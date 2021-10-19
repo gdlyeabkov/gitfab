@@ -1,5 +1,6 @@
 <template>
   <div>
+    <Header />
     <div style="display: flex;">
       <div style="width: 350px; margin: 0px 75px;">
 
@@ -83,6 +84,9 @@
           </button>
         </div>
         <button class="btn btn-light" style="">Show more activity</button>
+        <p>
+          Seeing something unexpected? Take a look at the GitHub profile guide.
+        </p>
 
       </div>
       <div v-else-if="activeTab.includes('repositories')" style="width: calc(100% - 175px);">
@@ -304,11 +308,13 @@
         </div>
       </div>
     </div>
-
+    <Footer />
   </div>
 </template>
 
 <script>
+import Header from '@/components/Header.vue'
+import Footer from '@/components/Footer.vue'
 
 export default {
   name: 'Home',
@@ -318,7 +324,8 @@ export default {
     }
   },
   components: {
-    
+    Header,
+    Footer
   }
 }
 </script>
