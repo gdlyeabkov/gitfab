@@ -33,12 +33,114 @@
                 arrow_drop_down
             </span>
         </div>
+        <div v-if="togglerContextMenu" class="contextMenu">
+            <span>
+                Signed in as
+            </span>
+            <span class="gitfaber">
+                {{ gitfaber.email }}
+            </span>
+            <hr />
+            <span @click="$router.push({ name: 'Status' })">
+                Set status
+            </span>
+            <hr />
+            <span @click="$router.push({ name: 'Profile' })">
+                Your profile
+            </span>
+            <span @click="$router.push({ name: 'Repos' })">
+                Your repositories
+            </span>
+            <span @click="$router.push({ name: 'CodeSpaces' })">
+                Your codespaces
+            </span>
+            <span @click="$router.push({ name: 'Projects' })">
+                Your projects
+            </span>
+            <span @click="$router.push({ name: 'Stars' })">
+                Your stars
+            </span>
+            <span @click="$router.push({ name: 'Gists' })">
+                Your gists
+            </span>
+            <hr />
+            <span @click="$router.push({ name: 'Upgrade' })">
+                Upgrade
+            </span>
+            <span @click="$router.push({ name: 'FeaturePreview' })">
+                Feature preview
+            </span>
+            <span @click="$router.push({ name: 'Help' })">
+                Help
+            </span>
+            <span @click="$router.push({ name: 'Settings' })">
+                Settings
+            </span>
+            <hr />
+            <span @click="signOut()">
+                Sign out
+            </span>
+        </div>
     </div>
 </template>
 
 <script>
-export default {
+import * as jwt from 'jsonwebtoken'
 
+export default {
+    name: 'Header',
+    data(){
+        return {
+            gitfaber: {},
+            togglerContextMenu: false,
+            token: window.localStorage.getItem("gitfabtoken")
+        }
+    },
+    mounted(){
+        jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
+            fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+                if(JSON.parse(result).status.includes('OK')){
+                    this.gitfaber = JSON.parse(result).gitfaber
+
+                }
+            })
+        })
+    },
+    methods: {
+        signOut(){
+            jwt.sign({
+                gitfaberemail: "this.email"
+                }, 'gitfabsecret', { expiresIn: '5m' })
+                localStorage.removeItem('gitfabtoken')            
+            this.$router.push({ name: "StartPage" })
+        }
+    }
 }
 </script>
 
@@ -83,6 +185,33 @@ export default {
         height: 30px;
         border: 1px solid rgb(125, 125, 125);
         width: 225px;
+    }
+
+    .contextMenu {
+        color: rgb(0, 0, 0);
+        box-shadow: 0 0 10px rgb(150, 150, 150);
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 15px;
+        width: 250px;
+        height: 500px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        top: 45px;
+        left: 975px;
+        background-color: rgb(255, 255, 255);
+        z-index: 5;
+    }
+
+    .gitfaber {
+        font-weight: bolder;
+        font-size: 12px;
+    }
+
+    .contextMenu > span {
+        cursor: pointer;
     }
 
 </style>

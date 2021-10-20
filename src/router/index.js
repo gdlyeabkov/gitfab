@@ -14,6 +14,12 @@ import Security from '../views/Security.vue'
 import PullRequests from '../views/PullRequests.vue'
 import Pricing from '../views/Pricing.vue'
 import Status from '../views/Status.vue'
+import StartPage from '../views/StartPage.vue'
+import SignIn from '../views/SignIn.vue'
+import SignUp from '../views/SignUp.vue'
+import ResetPassword from '../views/ResetPassword.vue'
+import Main from '../views/Main.vue'
+import RepoRegister from '../views/RepoRegister.vue'
 
 Vue.use(VueRouter)
 
@@ -87,8 +93,37 @@ const routes = [
     path: '/status',
     name: 'Status',
     component: Status
+  },
+  {
+    path: '/start',
+    name: 'StartPage',
+    component: StartPage
+  },
+  {
+    path: '/signin',
+    name: 'SignIn',
+    component: SignIn
+  },
+  {
+    path: '/signup',
+    name: 'SignUp',
+    component: SignUp
+  },
+  {
+    path: '/reset',
+    name: 'ResetPassword',
+    component: ResetPassword
+  },
+  {
+    path: '/main',
+    name: 'Main',
+    component: Main
+  },
+  {
+    path: '/repo/register',
+    name: 'RepoRegister',
+    component: RepoRegister
   }
-  
 ]
 
 const router = new VueRouter({

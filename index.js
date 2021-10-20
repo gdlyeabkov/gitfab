@@ -1,5 +1,6 @@
 const bcrypt = require('bcrypt');
 const saltRounds = 10;
+const nodemailer = require("nodemailer")
 
 const mongoose = require('mongoose')
 const express = require('express')
@@ -9,6 +10,14 @@ const serveStatic = require('serve-static')
 const app = express()
 
 app.use('/', serveStatic(path.join(__dirname, '/dist')))
+
+var transporter = nodemailer.createTransport({
+    service: 'Gmail',
+    auth: {
+        user: 'gdlyeabkov@gmail.com',
+        pass: 'myreversepassword'
+    }
+})
 
 const url = `mongodb+srv://glebClusterUser:glebClusterUserPassword@cluster0.fvfru.mongodb.net/gitfab?retryWrites=true&w=majority`;
 
@@ -62,14 +71,102 @@ const GitFaberSchema = new mongoose.Schema({
 
 const GitFaberModel = mongoose.model('GitFaberModel', GitFaberSchema);
 
-app.get('/gitfabers/get',(req, res)=>{
+app.get('/api/gitfabers/create',(req, res)=>{
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     
-    res.json({ 'status': 'OK' })
+    let query = GitFaberModel.find({})
+    query.exec((err, allGitfabers) => {
+        if (err){
+            return res.json({ "status": "Error" })
+        }
+        let gitfaberExists = false;
+        allGitfabers.forEach(gitfaber => {
+            if(gitfaber.email.includes(req.query.gitfaberemail)){
+                gitfaberExists = true
+            }
+        });
+        if(gitfaberExists){
+            return res.json({ "status": "Error" })
+        } else {
+            let encodedPassword = "#"
+            let salt = bcrypt.genSalt(saltRounds)
+            let generatedPassword = ''
+            let alphabet = "abcdefghjiklmnoprstuvwxyz"
+            for(let i = 0; i < Math.floor(Math.random() * 10); i++){
+                let randomIndex = Math.floor(Math.random() * alphabet.length)
+                let randomLetter = alphabet[randomIndex]
+                generatedPassword += randomLetter
+            }        
+            encodedPassword = bcrypt.hashSync(generatedPassword, saltRounds)
+            let gitfaber = new GitFaberModel({ email: req.query.gitfaberemail, password: encodedPassword });
+            gitfaber.save(function (err) {
+                if(err){
+                    return res.json({ "status": "Error" })
+                } else {
+                    let mailOptions = {
+                        from: `"${'gdlyeabkov'}" <${"gdlyeabkov"}>`,
+                        to: `${req.query.gitfaberemail}`,
+                        subject: `Никому не называйте пароль!`,
+                        html: `<h3>Gitfaber сгенерировал вам пароль</h3><p>Ваш пароль: ${generatedPassword}</p>`,
+                    }
+                    transporter.sendMail(mailOptions, function (err, info) {
+                        return res.json({ 'status': 'OK', 'newpassword': generatedPassword })
+                    })
+                }
+            })
+        }
+    })
+})
 
+app.get('/api/gitfabers/get', (req,res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let query =  GitFaberModel.findOne({'email': req.query.gitfaberemail}, function(err, gitfaber){
+        if (err){
+            return res.json({ "status": "Error" })
+        } else {
+            return res.json({ status: 'OK', gitfaber: gitfaber })
+        }
+    })
+
+})
+
+app.get('/api/gitfabers/check', (req,res)=>{
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let queryBefore = GitFaberModel.find({ email: { $in: req.query.gitfaberemail }  })
+    queryBefore.exec((err, allGitfabers) => {
+        if(err){
+            return res.json({ "status": "Error" })
+        }
+        if(allGitfabers.length >= 1){
+            let query =  GitFaberModel.findOne({'email': req.query.gitfaberemail}, function(err, gitfaber){
+                if (err){
+                    return res.json({ "status": "Error" })
+                } else {
+                    const passwordCheck = bcrypt.compareSync(req.query.gitfaberpassword, gitfaber.password) && req.query.gitfaberpassword !== ''
+                    if(gitfaber != null && gitfaber != undefined && passwordCheck){
+                        return res.json({ "status": "OK", "gitfaber": gitfaber })
+                    } else {
+                        return res.json({ "status": "Error" })
+                    }
+                }
+            })    
+        } else if(allEmployers.length <= 0){
+            return res.json({ "status": "Error" })
+        }
+    })
 })
 
 app.get('**', (req, res) => { 

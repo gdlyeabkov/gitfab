@@ -1,0 +1,210 @@
+<template>
+    <div>
+        <Header />
+        <div class="createRepoForm">
+            <h4>
+                Create a new repository
+            </h4>
+            <span>
+                A repository contains all project files, including the revision history. Already have a project repository elsewhere? 
+                <span class="importRepo">
+                    Import a repository.
+                </span>
+            </span>
+            <hr />
+            <div class="repoLabels">
+                <span class="repoLabel">
+                    Owner *
+                </span>
+                <span class="repoLabel">
+                    Repository name *
+                </span>
+            </div>
+            <div class="repoLabels">
+                <input type="text" class="form-control w-25">
+                <span class="separator">
+                    /
+                </span>
+                <input type="text" class="form-control w-25">
+            </div>
+            <span>
+                Great repository names are short and memorable. Need inspiration? How about curly-waddle?
+            </span>
+            <span>
+                Description (optional)
+            </span>
+            <input type="text" class="form-control w-75">
+            <hr />
+            <div class="accessRow">
+                <input type="checkbox" >
+                <span class="material-icons">
+                    note
+                </span>
+                <div class="accessColumn">
+                    <span class="repoAccess">
+                        Public
+                    </span>
+                    <span>
+                        Anyone on the internet can see this repository. You choose who can commit.
+                    </span>
+                </div>
+            </div>
+            <hr />
+            <hr />
+        </div>
+        <Footer />
+    </div>
+</template>
+
+<script>
+import * as jwt from 'jsonwebtoken'
+
+export default {
+    name: 'RepoRegister',
+    data(){
+        return {
+            gitfaber: {},
+            name: '',
+            description: '',
+            access: 'Public',
+            addReadme: false,
+            addGitIngore: false,
+            chooseALicense: false,
+            token: window.localStorage.getItem("gitfabtoken")
+        }
+    },
+    mounted(){
+        jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
+            fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+                if(JSON.parse(result).status.includes('OK')){
+                    this.gitfaber = JSON.parse(result).gitfaber
+
+                }
+            })
+        })
+    },
+    methods: {
+        createRepo(){
+            fetch(`http://localhost:4000/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitingore=${this.addGitIngore}&choosealicense=${this.chooseALicense}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+                if(JSON.parse(result).status.includes('OK')){
+                    this.token = jwt.sign({
+                        gitfaberemail: this.email
+                        }, 'gitfabsecret', { expiresIn: '5m' })
+                    localStorage.setItem('gitfabtoken', this.token)
+                    this.$router.push({ name: 'Home' })
+                } else if(JSON.parse(result).status.includes('Error')){
+                    this.errors = 'Такого гитфабера нет'
+                }
+            })
+        }
+    }
+}
+</script>
+
+<style scoped>
+    
+    .createRepoForm {
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        align-items: center;
+        width: 60%;
+        margin: auto;
+    }
+
+    .importRepo {
+        cursor: pointer;
+        color: rgb(0, 0, 255);
+    }
+
+    .repoLabels {
+        margin: 5px 0px;
+        display: flex;
+        width: 100%;
+    }
+
+    .repoLabel {
+        margin: 0px 75px;
+        font-weight: bolder;
+    }
+
+    .repoLabels > input {
+        margin: 0px 25px;
+    }
+
+    .separator {
+        font-weight: bolder;
+        font-size: 24px;
+    }
+
+    .repoAccess {
+        font-weight: bolder;
+    }
+
+    .accessColumn {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .accessRow {
+        display: flex;
+        align-items: center;
+    }
+
+    .accessRow > * {
+        margin: 5px 15px;
+    }
+
+</style>

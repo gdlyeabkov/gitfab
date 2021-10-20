@@ -45,27 +45,147 @@
         <div style="display: flex; width: 100%;">
           
           <div style="width: 50%;">
-            <dir style="width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
 
-            </dir>
-            <dir style="width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              
-            </dir>
-            <dir style="width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              
-            </dir>
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
+            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
+
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
+            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
+
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
           </div>
           
           <div style="width: 50%;">
-            <dir style="width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+<div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
 
-            </dir>
-            <dir style="width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              
-            </dir>
-            <dir style="width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              
-            </dir>
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
+            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
+
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
+            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
+
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
           </div>
 
         </div>
@@ -485,6 +605,25 @@ export default {
   .repoContent > div {
     display: flex;
     justify-content: space-between
+  }
+
+  .repoShortcutNameRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .repoShortcutLanguageRow {
+    display: flex;
+    align-items: center;
+  }
+
+  .marker {
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(0, 150, 0);
+    margin-right: 15px;
   }
 
 </style>
