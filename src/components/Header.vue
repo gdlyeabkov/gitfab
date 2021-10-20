@@ -3,16 +3,16 @@
         <div class="headerItem headerLeftItem">
             <img class="logo" width="100px" src="https://repository-images.githubusercontent.com/124369770/d12e6800-b47a-11e9-85a3-5fe53e198d49" alt="">
             <input type="text" placeholder="Search or jump to..." class="searcher form-control">
-            <span>
+            <span  @click="$router.push({ name: 'PullRequests' })">
                 Pull requests
             </span>
-            <span>
+            <span @click="$router.push({ name: 'Issues' })">
                 Issues
             </span>
-            <span>
+            <span @click="$router.push({ name: 'Marketplace' })">
                 Marketplace
             </span>
-            <span>
+            <span @click="$router.push({ name: 'Explore' })">
                 Explore
             </span>
         </div>
@@ -27,7 +27,7 @@
                 arrow_drop_down
             </span>
             <div class="avatar">
-
+                Г
             </div>
             <span class="material-icons">
                 arrow_drop_down
@@ -53,6 +53,9 @@ export default {
     }
     
     .avatar {
+        display: flex;
+        align-items: center;
+        justify-content: center;
         border-radius: 100%;
         width: 25px;
         height: 25px;
@@ -72,6 +75,7 @@ export default {
     .headerLeftItem > span {
         font-weight: bolder;
         font-size: 12px;
+        cursor: pointer;
     }
 
     .searcher {

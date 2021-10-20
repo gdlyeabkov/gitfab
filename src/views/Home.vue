@@ -37,8 +37,8 @@
     </div>
     <hr />
     <div style="display: flex;">
-      <div style="border-radius: 100%; background-color: rgb(0, 255, 0); width: 350px; height: 300px; margin: 0px 75px;">
-        
+      <div style="color: rgb(255, 255, 255);  font-size: 128px; display: flex; align-items: center; justify-content: center; border-radius: 100%; background-color: rgb(0, 150, 0); width: 350px; height: 300px; margin: 0px 75px;">
+        Г
       </div>
       <div v-if="activeTab.includes('overview')" style="width: calc(100% - 175px);">
         <p>Popular repositories</p>
