@@ -9,7 +9,7 @@
                             markunread_mailbox
                         </span>
                         <span class="repoAuthor">
-                            glebDyakov
+                            {{ repo.gitfaber }}
                         </span>
                         <span class="repoName">
                             / mynewrepository
@@ -200,8 +200,8 @@
                                 <div class="avatar">
                                     Г
                                 </div>
-                                <span>
-                                    glebDyakov
+                                <span class="gitfaber">
+                                    {{ repo.gitfaber }}
                                 </span>
                                 <span>
                                     add statistics
@@ -632,13 +632,56 @@
 import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
 
+import * as jwt from 'jsonwebtoken'
+
 export default {
     name: "Repo",
     data(){
         return {
             activeTab: 'code',
-            securityTab: 'overview'
+            securityTab: 'overview',
+            repo: {},
+            token: window.localStorage.getItem("gitfabtoken")
         }
+    },
+    mounted(){
+    jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
+      if(err) {
+        this.$router.push({ name: 'StartPage' })
+      } else {
+        fetch(`http://localhost:4000/api/repos/get/?repoid=${this.$route.query.repoid}`, {
+          mode: 'cors',
+          method: 'GET'
+        }).then(response => response.body).then(rb  => {
+          const reader = rb.getReader()
+          return new ReadableStream({
+            start(controller) {
+                function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                            console.log('done', done);
+                            controller.close();
+                            return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                }
+                push();
+            }
+            });
+                }).then(stream => {
+                    return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+                })
+                .then(result => {
+                    console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                    if(JSON.parse(result).status.includes('OK')){
+                        this.repo = JSON.parse(result).repo
+                    }
+                })
+            }
+        })
     },
     components: {
         Header,
@@ -931,6 +974,12 @@ export default {
         display: flex;
         justify-content: space-between;
         width: 150%;
+    }
+
+    .gitfaber {
+        width: 150px;
+        height: 100%;
+        word-break: break-word;
     }
 
 </style>

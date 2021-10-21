@@ -23,10 +23,10 @@
         </div>
         <div class="rightSideHeader">
             <input placeholder="Search Gitfab" type="text" class="form-control w-50">
-            <span>
+            <span @click="$router.push({ name: 'SignUp' })">
                 Sign in
             </span>
-            <span>
+            <span @click="$router.push({ name: 'SignIn' })">
                 Sign up
             </span>
         </div>
@@ -66,6 +66,10 @@ export default {
 
     .rightSideHeader > *, .leftSideHeader > * {
         margin: 0px 5px;
+    }
+    
+    .rightSideHeader > * {
+        cursor: pointer;
     }
 
 </style>

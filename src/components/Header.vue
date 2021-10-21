@@ -17,16 +17,16 @@
             </span>
         </div>
         <div class="headerItem">
-            <span class="material-icons">
+            <span @click="togglerNotificationContextMenu = true" id="notificationContextMenu" class="toggler material-icons">
                 notifications
             </span>
-            <span class="material-icons">
+            <span @click="togglerAddContextMenu = true" id="addContextMenu" class="toggler material-icons">
                 add
             </span>
             <span class="material-icons">
                 arrow_drop_down
             </span>
-            <div class="avatar">
+            <div @click="togglerContextMenu = true" id="mainContextMenu" class="avatar">
                 Г
             </div>
             <span class="material-icons">
@@ -81,6 +81,28 @@
                 Sign out
             </span>
         </div>
+        <div v-if="togglerAddContextMenu" class="addContextMenu">
+            <span @click="$router.push({ name: 'RepoRegister' })">
+                New repository
+            </span>
+            <span @click="$router.push({ name: 'Status' })">
+                Import repository
+            </span>
+            <span @click="$router.push({ name: 'Profile' })">
+                New gist
+            </span>
+            <span @click="$router.push({ name: 'Repos' })">
+                New organization
+            </span>
+            <span @click="$router.push({ name: 'CodeSpaces' })">
+                New project
+            </span>
+        </div>
+        <div v-if="togglerNotificationContextMenu" class="notificationsContextMenu">
+            <span @click="$router.push({ name: 'Gists' })">
+                Your have no unread notifications
+            </span>
+        </div>
     </div>
 </template>
 
@@ -93,43 +115,57 @@ export default {
         return {
             gitfaber: {},
             togglerContextMenu: false,
+            togglerAddContextMenu: false,
+            togglerNotificationContextMenu: false,
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
     mounted(){
         jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
-            fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
-                mode: 'cors',
-                method: 'GET'
-            }).then(response => response.body).then(rb  => {
-                const reader = rb.getReader()
-                return new ReadableStream({
-                start(controller) {
-                    function push() {
-                    reader.read().then( ({done, value}) => {
-                        if (done) {
-                        console.log('done', done);
-                        controller.close();
-                        return;
+            if(err) {
+                this.$router.push({ name: 'StartPage' })
+            } else {
+                fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                    mode: 'cors',
+                    method: 'GET'
+                }).then(response => response.body).then(rb  => {
+                    const reader = rb.getReader()
+                    return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                        reader.read().then( ({done, value}) => {
+                            if (done) {
+                            console.log('done', done);
+                            controller.close();
+                            return;
+                            }
+                            controller.enqueue(value);
+                            console.log(done, value);
+                            push();
+                        })
                         }
-                        controller.enqueue(value);
-                        console.log(done, value);
                         push();
-                    })
                     }
-                    push();
-                }
-                });
-            }).then(stream => {
-                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
-            })
-            .then(result => {
-                console.log(`JSON.parse(result): ${JSON.parse(result)}`)
-                if(JSON.parse(result).status.includes('OK')){
-                    this.gitfaber = JSON.parse(result).gitfaber
-
-                }
-            })
+                    });
+                }).then(stream => {
+                    return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+                })
+                .then(result => {
+                    console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+                    if(JSON.parse(result).status.includes('OK')){
+                        this.gitfaber = JSON.parse(result).gitfaber
+                        
+                        document.body.addEventListener("click", (event) => {                        
+                            if(!event.target.id.includes('mainContextMenu'))
+                                this.togglerContextMenu = false
+                            if(!event.target.id.includes('addContextMenu'))
+                                this.togglerAddContextMenu = false
+                            if(!event.target.id.includes('notificationContextMenu'))
+                                this.togglerNotificationContextMenu = false
+                        })
+                    }
+                })
+            }
         })
     },
     methods: {
@@ -155,6 +191,7 @@ export default {
     }
     
     .avatar {
+        cursor: pointer;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -205,12 +242,52 @@ export default {
         z-index: 5;
     }
 
+    .addContextMenu {
+        color: rgb(0, 0, 0);
+        box-shadow: 0 0 10px rgb(150, 150, 150);
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 15px;
+        width: 200px;
+        height: 200px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        top: 45px;
+        left: 975px;
+        background-color: rgb(255, 255, 255);
+        z-index: 5;
+    }
+
+    .notificationsContextMenu {
+        color: rgb(255, 255, 255);
+        box-shadow: 0 0 10px rgb(150, 150, 150);
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 15px;
+        width: 350px;
+        height: 25px;
+        position: absolute;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        top: 45px;
+        left: 765px;
+        background-color: rgb(0, 0, 0);
+        z-index: 5;
+    }
+
     .gitfaber {
         font-weight: bolder;
         font-size: 12px;
     }
 
-    .contextMenu > span {
+    .contextMenu > span, .addContextMenu > span, .notificationsContextMenu > span {
+        cursor: pointer;
+    }
+
+    .toggler {
         cursor: pointer;
     }
 

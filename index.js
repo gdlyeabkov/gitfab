@@ -38,7 +38,11 @@ mongoose.connect(url, connectionParams)
 const RepoSchema = new mongoose.Schema({
     gitfaber: String,
     name: String,
+    description: String,
     access: String,
+    addReadme: Boolean,
+    addGitIngore: Boolean,
+    chooseALicence: Boolean,
     commits: {
         type: Number,
         default: 0
@@ -121,6 +125,91 @@ app.get('/api/gitfabers/create',(req, res)=>{
     })
 })
 
+app.get('/api/repos/create',(req, res)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let query = RepoModel.find({})
+    query.exec((err, allRepos) => {
+        if (err){
+            return res.json({ "status": "Error" })
+        }
+        let repoExists = false;
+        allRepos.forEach(repo => {
+            if(repo.name.includes(req.query.reponame)){
+                repoExists = true
+            }
+        });
+        if(repoExists){
+            return res.json({ "status": "Error" })
+        } else {
+            let newRepo = new RepoModel({ name: req.query.reponame, description: req.query.repodescription, access: req.query.repoaccess, addReadme: req.query.addreadme, addGitIngore: req.query.addgitignore, chooseALicence: req.query.choosealicense, gitfaber: req.query.gitfaberemail });
+            newRepo.save(function (err) {
+                if(err){
+                    return res.json({ "status": "Error" })
+                } else {
+                    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+                        { $push: 
+                            {
+                                repos: [
+                                    {
+                                        name: req.query.reponame
+                                    }
+                                ]
+                                
+                            }
+                    }, (err, repo) => {
+                        if(err){
+                            return res.json({ "status": "error" })
+                        } else {
+                            return res.json({ 'status': 'OK' })
+                        }
+                    })                
+                }
+            })
+        }
+    })
+})
+
+app.get('/api/repos/get', (req,res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let query =  RepoModel.findOne({'_id': req.query.repoid}, function(err, repo){
+        if (err){
+            return res.json({ "status": "Error" })
+        } else {
+            return res.json({ 'status': 'OK', repo: repo })
+        }
+    })
+
+})
+
+app.get('/api/stars/add', (req,res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+    {
+        "$inc": { "stars": 1 }
+    }, (err, repo) => {
+        if(err){
+            return res.json({ "status": "Error" })
+        } else {
+            return res.json({ "status": "OK" })
+        }
+    })
+
+})
+
 app.get('/api/gitfabers/get', (req,res) => {
 
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -132,7 +221,12 @@ app.get('/api/gitfabers/get', (req,res) => {
         if (err){
             return res.json({ "status": "Error" })
         } else {
-            return res.json({ status: 'OK', gitfaber: gitfaber })
+            let query =  RepoModel.find({'gitfaber': req.query.gitfaberemail}, function(err, allRepos){
+                if(err) {
+                    return res.json({ "status": "Error" })
+                }
+                return res.json({ status: 'OK', gitfaber: gitfaber, repos: allRepos })
+            })
         }
     })
 

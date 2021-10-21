@@ -19,7 +19,7 @@
             markunread_mailbox
           </span>
           <span @click="activeTab = 'repositories'" class="tab" :style="`${ activeTab.includes('repositories') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); font-weight: bolder;' : '' }`">Repositories</span>
-          <span>149</span>
+          <span>{{ gitfaber.repos.length }}</span>
         </div>
         <div class="tabItem">
           <span class="material-icons">
@@ -45,7 +45,7 @@
         <div style="display: flex; width: 100%;">
           
           <div style="width: 50%;">
-            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+            <!-- <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
               <div class="repoShortcutNameRow">
                 <span class="repoName">
                   mynewrepository
@@ -108,6 +108,31 @@
               <div class="repoShortcutLanguageRow">
                 <div class="marker">
 
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div> -->
+            
+            <div v-for="repo in repos.filter((repo, repoInd) => {
+                return repoInd <= 2
+              })" style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span @click="$router.push({ name: 'Repo', query: { repoid: repo._id } })" class="repoName">
+                  {{ repo.name }}
+                </span>
+                <span class="repoAccess">
+                  {{ repo.access }}
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
                 </div>
                 <span>
                   HTML
@@ -115,10 +140,32 @@
               </div>
             </div>
           </div>
-          
           <div style="width: 50%;">
+            <!-- <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+              <div class="repoShortcutNameRow">
+                <span class="repoName">
+                  mynewrepository
+                </span>
+                <span class="repoAccess">
+                  Public
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <span>
+                  vueJS
+                </span>
+              </div>
+              <div class="repoShortcutLanguageRow">
+                <div class="marker">
+
+                </div>
+                <span>
+                  HTML
+                </span>
+              </div>
+            </div>
             <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-<div class="repoShortcutNameRow">
+              <div class="repoShortcutNameRow">
                 <span class="repoName">
                   mynewrepository
                 </span>
@@ -162,14 +209,16 @@
                   HTML
                 </span>
               </div>
-            </div>
-            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
+            </div> -->
+            <div v-for="repo in repos.filter((repo, repoInd) => {
+                return repoInd <= 5 && repoInd >= 3
+              })" style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
               <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
+                <span @click="$router.push({ name: 'Repo', query: { repoid: repo._id } })" class="repoName">
+                  {{ repo.name }}
                 </span>
                 <span class="repoAccess">
-                  Public
+                  {{ repo.access }}
                 </span>
               </div>
               <div class="repoShortcutLanguageRow">
@@ -179,7 +228,6 @@
               </div>
               <div class="repoShortcutLanguageRow">
                 <div class="marker">
-
                 </div>
                 <span>
                   HTML
@@ -211,7 +259,7 @@
       </div>
       <div v-else-if="activeTab.includes('repositories')" style="width: calc(100% - 175px);">
         <div class="projectSearchOrCreate">
-          <input placeholder="Find a repository" type="text" class="form-control w-50">
+          <input v-model="needRepos" placeholder="Find a repository" type="text" class="form-control w-50">
           <div class="btns">
             <button class="btn btn-light packageBtn">
               Type
@@ -232,12 +280,13 @@
               </span>
             </button>
           </div>
-          <button class="btn btn-success">
+          <button @click="$router.push({ name: 'RepoRegister' })" class="btn btn-success">
             New
           </button>
         </div>
         <div class="repos">
-          <div class="repo">
+          
+          <!-- <div class="repo">
             <div class="repoHeader">
               <div>
                 <span class="repoName">
@@ -270,6 +319,66 @@
               </div>
               <hr />
             </div>
+          </div> -->
+          <div v-if="repos.filter((repo, repoInd) => {
+              return repo.name.toLowerCase().includes(needRepos.toLowerCase())
+            }).length >= 1">
+            <div v-for="repo in repos.filter((repo, repoInd) => {
+              return repo.name.toLowerCase().includes(needRepos.toLowerCase())
+            })" class="repo">
+              <div class="repoHeader">
+                <div>
+                  <span @click="$router.push({ name: 'Repo', query: { repoid: repo._id } })" class="repoName">
+                    {{ repo.name }}
+                  </span>
+                  <span class="repoAccess">
+                    {{ repo.access }}
+                  </span>
+                </div>
+                <button @click="addStar(repo._id)" class="btn-light packageBtn">
+                  <span class="material-icons-outlined">
+                    star_outline
+                  </span>
+                  <span>
+                    Star
+                  </span>
+                </button>
+              </div>
+              <div class="repoContent">
+                <div>
+                  <div class="repoAuthorLogo">
+
+                  </div>
+                  <span>
+                    C#
+                  </span>
+                  <span>
+                    Updated 17 hours ago
+                  </span>
+                </div>
+                <hr />
+              </div>
+            </div>
+          </div>
+          <div v-else>
+            <hr />
+            <div class="reposNotFound">
+              <span>
+                0 results for repositories matching 123 sorted by last updated
+              </span>
+              <div class="clearFilterBLock">
+                <span @click="needRepos = ''" class="clearFilter material-icons">
+                  disabled_by_default
+                </span>
+                <span @click="needRepos = ''" class="clearFilter">
+                  Clear filter
+                </span>
+              </div>
+            </div>
+            <hr />
+            <p class="notHaveRepos">
+              {{ gitfaber.email }} doesn’t have any repositories that match.
+            </p>
           </div>
         </div>
       </div>
@@ -436,11 +545,91 @@
 import Header from '@/components/Header.vue'
 import Footer from '@/components/Footer.vue'
 
+import * as jwt from 'jsonwebtoken'
+
 export default {
   name: 'Home',
   data(){
     return {
-      activeTab: 'overview'
+      activeTab: 'overview',
+      gitfaber: {
+        repos: []
+      },
+      repos: [],
+      needRepos: '',
+      token: window.localStorage.getItem("gitfabtoken")
+    }
+  },
+  mounted(){
+    jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
+      if(err) {
+        this.$router.push({ name: 'StartPage' })
+      } else {
+        fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+          mode: 'cors',
+          method: 'GET'
+        }).then(response => response.body).then(rb  => {
+          const reader = rb.getReader()
+          return new ReadableStream({
+          start(controller) {
+              function push() {
+              reader.read().then( ({done, value}) => {
+                  if (done) {
+                  console.log('done', done);
+                  controller.close();
+                  return;
+                  }
+                  controller.enqueue(value);
+                  console.log(done, value);
+                  push();
+              })
+              }
+              push();
+          }
+          });
+        }).then(stream => {
+          return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+        })
+        .then(result => {
+          console.log(`JSON.parse(result): ${JSON.parse(result).gitfaber}`)
+          if(JSON.parse(result).status.includes('OK')){
+            this.gitfaber = JSON.parse(result).gitfaber
+            this.repos = JSON.parse(result).repos
+          }
+        })
+      }
+    })
+  },
+  methods: {
+    addStar(repoId){
+      fetch(`http://localhost:4000/api/stars/add/?repoid=${repoId}`, {
+          mode: 'cors',
+          method: 'GET'
+        }).then(response => response.body).then(rb  => {
+          const reader = rb.getReader()
+          return new ReadableStream({
+          start(controller) {
+              function push() {
+              reader.read().then( ({done, value}) => {
+                  if (done) {
+                  console.log('done', done);
+                  controller.close();
+                  return;
+                  }
+                  controller.enqueue(value);
+                  console.log(done, value);
+                  push();
+              })
+              }
+              push();
+          }
+          });
+        }).then(stream => {
+          return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+        })
+        .then(result => {
+          console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+        })
     }
   },
   components: {
@@ -489,6 +678,8 @@ export default {
 
   .packageBtn {
     border: 1px solid rgb(175, 175, 175);
+    display: flex;
+    align-items: center;
   }
 
   .packagesList {
@@ -570,7 +761,7 @@ export default {
   }
 
   .repo {
-
+    margin: 15px 0px;
   }
 
   .repoAuthorLogo {
@@ -583,6 +774,11 @@ export default {
   .repoName {
     color: rgb(0, 0, 255);
     font-weight: bolder;
+    cursor: pointer;
+  }
+
+  .repoName:hover {
+    text-decoration: underline;
   }
 
   .repoAccess {
@@ -624,6 +820,32 @@ export default {
     height: 10px;
     background-color: rgb(0, 150, 0);
     margin-right: 15px;
+  }
+
+  .reposNotFound {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .clearFilterBLock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .clearFilter {
+    cursor: pointer;
+    align-self: center;
+  }
+
+  .clearFilter:hover {
+    color: rgb(0, 0, 255);
+  }
+
+  .notHaveRepos {
+    font-weight: bolder;
+    text-align: center;
   }
 
 </style>
