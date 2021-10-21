@@ -37,8 +37,16 @@
     </div>
     <hr />
     <div style="display: flex;">
-      <div style="color: rgb(255, 255, 255);  font-size: 128px; display: flex; align-items: center; justify-content: center; border-radius: 100%; background-color: rgb(0, 150, 0); width: 350px; height: 300px; margin: 0px 75px;">
-        Г
+      <div class="avatarAside">
+        <div @click="$router.push({ name: 'Settings' })" style="cursor: pointer; color: rgb(255, 255, 255);  font-size: 128px; display: flex; align-items: center; justify-content: center; border-radius: 100%; background-color: rgb(0, 150, 0); width: 350px; height: 300px; margin: 0px 75px;">
+          Г
+        </div>
+        <span>
+          {{ gitfaber.email }}
+        </span>
+        <button class="btn btn-light w-75">
+          Edit profile
+        </button>
       </div>
       <div v-if="activeTab.includes('overview')" style="width: calc(100% - 175px);">
         <p>Popular repositories</p>
@@ -852,6 +860,21 @@ export default {
   .notHaveRepos {
     font-weight: bolder;
     text-align: center;
+  }
+
+  .avatarAside {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .avatarAside > button {
+    font-weight: bolder;
+    border: 1px solid rgb(200, 200, 200);
+  }
+
+  .avatarAside > * {
+    margin: 10px;
   }
 
 </style>

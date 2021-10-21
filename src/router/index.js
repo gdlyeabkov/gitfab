@@ -20,6 +20,7 @@ import SignUp from '../views/SignUp.vue'
 import ResetPassword from '../views/ResetPassword.vue'
 import Main from '../views/Main.vue'
 import RepoRegister from '../views/RepoRegister.vue'
+import Settings from '../views/Settings.vue'
 
 Vue.use(VueRouter)
 
@@ -123,7 +124,13 @@ const routes = [
     path: '/repo/register',
     name: 'RepoRegister',
     component: RepoRegister
+  },
+  {
+    path: '/settings',
+    name: 'Settings',
+    component: Settings
   }
+  
 ]
 
 const router = new VueRouter({
