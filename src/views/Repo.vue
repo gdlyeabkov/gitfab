@@ -12,7 +12,7 @@
                             {{ repo.gitfaber }}
                         </span>
                         <span class="repoName">
-                            / mynewrepository
+                            / {{ repo.name }}
                         </span>
                         <span class="repoAccess">
                             Public
@@ -409,17 +409,356 @@
                     </div>
                 </div>
             </div>
-            <div class="repoBody" v-else-if="activeTab.includes('issues')">
-                
+            <div class="" v-else-if="activeTab.includes('issues')">
+                <div class="pullRequestsFilters">
+                    <input placeholder="Filters" type="text" class="form-control w-50" />
+                    <button class="btn btn-light">
+                        <span>
+                            Labels
+                        </span>
+                        <span>
+                            9
+                        </span>
+                        <span>
+                            Milestones
+                        </span>
+                        <span>
+                            0
+                        </span>
+                    </button>
+                    <button class="btn btn-success">
+                        New pull request
+                    </button>
+                </div>
+                <div class="pullRequestData">
+                    <span class="material-icons-outlined">
+                        device_hub
+                    </span>
+                    <span class="pullRequestDataHeader">
+                        Welcome to issues!
+                    </span>
+                    <span class="pullRequestDataContent">
+                        Issues are used to track todos, bugs, feature requests, and more. As issues are created, they’ll appear here in a searchable and filterable list. To get started, you should 
+                        <span class="createBtn">
+                            create an issue.
+                        </span>
+                    </span>
+                </div>
+                <p class="proTipRow">
+                    <span class="material-icons-outlined">
+                        tungsten
+                    </span>
+                    <span class="proTip">
+                        ProTip!
+                    </span>
+                     What’s not been updated in a month: 
+                    <span class="pullRequestsUpdated">
+                        updated: 2021-09-21.
+                    </span>
+                </p>    
             </div>
-            <div class="repoBody" v-else-if="activeTab.includes('pull requests')">
-                
+            <div class="" v-else-if="activeTab.includes('pull requests')">
+                <div class="pullRequestsFilters">
+                    <input placeholder="Filters" type="text" class="form-control w-50" />
+                    <button class="btn btn-light">
+                        <span>
+                            Labels
+                        </span>
+                        <span>
+                            9
+                        </span>
+                        <span>
+                            Milestones
+                        </span>
+                        <span>
+                            0
+                        </span>
+                    </button>
+                    <button class="btn btn-success">
+                        New pull request
+                    </button>
+                </div>
+                <div class="pullRequestData">
+                    <span class="material-icons-outlined">
+                        device_hub
+                    </span>
+                    <span class="pullRequestDataHeader">
+                        Welcome to pull requests!
+                    </span>
+                    <span class="pullRequestDataContent">
+                        Pull requests help you collaborate on code with other people. As pull requests are created, they’ll appear here in a searchable and filterable list. To get started, you should 
+                        <span class="createBtn">
+                            create a pull request.
+                        </span>
+                    </span>
+                </div>
+                <p class="proTipRow">
+                    <span class="material-icons-outlined">
+                        tungsten
+                    </span>
+                    <span class="proTip">
+                        ProTip!
+                    </span>
+                     What’s not been updated in a month: 
+                    <span class="pullRequestsUpdated">
+                        updated: 2021-09-21.
+                    </span>
+                </p>    
             </div>
-            <div class="repoBody" v-else-if="activeTab.includes('actions')">
-                
+            <div class="" v-else-if="activeTab.includes('actions')">
+                <h4>
+                    Get started with GitHub Actions
+                </h4>
+                <p>
+                    Build, test, and deploy your code. Make code reviews, branch management, and issue triaging work the way you want. Select a workflow template to get started.
+                </p>
+                <p>
+                    Skip this and set up a workflow yourself 
+                </p>
+                <hr />
+                <h5>
+                    Workflows made for your repository
+                </h5>
+                <button class="btn btn-light w-25">
+                    Suggested
+                </button>
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <hr />
+                <h4>
+                    Deploy your code with these popular services
+                </h4>
+                <br class="clearer" />
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <div class="automateEveryStepInYourProcessBlockParentMultiple">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <hr />
+                <h4>
+                    Continuous integration workflows
+                </h4>
+                <br class="clearer" />
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <hr />
+                <h4>
+                    Automate every step in your process
+                </h4>
+                <br class="clearer" />
+                <div class="automateEveryStepInYourProcessBlockParent">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <div class="automateEveryStepInYourProcessBlockParentLeft">
+                    <div class="automateEveryStepInYourProcessBlock">
+
+                    </div>
+                </div>
+                <hr />
+                <h4 class="learnMoreAboutGitHubActionsTitle">
+                    Learn more about GitHub Actions
+                </h4>
+                <div class="learnMoreAboutGitFabActions">
+                    <div class="learnMoreAboutGitFabAction">
+                        <div class="learnMoreAboutGitFabActionHeader">
+                            <span class="learnMoreAboutGitFabActionHeaderTitle">
+                                Getting started and core concepts
+                            </span>
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                        </div>
+                        <span>
+                            New to Actions? Start here. Learn the core concepts and how to get started.
+                        </span>
+                    </div>
+                    <div class="learnMoreAboutGitFabAction">
+                        <div class="learnMoreAboutGitFabActionHeader">
+                            <span class="learnMoreAboutGitFabActionHeaderTitle">
+                                Configuring and managing workflows
+                            </span>
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                        </div>
+                        <span>
+                            Create custom workflows to control your project's life cycle processes.
+                        </span>
+                    </div>
+                    <div class="learnMoreAboutGitFabAction">
+                        <div class="learnMoreAboutGitFabActionHeader">
+                            <span class="learnMoreAboutGitFabActionHeaderTitle">
+                                Language and framework guides
+                            </span>
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                        </div>
+                        <span>
+                            Guides for projects written in many programming languages.
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="repoBody" v-else-if="activeTab.includes('projects')">
-                
+            <div class="" v-else-if="activeTab.includes('projects')">
+                <div class="projectsHeader">
+                    <div class="projectsHeaderTitle">
+                        <h3>
+                            Organize your issues with project boards
+                        </h3>
+                        <span>
+                            Did you know you can manage projects in the same place you keep your code? Set up a project board on GitHub to streamline and automate your workflow.
+                        </span>
+                    </div>
+                    <div class="btns">
+                        <button class="btn btn-light">
+                            Learn more
+                        </button>
+                        <button class="btn btn-success">
+                            Create project
+                        </button>
+                    </div>
+                </div>
+                <hr />
+                <div class="projectsBody">
+                    <div class="projectsRow">
+                        <div class="project">
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                            <span class="projectHeader">
+                                Sort tasks
+                            </span>
+                            <span>
+                                Add issues and pull requests to your board and prioritize them alongside note cards containing ideas or task lists.
+                            </span>
+                        </div>
+                        <div class="project">
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                            <span class="projectHeader">
+                                Plan your project
+                            </span>
+                            <span>
+                                Sort tasks into columns by status. You can label columns with status indicators like "To Do", "In Progress", and "Done".
+                            </span>
+                        </div>
+                        <div class="project">
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                            <span class="projectHeader">
+                                Automate your workflow
+                            </span>
+                            <span>
+                                Set up triggering events to save time on project management—we’ll move tasks into the right columns for you.
+                            </span>
+                        </div>
+                    </div>
+                    <div class="projectsRow">
+                        <div class="project">
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                            <span class="projectHeader">
+                                Track progress
+                            </span>
+                            <span>
+                                Keep track of everything happening in your project and see exactly what’s changed since the last time you looked.
+                            </span>
+                        </div>
+                        <div class="project">
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                            <span class="projectHeader">
+                                Share status
+                            </span>
+                            <span>
+                                Each card has a unique URL, making it easy to share and discuss individual tasks with your team.
+                            </span>
+                        </div>
+                        <div class="project">
+                            <span class="material-icons">
+                                view_agenda
+                            </span>
+                            <span class="projectHeader">
+                                Wrap up
+                            </span>
+                            <span>
+                                After you wrap up your work, close your project board to remove it from your active projects list. On to the next project!
+                            </span>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="repoBody" v-else-if="activeTab.includes('wiki')">
                 
@@ -620,62 +959,62 @@
             <div class="repoBody" v-else-if="activeTab.includes('insights')">
                 <div class="securityBody">
                     <div class="securityAside">
-                        <span :class="{ securityAsideItemActive: securityTab.includes('overview') }" @click="securityTab = 'overview'">
-                            <div v-if="ingsightsTab.includes('pulse')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('pulse') }" @click="insightsTab = 'pulse'">
+                            <div v-if="insightsTab.includes('pulse')" class="securityAsideLineItem">
 
                             </div>
                             Pulse
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('security policy') }" @click="securityTab = 'security policy'">
-                            <div v-if="securityTab.includes('contributors')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('contributors') }" @click="insightsTab = 'contributors'">
+                            <div v-if="insightsTab.includes('contributors')" class="securityAsideLineItem">
 
                             </div>
                             Contributors
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('security advisories') }" @click="securityTab = 'security advisories'">
-                            <div v-if="securityTab.includes('community')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('community') }" @click="insightsTab = 'community'">
+                            <div v-if="insightsTab.includes('community')" class="securityAsideLineItem">
 
                             </div>
                             Community
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('dependabot alerts') }" @click="securityTab = 'dependabot alerts'">
-                            <div v-if="securityTab.includes('traffic')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('traffic') }" @click="insightsTab = 'traffic'">
+                            <div v-if="insightsTab.includes('traffic')" class="securityAsideLineItem">
 
                             </div>
                             Traffic
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
-                            <div v-if="securityTab.includes('commits')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('commits') }" @click="insightsTab = 'commits'">
+                            <div v-if="insightsTab.includes('commits')" class="securityAsideLineItem">
 
                             </div>
                             Commits
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
-                            <div v-if="securityTab.includes('code frequency')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('code frequency') }" @click="insightsTab = 'code frequency'">
+                            <div v-if="insightsTab.includes('code frequency')" class="securityAsideLineItem">
 
                             </div>
                             Code frequency
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
-                            <div v-if="securityTab.includes('dependency graph')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('dependency graph') }" @click="insightsTab = 'dependency graph'">
+                            <div v-if="insightsTab.includes('dependency graph')" class="securityAsideLineItem">
 
                             </div>
                             Dependency graph
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="ingsightsTab = 'network'">
-                            <div v-if="securityTab.includes('network')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('network') }" @click="insightsTab = 'network'">
+                            <div v-if="insightsTab.includes('network')" class="securityAsideLineItem">
 
                             </div>
                             Network
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="ingsightsTab = 'forks'">
-                            <div v-if="securityTab.includes('forks')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: insightsTab.includes('forks') }" @click="insightsTab = 'forks'">
+                            <div v-if="insightsTab.includes('forks')" class="securityAsideLineItem">
 
                             </div>
                             Forks
                         </span>
                     </div>
-                    <div v-if="insightTab.includes('pulse')" class="securityMain">
+                    <div v-if="insightsTab.includes('pulse')" class="securityMain">
                         <h4>
                             october 14, 2021 – october 21, 2021
                         </h4>
@@ -849,22 +1188,19 @@
                     </div>
                     <div v-else-if="insightsTab.includes('dependency graph')" class="securityMain">
                         <h4>
-                            Network graph
+                            Dependency graph
                         </h4>
-                        <div class="dependabotAlertsBlock">
-                            <span class="material-icons">
-                                warning_amber
+                        <div class="dependencyGraphTabs">
+                            <span @click="dependencyGraphTab = 'dependencies'" :class="{ dependencyGraphActiveTab: dependencyGraphTab.includes('dependencies') }">
+                                Dependencies
                             </span>
-                            <h4>
-                                Dependabot alerts are disabled.
-                            </h4>
-                            <span>
-                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            <span @click="dependencyGraphTab = 'dependents'" :class="{ dependencyGraphActiveTab: dependencyGraphTab.includes('dependents') }">
+                                Dependents
+                            </span>
+                            <span @click="dependencyGraphTab = 'dependabot'" :class="{ dependencyGraphActiveTab: dependencyGraphTab.includes('dependabot') }">
+                                Dependabot
                             </span>
                         </div>
-                        <span>
-                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
-                        </span>
                     </div>
                     <div v-else-if="insightsTab.includes('network')" class="securityMain">
                         <h4>
@@ -885,27 +1221,17 @@
                             Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
                         </span>
                     </div>
-                    <div v-else-if="ingsightsTab.includes('forks')" class="securityMain">
-                        <h4>
-                            Security overview
-                        </h4>
-                        <div class="securityOverviewBlock">
-                            <div class="securityOverviewBlockColumn">
-                                <div class="securityOverviewBlockRow">
-                                    <div class="marker">
-
-                                    </div>
-                                    <span>
-                                        Security policy
-                                    </span>
-                                </div>
-                                <span>
-                                    Define how users should report security vulnerabilities for this repository
-                                </span>
-                            </div>
-                            <button class="btn btn-light">
-                                Set up a security policy
-                            </button>
+                    <div v-else-if="insightsTab.includes('forks')" class="securityMain">
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                device_hub
+                            </span>
+                            <h4>
+                                No one has forked this repository yet.
+                            </h4>
+                            <span>
+                                Forks are a great way to contribute to a repository. After forking a repository, you can send the original author a pull request.
+                            </span>
                         </div>
                     </div>
                 </div>
@@ -1168,7 +1494,8 @@ export default {
         return {
             activeTab: 'code',
             securityTab: 'overview',
-            ingsightsTab: 'pulse',
+            insightsTab: 'pulse',
+            dependencyGraphTab: 'dependencies',
             settingsTab: 'options',
             repo: {},
             token: window.localStorage.getItem("gitfabtoken")
@@ -1510,6 +1837,176 @@ export default {
         width: 150px;
         height: 100%;
         word-break: break-word;
+    }
+
+    .dependencyGraphTabs {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .dependencyGraphTabs > span {
+        border-bottom: 1px solid rgb(200, 200, 200);
+        box-sizing: border-box;
+        padding: 15px;
+        cursor: pointer;
+    }
+
+    .dependencyGraphActiveTab {
+        border-top-left-radius: 10px;
+        border-top-right-radius: 10px;
+        border: 1px solid rgb(200, 200, 200);
+        border-bottom: none !important;
+    }
+
+    .projectsHeader {
+        display: flex;
+        justify-content: space-around;
+
+    }
+    
+    .projectsBody {
+        display: flex;
+        flex-direction: column;
+        box-sizing: border-box;
+        padding: 50px;
+    }
+    
+    .projectsRow {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .project {
+        margin: 15px;
+        align-items: center;
+        width: 55%;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .projectHeader {
+        font-weight: bolder;
+    }
+
+    .btns {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .btns > button {
+        height: 35px;
+        margin: 15px;
+    }
+
+    .projectsHeaderTitle {
+        width: 50%;
+    }
+
+    .learnMoreAboutGitFabActions {
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .learnMoreAboutGitFabAction {
+        display: flex;
+        box-sizing: border-box;
+        padding: 15px;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(235, 235, 235);
+        width: 25%;
+        height: 200px;
+        border-radius: 8px;
+    }
+
+    .learnMoreAboutGitFabActionHeader {
+        display: flex;
+    }
+
+    .learnMoreAboutGitFabActionHeaderTitle {
+        font-weight: bolder;
+        font-size: 18px;
+    }
+
+    .learnMoreAboutGitHubActionsTitle {
+        text-align: center;
+    }
+
+    .automateEveryStepInYourProcessBlock {
+        border-radius: 8px;
+        width: 300px;
+        height: 250px;
+        border: 2px solid rgb(215, 215, 215);
+        margin: 25px;
+    }
+
+    .automateEveryStepInYourProcessBlock:last-child, .clearer {
+        clear: both;
+    }
+
+    .automateEveryStepInYourProcessBlockParent {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .automateEveryStepInYourProcessBlockParentLeft {
+        width: 93%;
+        display: flex;
+        justify-content: flex-start;
+        margin: auto;
+    }
+
+    .automateEveryStepInYourProcessBlockParentMultiple {
+        width: 67%;
+        display: flex;
+        justify-content: space-around;
+        
+    }
+
+    .pullRequestsUpdated {
+        color: rgb(0, 0, 255);
+    }
+
+    .proTip {
+        font-weight: bolder;
+    }
+
+    .pullRequestsFilters {
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .pullRequestData {
+        box-sizing: border-box;
+        padding: 25px;
+        margin: 35px auto;
+        height: 350px;
+        width: 75%;
+        border: 1px solid rgb(215, 215, 215);
+        border-radius: 8px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+
+    .pullRequestDataHeader {
+        font-weight: bolder;
+    }
+
+    .createBtn {
+        color: rgb(0, 0, 255);
+        cursor: pointer;
+    }
+
+    .pullRequestDataContent {
+        text-align: center;
+        width: 65%;
+    }
+
+    .proTipRow {
+        text-align: center;
     }
 
 </style>

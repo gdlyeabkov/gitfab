@@ -2,7 +2,7 @@
     <div class ="header">
         <div class="headerItem headerLeftItem">
             <img class="logo" width="100px" src="https://repository-images.githubusercontent.com/124369770/d12e6800-b47a-11e9-85a3-5fe53e198d49" alt="">
-            <input type="text" placeholder="Search or jump to..." class="searcher form-control">
+            <input @blur="searchKeywords = ''" v-model="searchKeywords" type="text" placeholder="Search or jump to..." class="searcher form-control">
             <span  @click="$router.push({ name: 'PullRequests' })">
                 Pull requests
             </span>
@@ -103,6 +103,17 @@
                 Your have no unread notifications
             </span>
         </div>
+        <div v-if="searchKeywords.length >= 1" class="searchAutoComplete">
+            <div v-for="repo in repos.filter((repo) => {
+                return repo.name.toLowerCase().includes(searchKeywords.toLowerCase()) 
+            })" :key="repo.name" @click="$router.push({ name: 'Repo', query: { repoid: repo._id } })" class="autocompleteRow">
+                <span >
+                
+                    {{ repo.name }}
+                </span>
+                <hr />
+            </div>
+        </div>
     </div>
 </template>
 
@@ -114,6 +125,8 @@ export default {
     data(){
         return {
             gitfaber: {},
+            repos: [],
+            searchKeywords: '',
             togglerContextMenu: false,
             togglerAddContextMenu: false,
             togglerNotificationContextMenu: false,
@@ -157,6 +170,8 @@ export default {
                     console.log(`JSON.parse(result): ${JSON.parse(result)}`)
                     if(JSON.parse(result).status.includes('OK')){
                         this.gitfaber = JSON.parse(result).gitfaber
+                        this.repos = JSON.parse(result).repos
+                        console.log(`repos: ${this.repos.length}`)
                         
                         document.body.addEventListener("click", (event) => {                        
                             if(!event.target.id.includes('mainContextMenu'))
@@ -230,6 +245,10 @@ export default {
         width: 225px;
     }
 
+    .searcher:focus {
+        background-color: rgb(255, 255, 255);
+    }
+
     .contextMenu {
         color: rgb(0, 0, 0);
         box-shadow: 0 0 10px rgb(150, 150, 150);
@@ -295,6 +314,43 @@ export default {
 
     .toggler {
         cursor: pointer;
+    }
+
+    .searchAutoComplete {
+        position: absolute;
+        top: 38px;
+        left: 265px;
+        border: 1px solid rgb(235, 235, 235);
+        box-shadow: 0 0 10px rgb(175, 175, 175);
+        background-color: rgb(255, 255, 255);
+        width: 225px;
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
+        min-height: 25px;
+        color : rgb(0, 0, 0);
+        display: flex;
+        flex-direction: column;
+        z-index: 5;
+    }
+
+    .autocompleteRow {
+        box-sizing: border-box;
+        padding: 15px;
+        display: flex;
+        justify-content: space-between;
+        cursor: pointer;
+        width: 100%;
+        
+    }
+
+    .autocompleteRow:hover {
+        background-color: rgb(0, 0, 255);
+        color: rgb(255, 255, 255);
+    }
+
+    .autocompleteRow:last-child {
+        border-bottom-left-radius: 7px;
+        border-bottom-right-radius: 7px;
     }
 
 </style>
