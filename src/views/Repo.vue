@@ -618,10 +618,538 @@
                 </div>
             </div>
             <div class="repoBody" v-else-if="activeTab.includes('insights')">
-                
+                <div class="securityBody">
+                    <div class="securityAside">
+                        <span :class="{ securityAsideItemActive: securityTab.includes('overview') }" @click="securityTab = 'overview'">
+                            <div v-if="ingsightsTab.includes('pulse')" class="securityAsideLineItem">
+
+                            </div>
+                            Pulse
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('security policy') }" @click="securityTab = 'security policy'">
+                            <div v-if="securityTab.includes('contributors')" class="securityAsideLineItem">
+
+                            </div>
+                            Contributors
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('security advisories') }" @click="securityTab = 'security advisories'">
+                            <div v-if="securityTab.includes('community')" class="securityAsideLineItem">
+
+                            </div>
+                            Community
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('dependabot alerts') }" @click="securityTab = 'dependabot alerts'">
+                            <div v-if="securityTab.includes('traffic')" class="securityAsideLineItem">
+
+                            </div>
+                            Traffic
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="securityTab.includes('commits')" class="securityAsideLineItem">
+
+                            </div>
+                            Commits
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="securityTab.includes('code frequency')" class="securityAsideLineItem">
+
+                            </div>
+                            Code frequency
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="securityTab.includes('dependency graph')" class="securityAsideLineItem">
+
+                            </div>
+                            Dependency graph
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="ingsightsTab = 'network'">
+                            <div v-if="securityTab.includes('network')" class="securityAsideLineItem">
+
+                            </div>
+                            Network
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="ingsightsTab = 'forks'">
+                            <div v-if="securityTab.includes('forks')" class="securityAsideLineItem">
+
+                            </div>
+                            Forks
+                        </span>
+                    </div>
+                    <div v-if="insightTab.includes('pulse')" class="securityMain">
+                        <h4>
+                            october 14, 2021 – october 21, 2021
+                        </h4>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Security policy
+                                    </span>
+                                </div>
+                                <span>
+                                    Define how users should report security vulnerabilities for this repository
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Set up a security policy
+                            </button>
+                        </div>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Security advisories
+                                    </span>
+                                </div>
+                                <span>
+                                    View or disclose security advisories for this repository
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                View security advisories
+                            </button>
+                        </div>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Dependabot alerts
+                                    </span>
+                                </div>
+                                <span>
+                                    Get notified when one of your dependencies has a vulnerability
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Enable dependabot alerts
+                            </button>
+                        </div>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Code scanning alerts
+                                    </span>
+                                </div>
+                                <span>
+                                    Automatically detect common vulnerability and coding errors
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Set up a code scanning
+                            </button>
+                        </div>
+                        
+                    </div>
+                    <div v-else-if="insightsTab.includes('contributors')" class="securityMain">
+                        <div class="securityPolicyBlock">
+                            <span class="material-icons">
+                                vpn_key
+                            </span>
+                            <h4>
+                                Set up a security policy
+                            </h4>
+                            <span>
+                                Help your community understand how to securely report security vulnerabilities for your project.
+                            </span>
+                            <button class="btn btn-success">
+                                Start setup
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else-if="insightsTab.includes('community')" class="securityMain">
+                        <div class="securityAdvisoriesHeader">
+                            <h4>
+                                Community profile
+                            </h4>
+                            <button class="btn btn-success">
+                                New draft security advisory
+                            </button>
+                        </div>
+                        <p>
+                            Privately discuss, fix, and publish information about security vulnerabilities in your repository's code.
+                        </p>
+                        <div class="securityPolicyBlock">
+                            <span class="material-icons-outlined">
+                                gpp_maybe
+                            </span>
+                            <h4>
+                                There aren’t any draft security advisories
+                            </h4>
+                        </div>
+                    </div>
+                    <div v-else-if="insightsTab.includes('traffic')" class="securityMain">
+                        <h4>
+                            Network graph
+                        </h4>
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                warning_amber
+                            </span>
+                            <h4>
+                                Dependabot alerts are disabled.
+                            </h4>
+                            <span>
+                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            </span>
+                        </div>
+                        <span>
+                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                        </span>
+                    </div>
+                    <div v-else-if="insightsTab.includes('commits')" class="securityMain">
+                        <h4>
+                            Network graph
+                        </h4>
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                warning_amber
+                            </span>
+                            <h4>
+                                Dependabot alerts are disabled.
+                            </h4>
+                            <span>
+                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            </span>
+                        </div>
+                        <span>
+                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                        </span>
+                    </div>
+                    <div v-else-if="insightsTab.includes('code frequency')" class="securityMain">
+                        <h4>
+                            Network graph
+                        </h4>
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                warning_amber
+                            </span>
+                            <h4>
+                                Dependabot alerts are disabled.
+                            </h4>
+                            <span>
+                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            </span>
+                        </div>
+                        <span>
+                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                        </span>
+                    </div>
+                    <div v-else-if="insightsTab.includes('dependency graph')" class="securityMain">
+                        <h4>
+                            Network graph
+                        </h4>
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                warning_amber
+                            </span>
+                            <h4>
+                                Dependabot alerts are disabled.
+                            </h4>
+                            <span>
+                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            </span>
+                        </div>
+                        <span>
+                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                        </span>
+                    </div>
+                    <div v-else-if="insightsTab.includes('network')" class="securityMain">
+                        <h4>
+                            Network graph
+                        </h4>
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                warning_amber
+                            </span>
+                            <h4>
+                                Dependabot alerts are disabled.
+                            </h4>
+                            <span>
+                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            </span>
+                        </div>
+                        <span>
+                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                        </span>
+                    </div>
+                    <div v-else-if="ingsightsTab.includes('forks')" class="securityMain">
+                        <h4>
+                            Security overview
+                        </h4>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Security policy
+                                    </span>
+                                </div>
+                                <span>
+                                    Define how users should report security vulnerabilities for this repository
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Set up a security policy
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
             <div class="repoBody" v-else-if="activeTab.includes('settings')">
-                
+                <div class="securityBody">
+                    <div class="securityAside">
+                        <span :class="{ securityAsideItemActive: securityTab.includes('overview') }" @click="securityTab = 'overview'">
+                            <div v-if="settingsTab.includes('options')" class="securityAsideLineItem">
+
+                            </div>
+                            Options
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('security policy') }" @click="securityTab = 'security policy'">
+                            <div v-if="settingsTab.includes('manage access')" class="securityAsideLineItem">
+
+                            </div>
+                            Manage access
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('security advisories') }" @click="securityTab = 'security advisories'">
+                            <div v-if="settingsTab.includes('security and analysis')" class="securityAsideLineItem">
+
+                            </div>
+                            Security and analysis
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('dependabot alerts') }" @click="securityTab = 'dependabot alerts'">
+                            <div v-if="settingsTab.includes('branches')" class="securityAsideLineItem">
+
+                            </div>
+                            Branches
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('webhooks')" class="securityAsideLineItem">
+
+                            </div>
+                            Webhooks
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('notifications')" class="securityAsideLineItem">
+
+                            </div>
+                            Notifications
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('integrations')" class="securityAsideLineItem">
+
+                            </div>
+                            Integrations
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('deploy keys')" class="securityAsideLineItem">
+
+                            </div>
+                            Deploy keys
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('actions')" class="securityAsideLineItem">
+
+                            </div>
+                            Actions
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('environments')" class="securityAsideLineItem">
+
+                            </div>
+                            Environments
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('secrets')" class="securityAsideLineItem">
+
+                            </div>
+                            Secrets
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('pages')" class="securityAsideLineItem">
+
+                            </div>
+                            Pages
+                        </span>
+                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                            <div v-if="settingsTab.includes('moderation settings alerts')" class="securityAsideLineItem">
+
+                            </div>
+                            Moderation settings
+                        </span>
+                    </div>
+                    <div v-if="securityTab.includes('overview')" class="securityMain">
+                        <h4>
+                            Security overview
+                        </h4>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Security policy
+                                    </span>
+                                </div>
+                                <span>
+                                    Define how users should report security vulnerabilities for this repository
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Set up a security policy
+                            </button>
+                        </div>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Security advisories
+                                    </span>
+                                </div>
+                                <span>
+                                    View or disclose security advisories for this repository
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                View security advisories
+                            </button>
+                        </div>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Dependabot alerts
+                                    </span>
+                                </div>
+                                <span>
+                                    Get notified when one of your dependencies has a vulnerability
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Enable dependabot alerts
+                            </button>
+                        </div>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Code scanning alerts
+                                    </span>
+                                </div>
+                                <span>
+                                    Automatically detect common vulnerability and coding errors
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Set up a code scanning
+                            </button>
+                        </div>
+                        
+                    </div>
+                    <div v-else-if="securityTab.includes('security policy')" class="securityMain">
+                        <div class="securityPolicyBlock">
+                            <span class="material-icons">
+                                vpn_key
+                            </span>
+                            <h4>
+                                Set up a security policy
+                            </h4>
+                            <span>
+                                Help your community understand how to securely report security vulnerabilities for your project.
+                            </span>
+                            <button class="btn btn-success">
+                                Start setup
+                            </button>
+                        </div>
+                    </div>
+                    <div v-else-if="securityTab.includes('security advisories')" class="securityMain">
+                        <div class="securityAdvisoriesHeader">
+                            <h4>
+                                Security Advisories
+                            </h4>
+                            <button class="btn btn-success">
+                                New draft security advisory
+                            </button>
+                        </div>
+                        <p>
+                            Privately discuss, fix, and publish information about security vulnerabilities in your repository's code.
+                        </p>
+                        <div class="securityPolicyBlock">
+                            <span class="material-icons-outlined">
+                                gpp_maybe
+                            </span>
+                            <h4>
+                                There aren’t any draft security advisories
+                            </h4>
+                        </div>
+                    </div>
+                    <div v-else-if="securityTab.includes('dependabot alerts')" class="securityMain">
+                        <h4>
+                            Dependabot alerts
+                        </h4>
+                        <div class="dependabotAlertsBlock">
+                            <span class="material-icons">
+                                warning_amber
+                            </span>
+                            <h4>
+                                Dependabot alerts are disabled.
+                            </h4>
+                            <span>
+                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                            </span>
+                        </div>
+                        <span>
+                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                        </span>
+                    </div>
+                    <div v-else-if="securityTab.includes('code scanning alerts')" class="securityMain">
+                        <h4>
+                            Security overview
+                        </h4>
+                        <div class="securityOverviewBlock">
+                            <div class="securityOverviewBlockColumn">
+                                <div class="securityOverviewBlockRow">
+                                    <div class="marker">
+
+                                    </div>
+                                    <span>
+                                        Security policy
+                                    </span>
+                                </div>
+                                <span>
+                                    Define how users should report security vulnerabilities for this repository
+                                </span>
+                            </div>
+                            <button class="btn btn-light">
+                                Set up a security policy
+                            </button>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <Footer />
@@ -640,6 +1168,8 @@ export default {
         return {
             activeTab: 'code',
             securityTab: 'overview',
+            ingsightsTab: 'pulse',
+            settingsTab: 'options',
             repo: {},
             token: window.localStorage.getItem("gitfabtoken")
         }

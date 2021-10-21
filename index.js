@@ -114,7 +114,7 @@ app.get('/api/gitfabers/create',(req, res)=>{
                         from: `"${'gdlyeabkov'}" <${"gdlyeabkov"}>`,
                         to: `${req.query.gitfaberemail}`,
                         subject: `Никому не называйте пароль!`,
-                        html: `<h3>Gitfaber сгенерировал вам пароль</h3><p>Ваш пароль: ${generatedPassword}</p>`,
+                        html: `<h3>Gitfab сгенерировал вам пароль</h3><p>Ваш пароль: ${generatedPassword}</p>`,
                     }
                     transporter.sendMail(mailOptions, function (err, info) {
                         return res.json({ 'status': 'OK', 'newpassword': generatedPassword })

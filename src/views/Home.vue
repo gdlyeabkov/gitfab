@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Header />
+    <Header @gotoRepositories="gotoRepositoriesHandler" />
     <div style="display: flex;">
       <div style="width: 350px; margin: 0px 75px;">
 
@@ -565,6 +565,9 @@ export default {
       if(err) {
         this.$router.push({ name: 'StartPage' })
       } else {
+        if(this.$route.query.activetab !== null && this.$route.query.activetab !== undefined) {
+          this.activeTab = this.$route.query.activetab
+        }
         fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
           mode: 'cors',
           method: 'GET'
@@ -601,6 +604,9 @@ export default {
     })
   },
   methods: {
+    gotoRepositoriesHandler(){
+      this.activeTab = 'repositories'
+    },
     addStar(repoId){
       fetch(`http://localhost:4000/api/stars/add/?repoid=${repoId}`, {
           mode: 'cors',

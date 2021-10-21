@@ -48,7 +48,7 @@
             <span @click="$router.push({ name: 'Profile' })">
                 Your profile
             </span>
-            <span @click="$router.push({ name: 'Repos' })">
+            <span @click="gotoRepositories()">
                 Your repositories
             </span>
             <span @click="$router.push({ name: 'CodeSpaces' })">
@@ -120,6 +120,9 @@ export default {
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
+    emits: [
+        "gotoRepositories"
+    ],
     mounted(){
         jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
             if(err) {
@@ -169,6 +172,9 @@ export default {
         })
     },
     methods: {
+        gotoRepositories(){
+            this.$emit('gotoRepositories')
+        },
         signOut(){
             jwt.sign({
                 gitfaberemail: "this.email"

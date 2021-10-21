@@ -68,7 +68,7 @@ export default {
         margin: 0px 5px;
     }
     
-    .rightSideHeader > * {
+    .leftSideHeader > span, .rightSideHeader > span {
         cursor: pointer;
     }
 
