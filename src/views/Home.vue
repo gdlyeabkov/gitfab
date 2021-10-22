@@ -576,7 +576,7 @@ export default {
         if(this.$route.query.activetab !== null && this.$route.query.activetab !== undefined) {
           this.activeTab = this.$route.query.activetab
         }
-        fetch(`https://gitfab.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+        fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
         // fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
           mode: 'cors',
           method: 'GET'
@@ -617,7 +617,7 @@ export default {
       this.activeTab = 'repositories'
     },
     addStar(repoId){
-      fetch(`https://gitfab.herokuapp.com/api/stars/add/?repoid=${repoId}`, {
+      fetch(`https://gitfabric.herokuapp.com/api/stars/add/?repoid=${repoId}`, {
       // fetch(`http://localhost:4000/api/stars/add/?repoid=${repoId}`, {
           mode: 'cors',
           method: 'GET'

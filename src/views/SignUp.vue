@@ -55,7 +55,7 @@ export default {
     },
     methods: {
         login(){
-            fetch(`https://gitfab.herokuapp.com/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}`, {
+            fetch(`https://gitfabric.herokuapp.com/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}`, {
             // fetch(`http://localhost:4000/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}`, {
                 mode: 'cors',
                 method: 'GET'

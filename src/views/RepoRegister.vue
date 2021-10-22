@@ -138,7 +138,7 @@ export default {
     },
     mounted(){
         jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
-            fetch(`https://gitfab.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+            fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
             // fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
                 mode: 'cors',
                 method: 'GET'
@@ -174,7 +174,7 @@ export default {
     },
     methods: {
         createRepo(){
-            fetch(`https://gitfab.herokuapp.com/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}`, {
+            fetch(`https://gitfabric.herokuapp.com/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}`, {
             // fetch(`http://localhost:4000/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}`, {
                 mode: 'cors',
                 method: 'GET'

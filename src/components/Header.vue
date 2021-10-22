@@ -141,7 +141,7 @@ export default {
             if(err) {
                 this.$router.push({ name: 'StartPage' })
             } else {
-                fetch(`https://gitfab.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
                 // fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
                     mode: 'cors',
                     method: 'GET'

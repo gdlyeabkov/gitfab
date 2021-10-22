@@ -283,7 +283,9 @@ app.get('**', (req, res) => {
     res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     
-    return res.redirect(`http://localhost:4000`)
+    // return res.redirect(`http://localhost:4000`)
+    return res.redirect(`https://gitfabric.herokuapp.com/`)
+
 })
 
 const port = process.env.PORT || 8080
