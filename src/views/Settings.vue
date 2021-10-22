@@ -21,76 +21,322 @@
             </button>
         </div>
         <div class="totalContainer">
-            <div class="asideMenu">
-                <div class="asideMenuItem">
-                    Account settings
+            <div class="asideMenus">
+                <div class="asideMenu">
+                    <div class="asideMenuItem">
+                        Account settings
+                    </div>
+                    <div @click="activeTab = 'profile'" class="asideMenuItem">
+                        Profile
+                    </div>
+                    <div @click="activeTab = 'account'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('account')  && activeTab.length <= 7 }">
+                        Account
+                    </div>
+                    <div @click="activeTab = 'appearance'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('appearance') }">
+                        Appearance
+                    </div>
+                    <div @click="activeTab = 'account security'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('account security') && activeTab.length >= 10 }">
+                        Account security
+                    </div>
+                    <div @click="activeTab = 'billing & plans'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('billing & plans') }">
+                        Billing & plans
+                    </div>
+                    <div @click="activeTab = 'security log'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('security log') }">
+                        Security log
+                    </div>
+                    <div @click="activeTab = 'security & analysis'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('security & analysis') }">
+                        Security & analysis
+                    </div>
+                    <div @click="activeTab = 'sponsorship log'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('sponsorship log') }">
+                        Sponsorship log
+                    </div>
+                    <div @click="activeTab = 'emails'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('emails') }">
+                        Emails
+                    </div>
+                    <div @click="activeTab = 'notifications'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('notifications') }">
+                        Notifications
+                    </div>
+                    <div @click="activeTab = 'scheduled reminders'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('scheduled reminders') }">
+                        Scheduled reminders
+                    </div>
+                    <div @click="activeTab = 'ssh and gpg keys'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('ssh and gpg keys') }">
+                        SSH and GPG keys
+                    </div>
+                    <div @click="activeTab = 'repositories'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('repositories') }">
+                        Repositories
+                    </div>
+                    <div @click="activeTab = 'packages'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('packages') }">
+                        Packages
+                    </div>
+                    <div @click="activeTab = 'organizations'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('organizations') }">
+                        Organizations
+                    </div>
+                    <div @click="activeTab = 'saved replies'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('saved replies') }">
+                        Saved replies
+                    </div>
+                    <div @click="activeTab = 'applications'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('applications') }">
+                        Applications
+                    </div>
                 </div>
-                <div @click="activeTab = 'profile'" class="asideMenuItem">
-                    Profile
+                <div class="asideMenuSecond">
+                    <div class="asideMenuItem">
+                        Developer settings
+                    </div>
                 </div>
-                <div @click="activeTab = 'account'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('account') }">
-                    Account
-                </div>
-                <div @click="activeTab = 'appearance'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('appearance') }">
-                    Appearance
-                </div>
-                <div @click="activeTab = 'account security'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('account security') }">
-                    Account security
-                </div>
-                <div @click="activeTab = 'billing & plans'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('billing & plans') }">
-                    Billing & plans
-                </div>
-                <div @click="activeTab = 'security log'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('security log') }">
-                    Security log
-                </div>
-                <div @click="activeTab = 'security & analysis'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('security & analysis') }">
-                    Security & analysis
-                </div>
-                <div @click="activeTab = 'sponsorship log'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('sponsorship log') }">
-                    Sponsorship log
-                </div>
-                <div @click="activeTab = 'emails'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('emails') }">
-                    Emails
-                </div>
-                <div @click="activeTab = 'notifications'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('notifications') }">
-                    Notifications
-                </div>
-                <div @click="activeTab = 'scheduled reminders'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('scheduled reminders') }">
-                    Scheduled reminders
-                </div>
-                <div @click="activeTab = 'ssh and gpg keys'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('ssh and gpg keys') }">
-                    SSH and GPG keys
-                </div>
-                <div @click="activeTab = 'repositories'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('repositories') }">
-                    Repositories
-                </div>
-                <div @click="activeTab = 'packages'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('packages') }">
-                    Packages
-                </div>
-                <div @click="activeTab = 'organizations'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('organizations') }">
-                    Organizations
-                </div>
-                <div @click="activeTab = 'saved replies'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('saved replies') }">
-                    Saved replies
-                </div>
-                <div @click="activeTab = 'applications'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('applications') }">
-                    Applications
+                <div class="asideMenuThird">
+                    <div class="asideMenuItem">
+                        Moderation settings
+                    </div>
+                    <div class="asideMenuItem">
+                        Blocked users
+                    </div>
+                    <div class="asideMenuItem">
+                        Interaction limits
+                    </div>
                 </div>
             </div>
             <div v-if="activeTab.includes('profile')" class="article">
                 <h4>
                     Public profile
                 </h4>
-            </div> 
-            <div v-else-if="activeTab.includes('account')" class="article">
+                <hr />
+                <p class="defaultEmail">
+                    Name
+                </p>
+                <input type="text" class="form-control w-50" />
+                <span>
+                    Your name may appear around GitHub where you contribute or are mentioned. You can remove it at any time.
+                </span>
+                <p class="defaultEmail">
+                    Public email
+                </p>
+                <input type="text" placeholder="Select a verified email to display" class="form-control w-50" />
+                <span>
+                    You have set your email address to private. To toggle email privacy, go to email settings and uncheck "Keep my email address private."
+                </span>
+                <p class="defaultEmail">
+                    Bio
+                </p>
+                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <span>
+                    You can @mention other users and organizations to link to them.
+                </span>
+                <p class="defaultEmail">
+                    URL
+                </p>
+                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <p class="defaultEmail">
+                    Twitter username
+                </p>
+                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <p class="defaultEmail">
+                    Company
+                </p>
+                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <span>
+                    You can @mention your company’s GitHub organization to link it.
+                </span>
+                <p class="defaultEmail">
+                    Location
+                </p>
+                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <span>
+                    All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears. Please see our privacy statement to learn more about how we use this information.
+                </span>
+                <button class="btn btn-success btnRow">
+                    Update profile
+                </button>
                 <h4>
-                    Change username
+                    Gitfab Developer Program
                 </h4>
                 <hr />
-            </div>
+                <div class="notificationsBlock">
+                    Building an application, service, or tool that integrates with GitHub? Join the GitHub Developer Program, or read more about it at our Developer site.
+                </div>
+                <span>
+                    <span class='linkable'>
+                        Check out the Developer site
+                    </span>
+                     for guides, our API reference, and other resources for building applications that integrate with GitHub. Make sure your contact information is up-to-date below. Thanks for being a member!
+                </span>
+                <h4>
+                    Jobs profile
+                </h4>
+                <hr />
+                <div class="vigilantModeRow">
+                    <input type="checkbox">
+                    <span>
+                        Available for hire
+                    </span>
+                </div>
+                <button class="btn btn-light turnBtn">
+                    Save jobs profile
+                </button>
+                <h4>
+                    Trending settings
+                </h4>
+                <hr />
+                <p class="defaultEmail">
+                    Preferred spoken language
+                </p>
+                <button class="btn btn-light turnBtn btnRow">
+                    No Preference
+                </button>
+                <span>
+                    We'll use this language preference to filter the trending repository lists on Explore and our Trending Repositories page.
+                </span>
+                <button class="btn btn-light turnBtn btnRow">
+                    Save trending settings
+                </button>
+            </div> 
             <div v-else-if="activeTab.includes('appearance')" class="article">
                 <h4>
                     Theme preferences
+                </h4>
+                <hr />
+                <span>
+                    Choose how GitHub looks to you. Select a single theme, or sync with your system and automatically switch between day and night themes.
+                </span>
+                <p class="defaultEmail">
+                    Theme mode
+                </p>
+                <div class="vigilantModeRow">
+                    <button class="btn btn-light turnBtn">
+                        Single theme
+                    </button>
+                    <span>
+                        GitHub will use your selected theme
+                    </span>
+                </div>
+                <div class="themes">
+                    <div class="themeRow">
+                        <div class="theme">
+                            <div class="themePreview">
+                                
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <span class="themeName">
+                                    Default light
+                                </span>
+                            </div>
+                        </div>    
+                        <div class="theme">
+                            <div class="themePreview">
+                                
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <span class="themeName">
+                                    Default dark
+                                </span>
+                            </div>
+                        </div>    
+                        <div class="theme">
+                            <div class="themePreview">
+                                
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <span class="themeName">
+                                    Dark dimmed
+                                </span>
+                            </div>
+                        </div>    
+                    </div>
+                    <div class="themeRow">
+                        <div class="theme">
+                            <div class="themePreview">
+                                
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <span class="themeName">
+                                    Dark high contrast
+                                </span>
+                            </div>
+                        </div>    
+                        <div class="theme">
+                            <div class="themePreview">
+                                
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <span class="themeName">
+                                    Dark colorblind
+                                </span>
+                            </div>
+                        </div>    
+                        <div class="theme">
+                            <div class="themePreview">
+                                
+                            </div>
+                            <div>
+                                <input type="radio">
+                                <span class="themeName">
+                                    Light contrast
+                                </span>
+                            </div>
+                        </div>    
+                    </div>
+                </div>
+                <h4>
+                    Emoji skin tone preference
+                </h4>
+                <hr />
+                <span class="defaultEmail">
+                    Preferred default emoji skin tone
+                </span>
+                <div class="vigilantModeRow">
+                    <div>
+                        <input type="radio" />
+                        <span class="material-icons">
+                            front_hand
+                        </span>
+                    </div>
+                    <div>
+                        <input type="radio" />
+                        <span class="material-icons">
+                            front_hand
+                        </span>
+                    </div>
+                    <div>
+                        <input type="radio" />
+                        <span class="material-icons">
+                            front_hand
+                        </span>
+                    </div>
+                    <div>
+                        <input type="radio" />
+                        <span class="material-icons">
+                            front_hand
+                        </span>
+                    </div>
+                    <div>
+                        <input type="radio" />
+                        <span class="material-icons">
+                            front_hand
+                        </span>
+                    </div>
+                    <div>
+                        <input type="radio" />
+                        <span class="material-icons">
+                            front_hand
+                        </span>
+                    </div>
+                </div>
+                <h4>
+                    Tab size preference
+                </h4>
+                <hr />
+                <span class="   defaultEmail">
+                    Choose the number of spaces a tab is equal to when rendering code
+                </span>
+                <button class="btn btn-light turnBtn btnRow">
+                    8 (Default)
+                </button>
+                <h4>
+                    Markdown editor font preference
                 </h4>
                 <hr />
             </div>
@@ -99,6 +345,132 @@
                     Change password
                 </h4>
                 <hr />
+                <p class="labelBlock">
+                    Old password
+                </p>
+                <input type="password" class="form-control w-5" />
+                <p class="labelBlock">
+                    New password
+                </p>
+                <input type="password" class="form-control w-5" />
+                <p class="labelBlock">
+                    Confirm new password
+                </p>
+                <input type="password" class="form-control w-5" />
+                <span>
+                    Make sure it's at least 15 characters OR at least 8 characters including a number and a lowercase letter. Learn more.
+                </span>
+                <div class="vigilantModeRow">
+                    <button class="btn btn-light turnBtn">
+                        Update password
+                    </button>
+                    <span class="linkable">
+                        I forgot my password
+                    </span>
+                </div>
+                <h4>
+                    Two-factor authentication
+                </h4>
+                <hr />
+                <div class="accountSecurityBlock">
+                    <span class="material-icons-outlined">
+                        lock
+                    </span>
+                    <h5>
+                        Two factor authentication is not enabled yet.
+                    </h5>
+                    <span>
+                        Two-factor authentication adds an additional layer of security to your account by requiring more than just a password to sign in.
+                    </span>
+                    <button class="btn btn-success">
+                        Enable two-factor authentication
+                    </button>
+                    <span class="linkable">
+                        Learn more
+                    </span>
+                </div>
+                <h4>
+                    Sessions
+                </h4>
+                <hr />
+                <span>
+                    This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize.
+                </span>
+                <div class="reposTable">
+                    <div class="reposTableHeader">
+                        <div>
+                            <span>
+                                Gitfab free
+                            </span>
+                        </div>
+                    </div>
+                    <div class="reposTableHeader">
+                        <div>
+                            <span>
+                                Gitfab free
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div v-else-if="activeTab.includes('account')" class="article">
+                <h4>
+                    Change username
+                </h4>
+                <hr />
+                <span>
+                    Changing your username can have unintended side effects.
+                </span>
+                <button class="btn btn-light turnBtn btnRow">
+                    Change username
+                </button>
+                <div class="vigilantModeRow">
+                    <span class="material-icons">
+                        help_outline
+                    </span>
+                    <span>
+                        Looking for activity notification controls? Check the Notification center.
+                    </span>
+                </div>
+                <h4>
+                    Export account data
+                </h4>
+                <hr />
+                <span>
+                    Export all repositories and profile metadata for @glebDyakov. Exports will be available for 7 days.
+                </span>
+                <button class="btn btn-light turnBtn btnRow">
+                    Start export
+                </button>
+                <h4>
+                    Successor settings
+                </h4>
+                <hr />
+                <span>
+                    By clicking "Add Successor" below, I acknowledge that I am the owner of the @glebDyakov account, and am authorizing GitHub to transfer content within that account to my GitHub Successor, designated below, in the event of my death. I understand that this appointment of a successor does not override legally binding next-of-kin rules or estate laws of any relevant jurisdiction, and does not create a binding will. Learn more about account successors.
+                </span>
+                <p class="">
+                    Search by username, full name, or email address
+                </p>
+                <input type="text" class="form-control w-75">
+                <button class="btn btn-light turnBtn">
+                    Add Successor
+                </button>
+                <div class="notificationsBlock">
+                    <span>
+                        You have not designated a successor.
+                    </span>
+                </div>
+                <h4 class="dangerBlock">
+                    Delete account
+                </h4>
+                <hr />
+                <span>
+                    Once you delete your account, there is no going back. Please be certain.
+                </span>
+                <button class="btn btn-light turnBtn dangerBlock btnRow">
+                    Delete your account
+                </button>
             </div>
             <div v-else-if="activeTab.includes('billing & plans')" class="article">
                 <h4>
@@ -1001,11 +1373,16 @@ export default {
         margin: 10px;
     }
 
+    .asideMenus {
+        width: 25%;
+    }
+
     .asideMenu {
+        height: 700px;
         display: flex;
         flex-direction: column;
         border: 1px solid rgb(150, 150, 150);
-        width: 25%;
+        width: 100%;
         border-radius: 10px;
         box-sizing: border-box;
         padding: 15px;
@@ -1208,7 +1585,57 @@ export default {
         border: 1px solid rgb(200, 200, 200);
     }
 
+    .accountSecurityBlock {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 65%;
+        height: 200px;
+        flex-direction: column;
+        margin: auto;
+    }
+
     .defaultEmail {
+        font-weight: bolder;
+    }
+
+    .btnRow {
+        display: block;
+    }
+
+    .dangerBlock {
+        color: rgb(215, 0, 0);
+    }
+
+    .labelBlock {
+        font-weight: bolder;
+    }
+
+    .themes {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .themeRow {
+        margin: 15px;
+        display: flex;
+        justify-content: space-around;
+    }
+    
+    .theme {
+        box-sizing: border-box;
+        padding: 15px;
+        border: 1px solid rgb(200, 200, 200);
+        width: 25%;
+        height: 150px;
+        border-radius: 8px;
+    }
+    
+    .themePreview {
+        height: 75%;
+    }
+
+    .themeName {
         font-weight: bolder;
     }
 
