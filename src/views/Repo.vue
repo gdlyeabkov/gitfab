@@ -1506,7 +1506,8 @@ export default {
       if(err) {
         this.$router.push({ name: 'StartPage' })
       } else {
-        fetch(`http://localhost:4000/api/repos/get/?repoid=${this.$route.query.repoid}`, {
+        fetch(`https://gitfab.herokuapp.com/api/repos/get/?repoid=${this.$route.query.repoid}`, {
+        // fetch(`http://localhost:4000/api/repos/get/?repoid=${this.$route.query.repoid}`, {
           mode: 'cors',
           method: 'GET'
         }).then(response => response.body).then(rb  => {

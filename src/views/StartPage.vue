@@ -32,7 +32,8 @@ export default {
     },
     methods: {
         signUp(){
-            fetch(`http://localhost:4000/api/gitfabers/create/?gitfaberemail=${this.email}`, {
+            fetch(`https://gitfab.herokuapp.com/api/gitfabers/create/?gitfaberemail=${this.email}`, {
+            // fetch(`http://localhost:4000/api/gitfabers/create/?gitfaberemail=${this.email}`, {
                 mode: 'cors',
                 method: 'GET'
             }).then(response => response.body).then(rb  => {
