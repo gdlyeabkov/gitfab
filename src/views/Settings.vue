@@ -78,19 +78,19 @@
                         Applications
                     </div>
                 </div>
-                <div class="asideMenuSecond">
+                <div class="secondAsideMenu">
                     <div class="asideMenuItem">
                         Developer settings
                     </div>
                 </div>
-                <div class="asideMenuThird">
+                <div class="thirdAsideMenu">
                     <div class="asideMenuItem">
                         Moderation settings
                     </div>
-                    <div class="asideMenuItem">
+                    <div @click="activeTab = 'blocked users'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('blocked users') }">
                         Blocked users
                     </div>
-                    <div class="asideMenuItem">
+                    <div @click="activeTab = 'interaction limits'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('interaction limits') }">
                         Interaction limits
                     </div>
                 </div>
@@ -1252,6 +1252,30 @@
                     </span>
                 </div>
             </div>
+            <div v-else-if="activeTab.includes('applications')" class="article">
+                <h4>
+                    Applications
+                </h4>
+                <hr />
+            </div>
+            <div v-else-if="activeTab.includes('applications')" class="article">
+                <h4>
+                    Applications
+                </h4>
+                <hr />
+            </div>
+            <div v-else-if="activeTab.includes('blocked users')" class="article">
+                <h4>
+                    Block a user
+                </h4>
+                <hr />
+            </div>
+            <div v-else-if="activeTab.includes('interaction limits')" class="article">
+                <h4>
+                    Temporary interaction limits
+                </h4>
+                <hr />
+            </div>
         </div>     
     </div>
     <Footer />
@@ -1269,7 +1293,6 @@ export default {
     data(){
         return {
             activeTab: 'profile',
-            savedReplyTab: 'write',
             appTab: 'installed gitfab apps',
             gitfaber: {},
             repos: [],
@@ -1379,6 +1402,31 @@ export default {
 
     .asideMenu {
         height: 700px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgb(150, 150, 150);
+        width: 100%;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 15px;
+        margin: 15px 0px;
+    }
+
+    .secondAsideMenu {
+        margin: 15px 0px;
+        height: 50px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgb(150, 150, 150);
+        width: 100%;
+        border-radius: 10px;
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    .thirdAsideMenu {
+        margin: 15px 0px;
+        height: 150px;
         display: flex;
         flex-direction: column;
         border: 1px solid rgb(150, 150, 150);
