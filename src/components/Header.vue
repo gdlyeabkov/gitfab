@@ -23,13 +23,13 @@
             <span @click="togglerAddContextMenu = true" id="addContextMenu" class="toggler material-icons">
                 add
             </span>
-            <span class="material-icons">
+            <span @click="togglerAddContextMenu = true" id="addContextMenu" class="logo material-icons">
                 arrow_drop_down
             </span>
             <div @click="togglerContextMenu = true" id="mainContextMenu" class="avatar">
                 Г
             </div>
-            <span class="material-icons">
+            <span @click="togglerContextMenu = true" id="mainContextMenu" class="logo material-icons">
                 arrow_drop_down
             </span>
         </div>

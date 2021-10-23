@@ -1,5 +1,5 @@
 <template>
-<div :style="`background-color: ${this.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(255, 255, 255)'};`">
+<div :style="`background-color: ${this.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(0, 0, 0)'};`">
     <Header />
     <div class="main">
         <div class="avatarRow">
@@ -103,47 +103,47 @@
                 <p class="defaultEmail">
                     Name
                 </p>
-                <input type="text" class="form-control w-50" />
+                <input v-model="gitfaber.name" type="text" class="form-control w-50" />
                 <span>
                     Your name may appear around GitHub where you contribute or are mentioned. You can remove it at any time.
                 </span>
                 <p class="defaultEmail">
                     Public email
                 </p>
-                <input type="text" placeholder="Select a verified email to display" class="form-control w-50" />
+                <input v-model="newPublicEmail" type="text" placeholder="Select a verified email to display" class="form-control w-50" />
                 <span>
                     You have set your email address to private. To toggle email privacy, go to email settings and uncheck "Keep my email address private."
                 </span>
                 <p class="defaultEmail">
                     Bio
                 </p>
-                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newBio" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
                 <span>
                     You can @mention other users and organizations to link to them.
                 </span>
                 <p class="defaultEmail">
                     URL
                 </p>
-                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newURL" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
                 <p class="defaultEmail">
                     Twitter username
                 </p>
-                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newTwitter" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
                 <p class="defaultEmail">
                     Company
                 </p>
-                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newCompany" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
                 <span>
                     You can @mention your company’s GitHub organization to link it.
                 </span>
                 <p class="defaultEmail">
                     Location
                 </p>
-                <input type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newLocation" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
                 <span>
                     All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears. Please see our privacy statement to learn more about how we use this information.
                 </span>
-                <button class="btn btn-success btnRow">
+                <button @click="setProfile()" class="btn btn-success btnRow">
                     Update profile
                 </button>
                 <h4>
@@ -348,20 +348,20 @@
                 <p class="labelBlock">
                     Old password
                 </p>
-                <input type="password" class="form-control w-5" />
+                <input v-model="oldPassword" type="password" class="form-control w-5" />
                 <p class="labelBlock">
                     New password
                 </p>
-                <input type="password" class="form-control w-5" />
+                <input v-model="newPassword" type="password" class="form-control w-5" />
                 <p class="labelBlock">
                     Confirm new password
                 </p>
-                <input type="password" class="form-control w-5" />
+                <input v-model="confirmNewPassword" type="password" class="form-control w-5" />
                 <span>
                     Make sure it's at least 15 characters OR at least 8 characters including a number and a lowercase letter. Learn more.
                 </span>
                 <div class="vigilantModeRow">
-                    <button class="btn btn-light turnBtn">
+                    <button @click="setNewPassword()" class="btn btn-light turnBtn">
                         Update password
                     </button>
                     <span class="linkable">
@@ -468,7 +468,7 @@
                 <span>
                     Once you delete your account, there is no going back. Please be certain.
                 </span>
-                <button class="btn btn-light turnBtn dangerBlock btnRow">
+                <button @click="deleteAccount()" class="btn btn-light turnBtn dangerBlock btnRow">
                     Delete your account
                 </button>
             </div>
@@ -846,7 +846,7 @@
                 </p>
                 <div class="vigilantModeRow">
                     <input type="email" placeholder="Email address" class="form-control w-50">
-                    <button class="btn btn-light turnBtn">
+                    <button @click="setPrimaryEmail()" class="btn btn-light turnBtn">
                         Save
                     </button>
                 </div>
@@ -858,8 +858,12 @@
                     Your backup GitHub email address will be used as an additional destination for security-relevant account notifications and can also be used for password resets.
                 </p>
                 <div class="vigilantModeRow">
-                    <input type="text" :value="'Allowed all verified emails'" placeholder="Email address" class="form-control w-50">
-                    <button class="btn btn-light turnBtn">
+                    <!-- <input type="text" :value="'Allowed all verified emails'" placeholder="Email address" class="form-control w-50"> -->
+                    <select name="backupEmail" v-model="newBackupEmail" class="form-control w-50">
+                        <option value="Allowed all verified emails">Allowed all verified emails</option>
+                        <option value="Only allow primary email">Only allow primary email</option>
+                    </select>
+                    <button @click="setBackupEmail()" class="btn btn-light turnBtn">
                         Save
                     </button>
                 </div>
@@ -868,7 +872,7 @@
                 </span>
                 <hr />
                 <div class="vigilantModeRow">
-                    <input type="checkbox">
+                    <input @change="setKeepMyEmailAddressesPrivate()" v-model="keepMyEmailAddressesPrivate" type="checkbox">
                     <span>
                         Keep my email addresses private
                     </span>
@@ -880,7 +884,7 @@
                     Commits pushed to GitHub using this email will still be associated with your account.
                 </p>
                 <div class="vigilantModeRow">
-                    <input type="checkbox">
+                    <input @change="setBlockCommandLinePushesThatExposeMyEmail()" v-model="blockCommandLinePushesThatExposeMyEmail" type="checkbox">
                     <span>
                         Block command line pushes that expose my email
                     </span>
@@ -893,7 +897,7 @@
                 </h4>
                 <hr />
                 <div class="vigilantModeRow">
-                    <input checked type="radio" />
+                    <input :value="'Receive all emails, except those I unsubscribe from.'" name="emailPreferences" v-model="newEmailPreferences" type="radio" />
                     <span>
                         Receive all emails, except those I unsubscribe from.
                     </span>
@@ -902,7 +906,7 @@
                     We’ll occasionally contact you with the latest news and happenings from the GitHub Universe. Learn more.
                 </span>
                 <div class="vigilantModeRow">
-                    <input type="radio" />
+                    <input :value="'Only receive account related emails, and those I subscribe to.'" name="emailPreferences" v-model="newEmailPreferences" type="radio" />
                     <span>
                         Only receive account related emails, and those I subscribe to.
                     </span>
@@ -910,7 +914,7 @@
                 <span>
                     We’ll only send you legal or administrative emails, and any emails you’re specifically subscribed to.
                 </span>
-                <button class="btn btn-light turnBtn">
+                <button @click="setEmailPreferences()" class="btn btn-light turnBtn">
                     Save email preferences
                 </button>
                 <div class="vigilantModeRow">
@@ -1297,10 +1301,212 @@ export default {
             gitfaber: {},
             repos: [],
             appearance: 'default light',
-            token: window.localStorage.getItem("gitfabtoken")
+            oldPassword: '',
+            newPassword: '',
+            confirmNewPassword: '',
+            newName: '',
+            newPublicEmail: '',
+            newBio: '',
+            newURL: '',
+            newTwitter: '',
+            newCompany: '',
+            newLocation: '',
+            newEmailPreferences: '',
+            newBackupEmail: '',
+            keepMyEmailAddressesPrivate: false,
+            blockCommandLinePushesThatExposeMyEmail: false,
+            token: window.localStorage.getItem("gitfabtoken"),
         }
     },
     methods: {
+        setKeepMyEmailAddressesPrivate(){
+
+        },
+        setBlockCommandLinePushesThatExposeMyEmail(){
+
+        },
+        setBackupEmail() {
+            fetch(`http://localhost:4000/api/gitfabers/backupemail/set/?gitfaberemail=${this.gitfaber.email}&newbackupemail=${this.newBackupEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setEmailPreferences() {
+            fetch(`http://localhost:4000/api/gitfabers/emailpreferences/set/?gitfaberemail=${this.gitfaber.email}&newemailpreferences=${this.newEmailPreferences}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setPrimaryEmail() {
+            fetch(`http://localhost:4000/api/gitfabers/primaryemail/set/?gitfaberemail=${this.gitfaber.email}&primaryemail=${this.newPublicEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setProfile(){
+            fetch(`http://localhost:4000/api/gitfabers/profile/set/?gitfaberemail=${this.gitfaber.email}&newname=${this.newName}&newpublicemail=${this.newPublicEmail}&newbio=${this.newBio}&newurl=${this.newURL}&newtwitter=${this.newTwitter}&newcompany=${this.newCompany}&newlocation=${this.newLocation}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setNewPassword(){
+            if(this.newPassword === this.confirmNewPassword) {
+                fetch(`http://localhost:4000/api/gitfabers/password/set/?gitfaberemail=${this.gitfaber.email}&gitfaberoldpassword=${this.oldPassword}&gitfabernewpassword=${this.newPassword}`, {
+                    mode: 'cors',
+                    method: 'GET'
+                }).then(response => response.body).then(rb  => {
+                    const reader = rb.getReader()
+                    return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                        reader.read().then( ({done, value}) => {
+                            if (done) {
+                            console.log('done', done);
+                            controller.close();
+                            return;
+                            }
+                            controller.enqueue(value);
+                            console.log(done, value);
+                            push();
+                        })
+                        }
+                        push();
+                    }
+                    });
+                }).then(stream => {
+                    return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+                })
+                .then(result => {
+                    this.$router.push({ name: 'Home' })
+                })
+            }
+        },
+        deleteAccount(){
+            fetch(`http://localhost:4000/api/account/delete/?gitfaberemail=${this.gitfaber.email}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'StartPage' })
+            })
+        },
         setTheme() {
             fetch(`http://localhost:4000/api/gitfabers/appearance/set/?gitfaberemail=${this.gitfaber.email}&theme=${this.appearance}`, {
                 mode: 'cors',
@@ -1374,7 +1580,17 @@ export default {
                         this.gitfaber = JSON.parse(result).gitfaber
                         this.repos = JSON.parse(result).repos
                         this.appearance = this.gitfaber.appearance
-
+                        this.newName = this.gitfaber.name
+                        this.newPublicEmail = this.gitfaber.publicEmail
+                        this.newBio = this.gitfaber.bio
+                        this.newURL = this.gitfaber.url
+                        this.newTwitter = this.gitfaber.twitter
+                        this.newCompany = this.gitfaber.company
+                        this.newLocation = this.gitfaber.location
+                        this.newEmailPreferences = this.gitfaber.emailPreferences
+                        this.newBackupEmail = this.gitfaber.backupEmail
+                        this.keepMyEmailAddressesPrivate = this.gitfaber.keepMyEmailAddressesPrivate
+                        this.blockCommandLinePushesThatExposeMyEmail = this.gitfaber.blockCommandLinePushesThatExposeMyEmail
                     }
                 })
             }
