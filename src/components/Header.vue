@@ -1,7 +1,7 @@
 <template>
     <div class ="header">
         <div class="headerItem headerLeftItem">
-            <img class="logo" width="100px" src="https://repository-images.githubusercontent.com/124369770/d12e6800-b47a-11e9-85a3-5fe53e198d49" alt="">
+            <img @click="$router.push({ name: 'Home' })" class="logo" width="100px" src="https://repository-images.githubusercontent.com/124369770/d12e6800-b47a-11e9-85a3-5fe53e198d49" alt="">
             <input @blur="searchKeywords = ''" v-model="searchKeywords" type="text" placeholder="Search or jump to..." class="searcher form-control">
             <span  @click="$router.push({ name: 'PullRequests' })">
                 Pull requests
@@ -141,8 +141,8 @@ export default {
             if(err) {
                 this.$router.push({ name: 'StartPage' })
             } else {
-                fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
-                // fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
                     mode: 'cors',
                     method: 'GET'
                 }).then(response => response.body).then(rb  => {
@@ -181,6 +181,7 @@ export default {
                                 this.togglerAddContextMenu = false
                             if(!event.target.id.includes('notificationContextMenu'))
                                 this.togglerNotificationContextMenu = false
+                            
                         })
                     }
                 })
@@ -352,6 +353,10 @@ export default {
     .autocompleteRow:last-child {
         border-bottom-left-radius: 7px;
         border-bottom-right-radius: 7px;
+    }
+
+    .logo {
+        cursor: pointer;
     }
 
 </style>

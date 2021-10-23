@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div :style="`background-color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(255, 255, 255)'};`">
         <Header />
         <div>
             <div>
@@ -1498,37 +1498,38 @@ export default {
             dependencyGraphTab: 'dependencies',
             settingsTab: 'options',
             repo: {},
+            gitfaber: {},
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
     mounted(){
-    jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
-      if(err) {
-        this.$router.push({ name: 'StartPage' })
-      } else {
-        fetch(`https://gitfabric.herokuapp.com/api/repos/get/?repoid=${this.$route.query.repoid}`, {
-        // fetch(`http://localhost:4000/api/repos/get/?repoid=${this.$route.query.repoid}`, {
-          mode: 'cors',
-          method: 'GET'
-        }).then(response => response.body).then(rb  => {
-          const reader = rb.getReader()
-          return new ReadableStream({
-            start(controller) {
-                function push() {
-                    reader.read().then( ({done, value}) => {
-                        if (done) {
-                            console.log('done', done);
-                            controller.close();
-                            return;
+        jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
+            if(err) {
+            this.$router.push({ name: 'StartPage' })
+            } else {
+            // fetch(`https://gitfabric.herokuapp.com/api/repos/get/?repoid=${this.$route.query.repoid}`, {
+            fetch(`http://localhost:4000/api/repos/get/?repoid=${this.$route.query.repoid}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
                         }
-                        controller.enqueue(value);
-                        console.log(done, value);
                         push();
-                    })
-                }
-                push();
-            }
-            });
+                    }
+                });
                 }).then(stream => {
                     return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
                 })
@@ -1536,6 +1537,7 @@ export default {
                     console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
                     if(JSON.parse(result).status.includes('OK')){
                         this.repo = JSON.parse(result).repo
+                        this.gitfaber = JSON.parse(result).gitfaber
                     }
                 })
             }

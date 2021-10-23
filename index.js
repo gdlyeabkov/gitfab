@@ -70,7 +70,11 @@ const RepoModel = mongoose.model('RepoModel', RepoSchema);
 const GitFaberSchema = new mongoose.Schema({
     email: String,
     password: String,
-    repos: [mongoose.Schema.Types.Map]
+    appearance: {
+        type: String,
+        default: 'default light'
+    },
+    repos: [mongoose.Schema.Types.Map],
 }, { collection : 'mygitfabers' });
 
 const GitFaberModel = mongoose.model('GitFaberModel', GitFaberSchema);
@@ -184,7 +188,13 @@ app.get('/api/repos/get', (req,res) => {
         if (err){
             return res.json({ "status": "Error" })
         } else {
-            return res.json({ 'status': 'OK', repo: repo })
+            let query =  GitFaberModel.findOne({'email': repo.gitfaber}, function(err, gitfaber){
+                if (err){
+                    return res.json({ "status": "Error" })
+                } else {
+                    return res.json({ 'status': 'OK', repo: repo, gitfaber: gitfaber })
+                }
+            })    
         }
     })
 
@@ -277,17 +287,33 @@ app.get('/git/test', (req, res) => {
 
 })
 
+app.get('/api/gitfabers/appearance/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail }, { appearance: req.query.theme }, (err, gitfaber) => {
+        if(err){
+            return res.json({ status: 'Error' })        
+        }
+        return res.json({ status: 'OK' })    
+    })
+
+})
+
 app.get('**', (req, res) => { 
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', true);
     res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     
-    // return res.redirect(`http://localhost:4000`)
-    return res.redirect(`https://gitfabric.herokuapp.com/`)
+    return res.redirect(`http://localhost:4000`)
+    // return res.redirect(`https://gitfabric.herokuapp.com/`)
 
 })
 
-const port = process.env.PORT || 8080
-// const port = 4000  
+// const port = process.env.PORT || 8080
+const port = 4000
 app.listen(port)

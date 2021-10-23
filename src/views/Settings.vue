@@ -1,5 +1,5 @@
 <template>
-<div>
+<div :style="`background-color: ${this.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(255, 255, 255)'};`">
     <Header />
     <div class="main">
         <div class="avatarRow">
@@ -215,7 +215,7 @@
                                 
                             </div>
                             <div>
-                                <input type="radio">
+                                <input @change="setTheme()" :value="'default light'" v-model="appearance" name="appearance" type="radio">
                                 <span class="themeName">
                                     Default light
                                 </span>
@@ -226,7 +226,7 @@
                                 
                             </div>
                             <div>
-                                <input type="radio">
+                                <input @change="setTheme()" :value="'dark default'" v-model="appearance" name="appearance" type="radio">
                                 <span class="themeName">
                                     Default dark
                                 </span>
@@ -237,7 +237,7 @@
                                 
                             </div>
                             <div>
-                                <input type="radio">
+                                <input @change="setTheme()" :value="'dark dimmed'" v-model="appearance" name="appearance" type="radio">
                                 <span class="themeName">
                                     Dark dimmed
                                 </span>
@@ -250,7 +250,7 @@
                                 
                             </div>
                             <div>
-                                <input type="radio">
+                                <input @change="setTheme()" :value="'dark high contrast'" v-model="appearance" name="appearance" type="radio">
                                 <span class="themeName">
                                     Dark high contrast
                                 </span>
@@ -261,7 +261,7 @@
                                 
                             </div>
                             <div>
-                                <input type="radio">
+                                <input @change="setTheme()" :value="'dark colorblind'" v-model="appearance" name="appearance" type="radio">
                                 <span class="themeName">
                                     Dark colorblind
                                 </span>
@@ -272,9 +272,9 @@
                                 
                             </div>
                             <div>
-                                <input type="radio">
+                                <input @change="setTheme()" :value="'light colorblind'" v-model="appearance" name="appearance" type="radio">
                                 <span class="themeName">
-                                    Light contrast
+                                    Light colorblind
                                 </span>
                             </div>
                         </div>    
@@ -437,7 +437,7 @@
                 </h4>
                 <hr />
                 <span>
-                    Export all repositories and profile metadata for @glebDyakov. Exports will be available for 7 days.
+                    Export all repositories and profile metadata for @{{ gitfaber.email }}. Exports will be available for 7 days.
                 </span>
                 <button class="btn btn-light turnBtn btnRow">
                     Start export
@@ -447,7 +447,7 @@
                 </h4>
                 <hr />
                 <span>
-                    By clicking "Add Successor" below, I acknowledge that I am the owner of the @glebDyakov account, and am authorizing GitHub to transfer content within that account to my GitHub Successor, designated below, in the event of my death. I understand that this appointment of a successor does not override legally binding next-of-kin rules or estate laws of any relevant jurisdiction, and does not create a binding will. Learn more about account successors.
+                    By clicking "Add Successor" below, I acknowledge that I am the owner of the @{{ gitfaber.email }} account, and am authorizing GitHub to transfer content within that account to my GitHub Successor, designated below, in the event of my death. I understand that this appointment of a successor does not override legally binding next-of-kin rules or estate laws of any relevant jurisdiction, and does not create a binding will. Learn more about account successors.
                 </span>
                 <p class="">
                     Search by username, full name, or email address
@@ -1296,7 +1296,45 @@ export default {
             appTab: 'installed gitfab apps',
             gitfaber: {},
             repos: [],
+            appearance: 'default light',
             token: window.localStorage.getItem("gitfabtoken")
+        }
+    },
+    methods: {
+        setTheme() {
+            fetch(`http://localhost:4000/api/gitfabers/appearance/set/?gitfaberemail=${this.gitfaber.email}&theme=${this.appearance}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+                if(JSON.parse(result).status.includes('OK')){
+                    this.gitfaber = JSON.parse(result).gitfaber
+                    this.repos = JSON.parse(result).repos
+                    this.appearance = this.gitfaber.appearance
+                }
+            })
         }
     },
     mounted(){
@@ -1304,8 +1342,8 @@ export default {
             if(err) {
                 this.$router.push({ name: 'StartPage' })
             } else {
-                fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
-                // fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
                     mode: 'cors',
                     method: 'GET'
                 }).then(response => response.body).then(rb  => {
@@ -1335,6 +1373,8 @@ export default {
                     if(JSON.parse(result).status.includes('OK')){
                         this.gitfaber = JSON.parse(result).gitfaber
                         this.repos = JSON.parse(result).repos
+                        this.appearance = this.gitfaber.appearance
+
                     }
                 })
             }
@@ -1349,6 +1389,10 @@ export default {
 
 <style scoped>
     
+    /* * {
+        background-color: rgb(0, 0, 0);
+    } */
+
     .main {
         margin: auto;
         width: 85%;

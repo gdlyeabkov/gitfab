@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div :style="`background-color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(255, 255, 255)'};`">
     <Header @gotoRepositories="gotoRepositoriesHandler" />
     <div style="display: flex;">
       <div style="width: 350px; margin: 0px 75px;">
@@ -576,8 +576,8 @@ export default {
         if(this.$route.query.activetab !== null && this.$route.query.activetab !== undefined) {
           this.activeTab = this.$route.query.activetab
         }
-        fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
-        // fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+        // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+        fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
           mode: 'cors',
           method: 'GET'
         }).then(response => response.body).then(rb  => {
@@ -617,8 +617,8 @@ export default {
       this.activeTab = 'repositories'
     },
     addStar(repoId){
-      fetch(`https://gitfabric.herokuapp.com/api/stars/add/?repoid=${repoId}`, {
-      // fetch(`http://localhost:4000/api/stars/add/?repoid=${repoId}`, {
+      // fetch(`https://gitfabric.herokuapp.com/api/stars/add/?repoid=${repoId}`, {
+      fetch(`http://localhost:4000/api/stars/add/?repoid=${repoId}`, {
           mode: 'cors',
           method: 'GET'
         }).then(response => response.body).then(rb  => {

@@ -40,8 +40,8 @@ export default {
     },
     methods: {
         createGitfaber(){
-            fetch(`https://gitfabric.herokuapp.com/api/gitfabers/create/?gitfaberemail=${this.email}`, {
-            // fetch(`http://localhost:4000/api/gitfabers/create/?gitfaberemail=${this.email}`, {
+            // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/create/?gitfaberemail=${this.email}`, {
+            fetch(`http://localhost:4000/api/gitfabers/create/?gitfaberemail=${this.email}`, {
                 mode: 'cors',
                 method: 'GET'
             }).then(response => response.body).then(rb  => {
