@@ -113,7 +113,26 @@ const GitFaberSchema = new mongoose.Schema({
         type: String,
         default: 'Allowed all verified emails'
     },
+    dependencyGraph: {
+        type: Boolean,
+        default: false
+    },
+    dependabotAlerts: {
+        type: Boolean,
+        default: false
+    },
+    dependabotSecurityUpdates: {
+        type: Boolean,
+        default: false
+    },
+    billing: {
+        type: String,
+        default: "Gitfab free"
+    },
+    keys: [mongoose.Schema.Types.Map],
+    sessions: [mongoose.Schema.Types.Map],
     repos: [mongoose.Schema.Types.Map],
+    deletedRepos: [mongoose.Schema.Types.Map],
 }, { collection : 'mygitfabers' });
 
 const GitFaberModel = mongoose.model('GitFaberModel', GitFaberSchema);
@@ -300,7 +319,27 @@ app.get('/api/gitfabers/check', (req,res)=>{
                 } else {
                     const passwordCheck = bcrypt.compareSync(req.query.gitfaberpassword, gitfaber.password) && req.query.gitfaberpassword !== ''
                     if(gitfaber != null && gitfaber != undefined && passwordCheck){
-                        return res.json({ "status": "OK", "gitfaber": gitfaber })
+                        
+                        GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+                            { $push: 
+                                {
+                                    sessions: [
+                                        {
+                                            ip: req.query.newip,
+                                            date: req.query.newdate,
+                                            city: req.query.newcity,
+                                            browser: req.query.newbrowser,
+                                        }
+                                    ]
+                                    
+                                }
+                        }, (err, gitfaber) => {
+                            if(err){
+                                return res.json({ "status": "error" })
+                            } else {
+                                return res.json({ "status": "OK", "gitfaber": gitfaber })
+                            }
+                        })
                     } else {
                         return res.json({ "status": "Error" })
                     }
@@ -349,9 +388,15 @@ app.get('/api/account/delete', async (req, res) => {
     res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     
-    await GitFaberModel.deleteOne({ email: req.query.gitfaberemail  })
-    
-    return res.json({ status: 'OK' })
+    let query =  GitFaberModel.findOne({ 'email': req.query.gitfaberemail}, async function(err, gitfaber){
+        if (err){
+            return res.json({ "status": "Error" })
+        } else {
+            await RepoModel.deleteMany({ name: { $in: gitfaber.repos.flatMap((repo) => new Map(repo).get('name')) }  })
+            await GitFaberModel.deleteOne({ email: req.query.gitfaberemail  })
+            return res.json({ status: 'OK' })
+        }
+    })
 
 })
 
@@ -437,6 +482,168 @@ app.get('/api/gitfabers/profile/set', (req, res) => {
                 return res.json({ status: 'Error' })        
             }
             return res.json({ status: 'OK' })    
+    })
+})
+
+app.get('/api/gitfabers/keepmyemailaddressesprivate/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        {
+            keepMyEmailAddressesPrivate: req.query.newkeepmyemailaddressesprivate,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/gitfabers/blockcommandlinepushesthatexposemyemail/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        {
+            blockCommandLinePushesThatExposeMyEmail: req.query.newblockcommandlinepushesthatexposemyemail,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/gitfabers/dependencygraph/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        {
+            dependencyGraph: req.query.newdependencygraph,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/gitfabers/dependabotalerts/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        {
+            dependabotAlerts: req.query.newdependabotalerts,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/gitfabers/dependabotsecurityupdates/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        {
+            dependabotSecurityUpdates: req.query.newdependabotsecurityupdates,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/gitfabers/billing/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        {
+            billing: req.query.newbilling,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/gitfabers/emails/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        { $push: 
+            {
+                emails: [
+                    {
+                        email: req.query.newemail
+                    }
+                ]
+                
+            }
+    }, (err, repo) => {
+        if(err){
+            return res.json({ "status": "error" })
+        } else {
+            return res.json({ "status": "OK" })
+        }
+    })
+})
+
+app.get('/api/gitfabers/keys/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+        { $push: 
+            {
+                keys: [
+                    {
+                        keyType: req.query.newkeytype,
+                        keyTitle: req.query.newkeytitle,
+                        key: req.query.newkey,
+                    }
+                ]
+                
+            }
+    }, (err, repo) => {
+        if(err){
+            return res.json({ "status": "error" })
+        } else {
+            return res.json({ "status": "OK" })
+        }
     })
 })
 

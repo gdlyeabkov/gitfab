@@ -10,7 +10,7 @@
           <span class="material-icons">
             menu_book
           </span>
-          <span @click="activeTab = 'overview'" class="tab" :style="`${ activeTab.includes('overview') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); font-weight: bolder;' : '' }`">
+          <span @click="activeTab = 'overview'" class="tab" :style="`${ activeTab.includes('overview') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); text-decoration-thickness: 3px; text-underline-offset: 20px; font-weight: bolder;' : '' }`">
             Overview
           </span>
         </div>
@@ -18,20 +18,20 @@
           <span class="material-icons">
             markunread_mailbox
           </span>
-          <span @click="activeTab = 'repositories'" class="tab" :style="`${ activeTab.includes('repositories') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); font-weight: bolder;' : '' }`">Repositories</span>
+          <span @click="activeTab = 'repositories'" class="tab" :style="`${ activeTab.includes('repositories') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); text-decoration-thickness: 3px; text-underline-offset: 20px; font-weight: bolder;' : '' }`">Repositories</span>
           <span>{{ gitfaber.repos.length }}</span>
         </div>
         <div class="tabItem">
           <span class="material-icons">
             insert_chart_outlined
           </span>
-          <span @click="activeTab = 'projects'" class="tab" :style="`${ activeTab.includes('projects') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); font-weight: bolder;' : '' }`">Projects</span>
+          <span @click="activeTab = 'projects'" class="tab" :style="`${ activeTab.includes('projects') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); text-decoration-thickness: 3px; text-underline-offset: 20px; font-weight: bolder;' : '' }`">Projects</span>
         </div>
         <div class="tabItem">
           <span class="material-icons">
             view_in_ar
           </span>
-          <span @click="activeTab = 'packages'" class="tab" :style="`${ activeTab.includes('packages') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); font-weight: bolder;' : '' }`">Packages</span>
+          <span @click="activeTab = 'packages'" class="tab" :style="`${ activeTab.includes('packages') ? 'text-decoration: underline; text-decoration-color: rgb(255, 150, 0); text-decoration-thickness: 3px; text-underline-offset: 20px; font-weight: bolder;' : '' }`">Packages</span>
         </div>
       </div>
     </div>

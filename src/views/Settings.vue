@@ -734,7 +734,7 @@
                             Understand your dependencies.
                         </p>
                         <div class="vigilantModeRow">
-                            <input type="checkbox">
+                            <input @change="setDependencyGraph()" v-model="dependencyGraph" type="checkbox">
                             <span>
                                 Automatically enable for new private repositories
                             </span>
@@ -745,7 +745,7 @@
                             Disable all
                         </button>
                         <button class="btn btn-light turnBtn">
-                            Enalble all
+                            Enable all
                         </button>
                     </div>
                 </div>
@@ -759,7 +759,7 @@
                             Be alerted when a new vulnerability is found in one of your dependencies.
                         </p>
                         <div class="vigilantModeRow">
-                            <input type="checkbox">
+                            <input @change="setDependabotAlerts()" v-model="dependabotAlerts" type="checkbox">
                             <span>
                                 Automatically enable for new repositories
                             </span>
@@ -784,7 +784,7 @@
                             Easily upgrade to non-vulnerable dependencies.
                         </p>
                         <div class="vigilantModeRow">
-                            <input type="checkbox">
+                            <input @change="setDependabotSecurityUpdates()" v-model="dependabotSecurityUpdates" type="checkbox">
                             <span>
                                 Automatically enable for new repositories
                             </span>
@@ -832,10 +832,22 @@
                     Add email address
                 </p>
                 <div class="vigilantModeRow">
-                    <input type="email" placeholder="Email address" class="form-control w-50">
-                    <button class="btn btn-light turnBtn">
+                    <input v-model="newEmail" type="email" placeholder="Email address" class="form-control w-50">
+                    <button @click="setNewEmail()" class="btn btn-light turnBtn">
                         Add
                     </button>
+                </div>
+                <div v-if="gitfaber.emails.length >= 1">
+                    <div v-for="mailClient in gitfaber.emails" :key="mailClient.email">
+                        <span>
+                            {{ mailClient.email }}
+                        </span>
+                    </div>
+                </div>
+                <div v-else>
+                    <span>
+                        Нет дополнительных прикреплённых почт.
+                    </span>
                 </div>
                 <hr />
                 <p class="defaultEmail">
@@ -845,7 +857,7 @@
                     Because you have email privacy enabled, glebdyakov2000@gmail.com will be used for account-related notifications as well as password resets. 67467704+glebDyakov@users.noreply.github.com will be used for web-based Git operations, e.g., edits and merges.
                 </p>
                 <div class="vigilantModeRow">
-                    <input type="email" placeholder="Email address" class="form-control w-50">
+                    <input v-model="newPublicEmail" type="email" placeholder="Email address" class="form-control w-50">
                     <button @click="setPrimaryEmail()" class="btn btn-light turnBtn">
                         Save
                     </button>
@@ -985,63 +997,103 @@
                 </div>
             </div>
             <div v-else-if="activeTab.includes('ssh and gpg keys')" class="article">
-                <div class="sshKeysRow">
+                <div v-if="createDialogKey.includes('ssh')">
                     <h4>
-                        SSH keys
+                        <span @click="createDialogKey = 'not created dialog'" class="linkable">
+                            SSH keys
+                        </span>
+                         / Add new
                     </h4>
-                    <button class="btn btn-success">
-                        New ssh key
+                    <p class="defaultEmail">
+                        Title
+                    </p>
+                    <input v-model="newKeyTitle" type="text" class="form-control w-75" />
+                    <p class="defaultEmail">
+                        Key
+                    </p>
+                    <textarea v-model="newKey" placeholder="Begins with 'ssh-rsa', 'ecdsa=sha2-nistp256', 'ecdsa-sha2-nistp384', 'ecdsa-sha2-nistp521', 'ssh-ed25519', 'sk-ecdsa-sha2-nistp256@openssh.com' or 'sk-ed25519@openssh.com'" type="text" class="newKey form-control w-75"></textarea>
+                    <button @click="setKey('ssh')" class="marginBtn btn btn-success">
+                        Add SSH key
                     </button>
                 </div>
-                <hr />
-                <p>
-                    There are no SSH keys associated with your account.
-                </p>
-                <p>
-                    Check out our guide to generating SSH keys or troubleshoot common SSH problems.
-                </p>
-                <div class="sshKeysRow">
+                <div v-else-if="createDialogKey.includes('gpg')">
                     <h4>
-                        GPG keys
+                        <span @click="createDialogKey = 'not created dialog'" class="linkable">
+                            GPG keys
+                        </span>
+                         / Add new
                     </h4>
-                    <button class="btn btn-success">
-                        New gpg key
-                    </button>
+                    <p class="defaultEmail">
+                        Title
+                    </p>
+                    <input v-model="newKeyTitle" type="text" class="form-control w-75" />
+                    <p class="defaultEmail">
+                        Key
+                    </p>
+                    <textarea v-model="newKey" placeholder="Begins with '-----BEGIN PGP PUBLIC KEY BLOCK-----'" type="text" class="newKey form-control w-75"></textarea>
+                    <button @click="setKey('gpg')" class="marginBtn btn btn-success">
+                        Add GPG key
+                    </button>    
                 </div>
-                <hr />
-                <p>
-                    There are no GPG keys associated with your account.
-                </p>
-                <p>
-                    Learn how to 
+                <div v-else >
+                    <div class="sshKeysRow">
+                        <h4>
+                            SSH keys
+                        </h4>
+                        <button @click="createDialogKey = 'ssh'" class="btn btn-success">
+                            New ssh key
+                        </button>
+                    </div>
+                    <hr />
+                    <p>
+                        There are no SSH keys associated with your account.
+                    </p>
+                    <p>
+                        Check out our guide to generating SSH keys or troubleshoot common SSH problems.
+                    </p>
+                    <div class="sshKeysRow">
+                        <h4>
+                            GPG keys
+                        </h4>
+                        <button  @click="createDialogKey = 'gpg'" class="btn btn-success">
+                            New gpg key
+                        </button>
+                    </div>
+                    <hr />
+                    <p>
+                        There are no GPG keys associated with your account.
+                    </p>
+                    <p>
+                        Learn how to 
+                        <span class="generateKey">
+                            generate a GPG key and add it to your account .
+                        </span>
+                    </p>
+                    <div class="vigilantModeRow">
+                        <h4>
+                            Vigilant mode row
+                        </h4>
+                        <button class="btn btn-success">
+                            Beta
+                        </button>
+                    </div>
+                    <hr />
+                    <div class="visilantModeRow">
+                        <input type="checkbox">
+                        <span>
+                            Flag unsigned commits as unverified
+                        </span>
+                    </div>
+                    <p>
+                        This will include any commit attributed to your account but not signed with your GPG or S/MIME key.
+                    </p>
+                    <p>
+                        Note that this will include your existing unsigned commits.
+                    </p>
                     <span class="generateKey">
-                        generate a GPG key and add it to your account .
-                    </span>
-                </p>
-                <div class="vigilantModeRow">
-                    <h4>
-                        Vigilant mode row
-                    </h4>
-                    <button class="btn btn-success">
-                        Beta
-                    </button>
-                </div>
-                <hr />
-                <div class="visilantModeRow">
-                    <input type="checkbox">
-                    <span>
-                        Flag unsigned commits as unverified
+                        Learn about vigilant mode.
                     </span>
                 </div>
-                <p>
-                    This will include any commit attributed to your account but not signed with your GPG or S/MIME key.
-                </p>
-                <p>
-                    Note that this will include your existing unsigned commits.
-                </p>
-                <span class="generateKey">
-                    Learn about vigilant mode.
-                </span>
             </div>
             <div v-else-if="activeTab.includes('scheduled reminders')" class="article">
                 <h4>
@@ -1311,19 +1363,230 @@ export default {
             newTwitter: '',
             newCompany: '',
             newLocation: '',
+            newEmail: '',
             newEmailPreferences: '',
             newBackupEmail: '',
             keepMyEmailAddressesPrivate: false,
             blockCommandLinePushesThatExposeMyEmail: false,
+            createDialogKey: 'not create dialog',
+            newKeyTitle: '',
+            newKey: '',
+            dependencyGraph: false,
+            dependabotAlerts: false,
+            dependabotSecurityUpdates: false,
             token: window.localStorage.getItem("gitfabtoken"),
         }
     },
     methods: {
+        setDependencyGraph(){
+            fetch(`http://localhost:4000/api/gitfabers/dependencygraph/set/?gitfaberemail=${this.gitfaber.email}&newdependencygraph=${this.dependencyGraph}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotAlerts(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotalerts/set/?gitfaberemail=${this.gitfaber.email}&newdependabotalerts=${this.dependabotAlerts}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotSecurityUpdates(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotsecurityupdates/set/?gitfaberemail=${this.gitfaber.email}&newdependabotsecurityupdates=${this.dependabotSecurityUpdates}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setKey(keyType){
+            fetch(`http://localhost:4000/api/gitfabers/keys/set/?gitfaberemail=${this.gitfaber.email}&newkeytype=${keyType}&newkeytitle=${this.newKeyTitle}&newkey=${this.newKey}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setNewEmail(){
+            fetch(`http://localhost:4000/api/gitfabers/emails/set/?gitfaberemail=${this.gitfaber.email}&newemail=${this.newEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
         setKeepMyEmailAddressesPrivate(){
-
+            fetch(`http://localhost:4000/api/gitfabers/keepmyemailaddressesprivate/set/?gitfaberemail=${this.gitfaber.email}&newkeepmyemailaddressesprivate=${this.keepMyEmailAddressesPrivate}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
         },
         setBlockCommandLinePushesThatExposeMyEmail(){
-
+            fetch(`http://localhost:4000/api/gitfabers/blockcommandlinepushesthatexposemyemail/set/?gitfaberemail=${this.gitfaber.email}&newblockcommandlinepushesthatexposemyemail=${this.blockCommandLinePushesThatExposeMyEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
         },
         setBackupEmail() {
             fetch(`http://localhost:4000/api/gitfabers/backupemail/set/?gitfaberemail=${this.gitfaber.email}&newbackupemail=${this.newBackupEmail}`, {
@@ -1591,6 +1854,9 @@ export default {
                         this.newBackupEmail = this.gitfaber.backupEmail
                         this.keepMyEmailAddressesPrivate = this.gitfaber.keepMyEmailAddressesPrivate
                         this.blockCommandLinePushesThatExposeMyEmail = this.gitfaber.blockCommandLinePushesThatExposeMyEmail
+                        this.dependencyGraph = this.gitfaber.dependencyGraph
+                        this.dependabotAlerts = this.gitfaber.dependabotAlerts
+                        this.dependabotSecurityUpdates = this.gitfaber.dependabotSecurityUpdates
                     }
                 })
             }
@@ -1946,6 +2212,14 @@ export default {
 
     .themeName {
         font-weight: bolder;
+    }
+
+    .marginBtn {
+        margin: 10px;
+    }
+
+    .newKey {
+        height: 150px;
     }
 
 </style>
