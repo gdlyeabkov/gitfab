@@ -397,19 +397,38 @@
                     This is a list of devices that have logged into your account. Revoke any sessions that you do not recognize.
                 </span>
                 <div class="reposTable">
-                    <div class="reposTableHeader">
-                        <div>
+                    <div v-for="session in gitfaber.sessions" :key="session" class="reposTableHeader">
+                        <div class="sessionDataColumn">
+                            <div class="sessionDataRow">
+                                <div class="marker">
+
+                                </div>
+                                <span class="material-icons">
+                                    desktop_windows
+                                </span>
+                            </div>
                             <span>
-                                Gitfab free
+                                Seen in RU
                             </span>
                         </div>
-                    </div>
-                    <div class="reposTableHeader">
-                        <div>
-                            <span>
-                                Gitfab free
-                            </span>
+                        <div class="sessionDataColumn">
+                            <div>
+                                <span>
+                                    Moscow
+                                </span>
+                                <span>
+                                    {{ session.ip }}
+                                </span>
+                            </div>
+                            <div>
+                                <span>
+                                    Your current session
+                                </span>
+                            </div>
                         </div>
+                        <button class="btn btn-light turnBtn">
+                            See more
+                        </button>
                     </div>
                 </div>
             </div>
@@ -693,25 +712,44 @@
                             </span>
                         </div>
                     </div>        
-                    <div v-for="repo in repos" :key="repo.name">
+                    <div v-for="event in gitfaber.events" :key="event">
                         <hr />
-                        <div class="currentRepo">
-                            <span class="material-icons-outlined">
-                                lock
-                            </span>
-                            <span class="linkable">
-                                {{ gitfaber.email }}/{{ repo.name }}
-                            </span>
-                            <span>
-                                1.82 MB
-                            </span>
-                            <div class="collaboratorsBlock">
-                                <span class="material-icons-outlined">
-                                    group
-                                </span>
-                                <span class="linkable">
-                                    0 collaborators
-                                </span>
+                        <div class="currentEventRow">
+                            <div class="logo">
+                                Г
+                            </div>
+                            <div class="currentEvent">
+                                <div class="currentEventRow">
+                                    <span class="linkable">
+                                        {{ event.raiser }}
+                                    </span>
+                                    <span>
+                                        –
+                                    </span>
+                                    <span>
+                                        {{ event.type }}
+                                    </span>
+                                </div>
+                                <p class="currentEventMessage">
+                                    {{ event.message }}
+                                </p>
+                                <div class="currentEventRow">
+                                    <span class="linkable">
+                                        {{ event.ip }}
+                                    </span>
+                                    <span>
+                                        |
+                                    </span>
+                                    <span>
+                                        Moscow, Moscow, Russia
+                                    </span>
+                                    <span>
+                                        |
+                                    </span>
+                                    <span>
+                                        {{ event.date }}
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -943,6 +981,135 @@
                     Notifications
                 </h4>
                 <hr />
+                <span>
+                    Choose how you receive notifications. These notification settings apply to the things you’re watching.
+                </span>
+                <div>
+                    <h4>
+                        Automatic watching
+                    </h4>
+                    <span>
+                        When you’re given push access to a repository, automatically receive notifications for it.
+                    </span>
+                    <div>
+                        <input @change="setAutomaticallyWatchRepositories()" v-model="automaticallyWatchRepositories" type="checkbox" />
+                        <span>
+                            Automatically watch repositories 
+                        </span>
+                    </div>
+                    <span>
+                        When you’re added to or join a team, automatically receive notifications for that team’s discussions.
+                    </span>
+                    <div>
+                        <input @change="setAutomaticallyWatchTeams()" v-model="automaticallyWatchTeams" type="checkbox" />
+                        <span>
+                            Automatically watch teams
+                        </span>
+                    </div>
+                    <hr />
+                    <h4>
+                        Participating
+                    </h4>
+                    <span>
+                        Notifications for the conversations you are participating in, or if someone cites you with an @mention.
+                    </span>
+                    <div>
+                        <input @change="setParticipatingEmail()" v-model="participatingEmail" type="checkbox" />
+                        <span>
+                            Email
+                        </span>
+                    </div>
+                    <div>
+                        <input @change="setParticipatingWebAndMobile()" v-model="participatingWebAndMobile" type="checkbox" />
+                        <span>
+                            Web and Mobile 
+                        </span>
+                    </div>
+                    <hr />
+                    <h4>
+                        Watching
+                    </h4>
+                    <span>
+                        Notifications for all repositories, teams, or conversations you’re watching.
+                    </span>
+                    <div>
+                        <input @change="setWatchingEmail()" v-model="watchingEmail" type="checkbox" />
+                        <span>
+                            Email
+                        </span>
+                    </div>
+                    <div>
+                        <input @change="setWatchingWebAndMobile()" v-model="watchingWebAndMobile" type="checkbox" />
+                        <span>
+                            Web and Mobile 
+                        </span>
+                    </div>
+                    <hr />
+                    <h4>
+                        Dependabot alerts
+                    </h4>
+                    <span>
+                        When you’re given access to Dependabot alerts, automatically receive notifications when a new vulnerability is found in one of your dependencies                    </span>
+                    <div>
+                        <input @change="setDependabotAlertsUIAlerts()" v-model="dependabotAlertsUIAlerts" type="checkbox" />
+                        <span>
+                            UI alerts
+                        </span>
+                        <span class="material-icons">
+                            help_outline
+                        </span>
+                        <input @change="setDependabotAlertsCommandLine()" v-model="dependabotAlertsCommandLine" type="checkbox" />
+                        <span>
+                            Command Line
+                        </span>
+                        <span class="material-icons">
+                            help_outline
+                        </span>
+                        <input @change="setDependabotAlertsWeb()" v-model="dependabotAlertsWeb" type="checkbox" />
+                        <span>
+                            Web
+                        </span>
+                    </div>
+                    <span>
+                        Receive security alert notifications via email
+                    </span>
+                    <div>
+                        <input @change="setDependabotAlertsEmailEachTimeAVulnerabilityIsFound()" v-model="dependabotAlertsEmailEachTimeAVulnerabilityIsFound" type="checkbox" />
+                        <span>
+                            Email each time a vulnerability is found 
+                        </span>
+                    </div>
+                    <div>
+                        <input @change="setDependabotAlertsEmailADigestSummaryOfVulnerabilities()" v-model="dependabotAlertsEmailADigestSummaryOfVulnerabilities" type="checkbox" />
+                        <span>
+                            Email a digest summary of vulnerabilities 
+                        </span>
+                    </div>
+                    <hr />
+                    <h4>
+                        Actions
+                    </h4>
+                    <span>
+                        Notifications for workflow runs on repositories set up with GitHub Actions.
+                    </span>
+                    <div>
+                        <input @change="setActionsEmail()" v-model="actionsEmail" type="checkbox" />
+                        <span>
+                            Email
+                        </span>
+                        <input @change="setActionsWeb()" v-model="actionsWeb" type="checkbox" />
+                        <span>
+                            Web
+                        </span>
+                    </div>
+                    <div>
+                        <input @change="setActionsSendNotificationsForFailedWorkflowsOnly()" v-model="actionsSendNotificationsForFailedWorkflowsOnly" type="checkbox" />
+                        <span>
+                            Send notifications for failed workflows only
+                        </span>
+                    </div>
+                    <hr />
+                </div>
                 <h4>
                     Email notifications references
                 </h4>
@@ -960,25 +1127,25 @@
                     Choose which email updates you receive on conversations you’re participating in or watching
                 </p>
                 <div class="vigilantModeRow">
-                    <input type="checkbox" checked>
+                    <input @change="setCommentsOnIssuesAndPullRequests()" v-model="commentsOnIssuesAndPullRequests" type="checkbox" checked>
                     <span>
                         Comments on Issues and Pull Requests 
                     </span>
                 </div>
                 <div class="vigilantModeRow">
-                    <input type="checkbox" checked>
+                    <input @change="setPullRequestReviews()" v-model="pullRequestReviews" type="checkbox" checked>
                     <span>
                         Pull Request reviews 
                     </span>
                 </div>
                 <div class="vigilantModeRow">
-                    <input type="checkbox" checked>
+                    <input @change="setPullRequestPushes()" v-model="pullRequestPushes" type="checkbox" checked>
                     <span>
                         Pull Request pushes 
                     </span>
                 </div>
                 <div class="vigilantModeRow">
-                    <input type="checkbox">
+                    <input @change="setIncludeYourOwnUpdates()" v-model="includeYourOwnUpdates" type="checkbox">
                     <span>
                         Include your own updates
                     </span>
@@ -1124,7 +1291,7 @@
                     <div class="reposTableHeader">
                         <div>
                             <span class="material-icons">
-                                delete
+                                import_contacts
                             </span>
                             <span>
                                 Repositories
@@ -1374,10 +1541,568 @@ export default {
             dependencyGraph: false,
             dependabotAlerts: false,
             dependabotSecurityUpdates: false,
+            automaticallyWatchRepositories: false,
+            automaticallyWatchTeams: false,
+            participatingEmail: false,
+            participatingWebAndMobile: false,
+            watchingEmail: false,
+            watchingWebAndMobile: false,
+            actionsEmail: false,
+            actionsWeb: false,
+            actionsSendNotificationsForFailedWorkflowsOnly: false,
+            dependabotAlertsUIAlerts: false,
+            dependabotAlertsCommandLine: false,
+            dependabotAlertsWeb: false,
+            dependabotAlertsEmailADigestSummaryOfVulnerabilities: false,
+            dependabotAlertsEmailEachTimeAVulnerabilityIsFound: false,
+            commentsOnIssuesAndPullRequests: false,
+            pullRequestReviews: false,
+            pullRequestPushes: false,
+            includeYourOwnUpdates : false,
             token: window.localStorage.getItem("gitfabtoken"),
         }
     },
     methods: {
+        setAutomaticallyWatchRepositories(){
+            fetch(`http://localhost:4000/api/gitfabers/automaticallywatchrepositories/set/?gitfaberemail=${this.gitfaber.email}&newautomaticallywatchrepositories=${this.automaticallyWatchRepositories}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setAutomaticallyWatchTeams(){
+            fetch(`http://localhost:4000/api/gitfabers/automaticallywatchteams/set/?gitfaberemail=${this.gitfaber.email}&newautomaticallywatchteams=${this.automaticallyWatchTeams}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setParticipatingEmail(){
+            fetch(`http://localhost:4000/api/gitfabers/participatingemail/set/?gitfaberemail=${this.gitfaber.email}&newparticipatingemail=${this.participatingEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setParticipatingWebAndMobile(){
+            fetch(`http://localhost:4000/api/gitfabers/participatingwebandmobile/set/?gitfaberemail=${this.gitfaber.email}&newparticipatingwebandmobile=${this.participatingWebAndMobile}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setWatchingWebAndMobile(){
+            fetch(`http://localhost:4000/api/gitfabers/watchingwebandmobile/set/?gitfaberemail=${this.gitfaber.email}&newwatchingwebandmobile=${this.watchingWebAndMobile}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setWatchingEmail(){
+            fetch(`http://localhost:4000/api/gitfabers/watchingemail/set/?gitfaberemail=${this.gitfaber.email}&newwatchingemail=${this.watchingEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setActionsWeb(){
+            fetch(`http://localhost:4000/api/gitfabers/actionsweb/set/?gitfaberemail=${this.gitfaber.email}&newactionsweb=${this.actionsWeb}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setActionsEmail(){
+            fetch(`http://localhost:4000/api/gitfabers/actionsemail/set/?gitfaberemail=${this.gitfaber.email}&newactionsemail=${this.actionsEmail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setActionsSendNotificationsForFailedWorkflowsOnly(){
+            fetch(`http://localhost:4000/api/gitfabers/actionssendnotificationsforfailedworkflowsonly/set/?gitfaberemail=${this.gitfaber.email}&newactionssendnotificationsforfailedworkflowsonly=${this.actionsSendNotificationsForFailedWorkflowsOnly}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setCommentsOnIssuesAndPullRequests(){
+            fetch(`http://localhost:4000/api/gitfabers/commentsonissuesandpullrequests/set/?gitfaberemail=${this.gitfaber.email}&newcommentsonissuesandpullrequests=${this.commentsOnIssuesAndPullRequests}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setPullRequestReviews(){
+            fetch(`http://localhost:4000/api/gitfabers/pullrequestreviews/set/?gitfaberemail=${this.gitfaber.email}&newpullrequestreviews=${this.pullRequestReviews}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setPullRequestPushes(){
+            fetch(`http://localhost:4000/api/gitfabers/pullrequestpushes/set/?gitfaberemail=${this.gitfaber.email}&newpullrequestpushes=${this.pullRequestPushes}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setIncludeYourOwnUpdates(){
+            fetch(`http://localhost:4000/api/gitfabers/includeyourownupdates/set/?gitfaberemail=${this.gitfaber.email}&newincludeyourownupdates=${this.includeYourOwnUpdates}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotAlertsEmailEachTimeAVulnerabilityIsFound(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotalertsemaileachtimeavulnerabilityisfound/set/?gitfaberemail=${this.gitfaber.email}&newdependabotalertsemaileachtimeavulnerabilityisfound=${this.dependabotAlertsEmailEachTimeAVulnerabilityIsFound}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotAlertsEmailADigestSummaryOfVulnerabilities(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotalertsemailadigestsummaryofvulnerabilities/set/?gitfaberemail=${this.gitfaber.email}&newdependabotalertsemailadigestsummaryofvulnerabilities=${this.dependabotAlertsEmailADigestSummaryOfVulnerabilities}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotAlertsCommandLine(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotalertscommandline/set/?gitfaberemail=${this.gitfaber.email}&newdependabotalertscommandline=${this.dependabotAlertsCommandLine}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotAlertsWeb(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotalertsweb/set/?gitfaberemail=${this.gitfaber.email}&newdependabotalertsweb=${this.dependabotAlertsWeb}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
+        setDependabotAlertsUIAlerts(){
+            fetch(`http://localhost:4000/api/gitfabers/dependabotalertsuialerts/set/?gitfaberemail=${this.gitfaber.email}&newdependabotalertsuialerts=${this.dependabotAlertsUIAlerts}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                start(controller) {
+                    function push() {
+                    reader.read().then( ({done, value}) => {
+                        if (done) {
+                        console.log('done', done);
+                        controller.close();
+                        return;
+                        }
+                        controller.enqueue(value);
+                        console.log(done, value);
+                        push();
+                    })
+                    }
+                    push();
+                }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                this.$router.push({ name: 'Home' })
+            })
+        },
         setDependencyGraph(){
             fetch(`http://localhost:4000/api/gitfabers/dependencygraph/set/?gitfaberemail=${this.gitfaber.email}&newdependencygraph=${this.dependencyGraph}`, {
                 mode: 'cors',
@@ -1857,6 +2582,24 @@ export default {
                         this.dependencyGraph = this.gitfaber.dependencyGraph
                         this.dependabotAlerts = this.gitfaber.dependabotAlerts
                         this.dependabotSecurityUpdates = this.gitfaber.dependabotSecurityUpdates
+                        this.commentsOnIssuesAndPullRequests = this.gitfaber.commentsOnIssuesAndPullRequests
+                        this.pullRequestReviews = this.gitfaber.pullRequestReviews
+                        this.pullRequestPushes = this.gitfaber.pullRequestPushes
+                        this.includeYourOwnUpdates = this.gitfaber.includeYourOwnUpdates
+                        this.automaticallyWatchRepositories = this.gitfaber.automaticallyWatchRepositories
+                        this.automaticallyWatchTeams = this.gitfaber.automaticallyWatchTeams
+                        this.participatingEmail = this.gitfaber.participatingEmail
+                        this.participatingWebAndMobile = this.gitfaber.participatingWebAndMobile
+                        this.watchingEmail = this.gitfaber.watchingEmail
+                        this.watchingWebAndMobile = this.gitfaber.watchingWebAndMobile
+                        this.dependabotAlertsUIAlerts = this.gitfaber.dependabotAlertsUIAlerts
+                        this.dependabotAlertsCommandLine = this.gitfaber.dependabotAlertsCommandLine
+                        this.dependabotAlertsWeb = this.gitfaber.dependabotAlertsWeb
+                        this.dependabotAlertsEmailEachTimeAVulnerabilityIsFound = this.gitfaber.dependabotAlertsEmailEachTimeAVulnerabilityIsFound
+                        this.dependabotAlertsEmailADigestSummaryOfVulnerabilities = this.gitfaber.dependabotAlertsEmailADigestSummaryOfVulnerabilities
+                        this.actionsEmail = this.gitfaber.actionsEmail
+                        this.actionsWeb = this.gitfaber.actionsWeb
+                        this.actionsSendNotificationsForFailedWorkflowsOnly = this.gitfaber.actionsSendNotificationsForFailedWorkflowsOnly
                     }
                 })
             }
@@ -2220,6 +2963,53 @@ export default {
 
     .newKey {
         height: 150px;
+    }
+
+    .sessionDataColumn {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .marker {
+        border-radius: 100%;
+        width: 10px;
+        height: 10px;
+        background-color: rgb(0, 150, 0);
+        margin-right: 15px;
+    }
+
+    .sessionDataRow {
+        display: flex;
+    }
+
+    .currentEvent {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .currentEventRow {
+        display: flex;
+        
+    }
+
+    .currentEventRow > * {
+        margin: 5px;
+    }
+
+    .currentEventMessage {
+        text-align: center;
+    }
+
+    .logo {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 100%;
+        width: 25px;
+        height: 25px;
+        background-color: rgb(0, 155, 0);
+        color: rgb(255, 255, 255);
+        align-self: center;
     }
 
 </style>

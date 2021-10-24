@@ -1,5 +1,5 @@
 <template>
-    <div @load="initialize()" class="signUp">
+    <div class="signUp">
         <img src="https://github.githubassets.com/images/modules/logos_page/GitHub-Mark.png" alt="">
         <span>
              Sign in to GitFab
@@ -60,9 +60,13 @@ export default {
             this.geocoder = new google.maps.Geocoder()
         },
         codeLatLng(lat, lng) {
-            var latlng = new google.maps.LatLng(lat, lng);
             this.geocoder = new google.maps.Geocoder()
-            this.geocoder.geocode({'latLng': latlng}, function(results, status) {
+            // google.maps.Geocoder.configure({
+            //     api_key: "AIzaSyDBQTky6uhgl-rdJhX7RyvJRaowGZ_FbPQ"
+            // })
+            var latlng = new google.maps.LatLng(lat, lng);
+            //apiKey: "AIzaSyDBQTky6uhgl-rdJhX7RyvJRaowGZ_FbPQ"
+            this.geocoder.geocode({'latLng': latlng }, function(results, status) {
                 if (status == google.maps.GeocoderStatus.OK) {
                     console.log(results)
                     if (results[1]) {
@@ -130,49 +134,49 @@ export default {
                 navigator.geolocation.getCurrentPosition((position) => {
                     var lat = position.coords.latitude;
                     var lng = position.coords.longitude;
-                    this.codeLatLng(lat, lng)
+                    // this.codeLatLng(lat, lng)
+                    // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}`, {
+                    fetch(`http://localhost:4000/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}&newip=${ip.address()}&newdate=${new Date().toLocaleDateString()}&newcity=${lat},${lng}&newbrowser=${navigator.appName}`, {
+                        mode: 'cors',
+                        method: 'GET'
+                    }).then(response => response.body).then(rb  => {
+                        const reader = rb.getReader()
+                        return new ReadableStream({
+                        start(controller) {
+                            function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                console.log('done', done);
+                                controller.close();
+                                return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                            }
+                            push();
+                        }
+                        });
+                    }).then(stream => {
+                        return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+                    })
+                    .then(result => {
+                        console.log(`JSON.parse(result): ${JSON.parse(result)}`)
+                        if(JSON.parse(result).status.includes('OK')){
+                            this.token = jwt.sign({
+                                gitfaberemail: this.email
+                                }, 'gitfabsecret', { expiresIn: '5m' })
+                            localStorage.setItem('gitfabtoken', this.token)
+                            this.$router.push({ name: 'Home' })
+                        } else if(JSON.parse(result).status.includes('Error')){
+                            this.errors = 'Такого гитфабера нет'
+                        }
+                    })
                 }, () => {
                     alert("Geocoder failed")
                 })
-            } 
-            // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}`, {
-            // fetch(`http://localhost:4000/api/gitfabers/check/?gitfaberemail=${this.email}&gitfaberpassword=${this.password}&newip=${ip.address()}&newdate=${new Date().toLocaleDateString()}&newcity=${}&newbrowser=${navigator.appName}`, {
-            //     mode: 'cors',
-            //     method: 'GET'
-            // }).then(response => response.body).then(rb  => {
-            //     const reader = rb.getReader()
-            //     return new ReadableStream({
-            //     start(controller) {
-            //         function push() {
-            //         reader.read().then( ({done, value}) => {
-            //             if (done) {
-            //             console.log('done', done);
-            //             controller.close();
-            //             return;
-            //             }
-            //             controller.enqueue(value);
-            //             console.log(done, value);
-            //             push();
-            //         })
-            //         }
-            //         push();
-            //     }
-            //     });
-            // }).then(stream => {
-            //     return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
-            // })
-            // .then(result => {
-            //     console.log(`JSON.parse(result): ${JSON.parse(result)}`)
-            //     if(JSON.parse(result).status.includes('OK')){
-            //         this.token = jwt.sign({
-            //             gitfaberemail: this.email
-            //             }, 'gitfabsecret', { expiresIn: '5m' })
-            //         localStorage.setItem('gitfabtoken', this.token)
-            //         this.$router.push({ name: 'Home' })
-            //     } else if(JSON.parse(result).status.includes('Error')){
-            //         this.errors = 'Такого гитфабера нет'
-            //     }
-            // })
+            }
         }
     }
 }
