@@ -1,5 +1,5 @@
 <template>
-    <div :style="`background-color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(255, 255, 255)'};`">
+    <div :style="`background-color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(0, 0, 0)'};`">
         <Header />
         <div>
             <div>
@@ -1239,25 +1239,25 @@
             <div class="repoBody" v-else-if="activeTab.includes('settings')">
                 <div class="securityBody">
                     <div class="securityAside">
-                        <span :class="{ securityAsideItemActive: securityTab.includes('overview') }" @click="securityTab = 'overview'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('options') }" @click="settingsTab = 'options'">
                             <div v-if="settingsTab.includes('options')" class="securityAsideLineItem">
 
                             </div>
                             Options
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('security policy') }" @click="securityTab = 'security policy'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('manage access') }" @click="settingsTab = 'manage access'">
                             <div v-if="settingsTab.includes('manage access')" class="securityAsideLineItem">
 
                             </div>
                             Manage access
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('security advisories') }" @click="securityTab = 'security advisories'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('security and analysis') }" @click="settingsTab = 'security and analysis'">
                             <div v-if="settingsTab.includes('security and analysis')" class="securityAsideLineItem">
 
                             </div>
                             Security and analysis
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('dependabot alerts') }" @click="securityTab = 'dependabot alerts'">
+                        <span :class="{ securityAsideItemActive: securityTab.includes('dependabot alerts') }" @click="settingsTab = 'dependabot alerts'">
                             <div v-if="settingsTab.includes('branches')" class="securityAsideLineItem">
 
                             </div>

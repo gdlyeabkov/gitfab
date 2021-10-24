@@ -272,11 +272,13 @@ app.get('/api/repos/create',(req, res)=>{
             return res.json({ "status": "Error" })
         }
         let repoExists = false;
-        allRepos.forEach(repo => {
-            if(repo.name.includes(req.query.reponame)){
-                repoExists = true
-            }
-        });
+        if(allRepos.length >= 1){
+            allRepos.forEach(repo => {
+                if(repo.name.includes(req.query.reponame)){
+                    repoExists = true
+                }
+            })
+        }
         if(repoExists){
             return res.json({ "status": "Error" })
         } else {
@@ -508,6 +510,30 @@ app.get('/api/account/delete', async (req, res) => {
             await RepoModel.deleteMany({ name: { $in: gitfaber.repos.flatMap((repo) => new Map(repo).get('name')) }  })
             await GitFaberModel.deleteOne({ email: req.query.gitfaberemail  })
             return res.json({ status: 'OK' })
+        }
+    })
+
+})
+
+app.get('/api/repos/delete', async (req, res) => {
+
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let query =  RepoModel.findOne({ 'name': req.query.reponame}, async function(err, repo){
+        if (err){
+            return res.json({ "status": "Error" })
+        } else {
+            mongoose.connection.collection("mygitfabers").updateOne(
+                { email: repo.gitfaber },
+                { $pull: { 'repos': { name: req.query.reponame } } },
+                async (err, user) => {
+        
+                    await RepoModel.deleteOne({ name: req.query.reponame  })
+                })
+                return res.json({ status: 'OK' })
         }
     })
 
