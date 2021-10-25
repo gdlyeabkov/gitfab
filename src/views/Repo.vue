@@ -1331,7 +1331,7 @@
                             Rename
                         </button>
                         <div>
-                            <input type="checkbox" />
+                            <input @change="setTemplateRepository()" v-model="templateRepository" type="checkbox" />
                             <span>
                                 Template repository 
                             </span>
@@ -1363,7 +1363,7 @@
                         </span>
                         <div class="archives">
                             <div class="archivesRow">
-                                <input checked type="checkbox" />
+                                <input @change="setAllowMergeCommits" v-model="allowMergeCommits" type="checkbox" />
                                 <span>
                                     Allow merge commits 
                                 </span>
@@ -1374,7 +1374,7 @@
                         </div>
                         <div class="archives">
                             <div class="archivesRow">
-                                <input checked type="checkbox" />
+                                <input @change="setAllowSquashMerging" v-model="allowSquashMerging" type="checkbox" />
                                 <span>
                                     Allow squash merging 
                                 </span>
@@ -1385,7 +1385,7 @@
                         </div>
                         <div class="archives">
                             <div class="archivesRow">
-                                <input checked type="checkbox" />
+                                <input @change="setAllowRebaseMerging" v-model="allowRebaseMerging" type="checkbox" />
                                 <span>
                                     Allow rebase merging
                                 </span>
@@ -1399,7 +1399,7 @@
                         </span>
                         <div class="archives">
                             <div class="archivesRow">
-                                <input type="checkbox" />
+                                <input @change="setAllowAutoMerge()" v-model="allowAutoMerge" type="checkbox" />
                                 <span>
                                     Allow auto-merge
                                 </span>
@@ -1413,7 +1413,7 @@
                         </span>
                         <div class="archives">
                             <div class="archivesRow">
-                                <input type="checkbox" />
+                                <input @change="setAutomaticallyDeleteHeadBranches" v-model="automaticallyDeleteHeadBranches" type="checkbox" />
                                 <span>
                                     Automatically delete head branches
                                 </span>
@@ -1428,7 +1428,7 @@
                         <hr />
                         <div class="archives">
                             <div class="archivesRow">
-                                <input type="checkbox" />
+                                <input @change="setIncludeGitLFSObjectsInArchives" v-model="includeGitLFSObjectsInArchives" type="checkbox" />
                                 <span>
                                     Include Git LFS objects in archives 
                                 </span>
@@ -1462,7 +1462,7 @@
                                         This repository is currently public.
                                     </span>
                                 </div>
-                                <button class="btn btn-light dangerBtn">
+                                <button @click="changeVisibility()" class="btn btn-light dangerBtn">
                                     Change visibility
                                 </button>
                             </div>
@@ -1667,6 +1667,15 @@ export default {
             repo: {},
             gitfaber: {},
             newRepoName: '',
+            templateRepository: false,
+            automaticallyDeleteHeadBranches: false,
+            allowAutoMerge: false,
+            allowRebaseMerging: false,
+            allowSquashMerging: false,
+            allowMergeCommits: false,
+            allowMergeCommits: false,
+            isOwner: false,
+            archived: false,
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
@@ -1708,6 +1717,14 @@ export default {
                         this.gitfaber = JSON.parse(result).gitfaber
 
                         this.newRepoName = this.repo.name
+                        this.templateRepository = this.repo.templateRepository
+                        this.allowMergeCommits = this.repo.allowMergeCommits
+                        this.allowSquashMerging = this.repo.allowSquashMerging
+                        this.allowRebaseMerging = this.repo.allowRebaseMerging
+                        this.allowAutoMerge = this.repo.allowAutoMerge
+                        this.automaticallyDeleteHeadBranches = this.repo.automaticallyDeleteHeadBranches
+                        this.includeGitLFSObjectsInArchives = this.repo.includeGitLFSObjectsInArchives
+                        this.templateRepository = this.repo.templateRepository
                         
                     }
                 })
@@ -1715,6 +1732,366 @@ export default {
         })
     },
     methods: {
+        setAllowMergeCommits(){
+            fetch(`http://localhost:4000/api/repos/allowmergecommits/set/?repoid=${this.$route.query.repoid}&newrepoallowmergecommits=${this.allowMergeCommits}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setAllowSquashMerging(){
+            fetch(`http://localhost:4000/api/repos/allowsquashmerging/set/?repoid=${this.$route.query.repoid}&newrepoallowsquashmerging=${this.allowSquashMerging}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setAllowRebaseMerging(){
+            fetch(`http://localhost:4000/api/repos/allowrebasemerging/set/?repoid=${this.$route.query.repoid}&newrepoallowrebasemerging=${this.allowRebaseMerging}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setAllowAutoMerge(){
+            fetch(`http://localhost:4000/api/repos/allowautomerge/set/?repoid=${this.$route.query.repoid}&newrepoallowautomerge=${this.allowAutoMerge}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setAutomaticallyDeleteHeadBranches(){
+            fetch(`http://localhost:4000/api/repos/automaticallydeleteheadbranches/set/?repoid=${this.$route.query.repoid}&newrepoautomaticallydeleteheadbranches=${this.automaticallyDeleteHeadBranches}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setIncludeGitLFSObjectsInArchives(){
+            fetch(`http://localhost:4000/api/repos/includegitlfsobjectsinarchives/set/?repoid=${this.$route.query.repoid}&newrepoincludegitlfsobjectsinarchives=${this.includeGitLFSObjectsInArchives}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setArchived(){
+            fetch(`http://localhost:4000/api/repos/archived/set/?repoid=${this.$route.query.repoid}&newrepoarcived=${this.repo.archived ? false : true}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setOwnership(){
+            fetch(`http://localhost:4000/api/repos/ownership/set/?repoid=${this.$route.query.repoid}&newrepoownership=${false}&newrepoowner=${"admin"}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        setTemplateRepository(){
+            fetch(`http://localhost:4000/api/repos/templaterepository/set/?repoid=${this.$route.query.repoid}&newrepotemplaterepository=${this.templateRepository}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        changeVisibility() {
+            fetch(`http://localhost:4000/api/repos/access/set/?repoid=${this.$route.query.repoid}&newrepoaccess=${this.repo.access.includes('Public') ? 'Private' : 'Public'}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
         deleteRepo(){
             fetch(`http://localhost:4000/api/repos/delete/?repoid=${this.$route.query.repoid}`, {
                 mode: 'cors',

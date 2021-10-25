@@ -63,6 +63,42 @@ const RepoSchema = new mongoose.Schema({
         type: Date,
         default: Date.now
     },
+    archived: {
+        type: Boolean,
+        default: false
+    },
+    isOwner: {
+        type: Boolean,
+        default: true
+    },
+    templateRepository: {
+        type: Boolean,
+        default: false
+    },
+    includeGitLFSObjectsInArchives: {
+        type: Boolean,
+        default: false
+    },
+    automaticallyDeleteHeadBranches: {
+        type: Boolean,
+        default: false
+    },
+    allowAutoMerge: {
+        type: Boolean,
+        default: false
+    },
+    allowRebaseMerging: {
+        type: Boolean,
+        default: true
+    },
+    allowSquashMerging: {
+        type: Boolean,
+        default: true
+    },
+    allowMergeCommits: {
+        type: Boolean,
+        default: true
+    }
 }, { collection : 'myrepos' });
 
 const RepoModel = mongoose.model('RepoModel', RepoSchema);
@@ -770,6 +806,186 @@ app.get('/api/gitfabers/billing/set', (req, res) => {
     GitFaberModel.updateOne({ email: req.query.gitfaberemail },
         {
             billing: req.query.newbilling,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/templaterepository/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            templateRepository: req.query.newrepotemplaterepository,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/allowmergecommits/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            allowMergeCommits: req.query.newrepoallowmergecommits,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/allowsquashmerging/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            allowSquashMerging: req.query.newrepoallowsquashmerging,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/allowrebasemerging/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            allowRebaseMerging: req.query.newrepoallowrebasemerging,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/allowautomerge/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            allowAutoMerge: req.query.newrepoallowautomerge,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/automaticallydeleteheadbracnhes/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            automaticallyDeleteHeadBracnhes: req.query.newrepoautomaticallydeleteheadbracnhes,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/includeGitLFSObjectsInArchives/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            includeGitLFSObjectsInArchives: req.query.newrepoincludegitlfsobjectsinarchives,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/archived/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            archived: req.query.newrepoarchived,
+        }, (err, gitfaber) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/ownership/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            isOnwer: req.query.newrepoownership,
+        }, (err, repo) => {
+            if(err){
+                return res.json({ status: 'Error' })        
+            }
+            return res.json({ status: 'OK' })
+    })
+})
+
+app.get('/api/repos/access/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        {
+            access: req.query.newrepoaccess,
         }, (err, gitfaber) => {
             if(err){
                 return res.json({ status: 'Error' })        
