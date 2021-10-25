@@ -1257,222 +1257,389 @@
                             </div>
                             Security and analysis
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('dependabot alerts') }" @click="settingsTab = 'dependabot alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('branches') }" @click="settingsTab = 'branches'">
                             <div v-if="settingsTab.includes('branches')" class="securityAsideLineItem">
 
                             </div>
                             Branches
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('webhooks') }" @click="settingsTab = 'webhooks'">
                             <div v-if="settingsTab.includes('webhooks')" class="securityAsideLineItem">
 
                             </div>
                             Webhooks
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('notifications') }" @click="settingsTab = 'notifications'">
                             <div v-if="settingsTab.includes('notifications')" class="securityAsideLineItem">
 
                             </div>
                             Notifications
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('integrations') }" @click="settingsTab = 'integrations'">
                             <div v-if="settingsTab.includes('integrations')" class="securityAsideLineItem">
 
                             </div>
                             Integrations
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
-                            <div v-if="settingsTab.includes('deploy keys')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('deploykeys') }" @click="settingsTab = 'deploykeys'">
+                            <div v-if="settingsTab.includes('deploykeys')" class="securityAsideLineItem">
 
                             </div>
                             Deploy keys
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('actions') }" @click="settingsTab = 'actions'">
                             <div v-if="settingsTab.includes('actions')" class="securityAsideLineItem">
 
                             </div>
                             Actions
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('environments') }" @click="settingsTab = 'environments'">
                             <div v-if="settingsTab.includes('environments')" class="securityAsideLineItem">
 
                             </div>
                             Environments
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('code scanning alerts') }" @click="settingsTab = 'secrets'">
                             <div v-if="settingsTab.includes('secrets')" class="securityAsideLineItem">
 
                             </div>
                             Secrets
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('pages') }" @click="settingsTab = 'pages'">
                             <div v-if="settingsTab.includes('pages')" class="securityAsideLineItem">
 
                             </div>
                             Pages
                         </span>
-                        <span :class="{ securityAsideItemActive: securityTab.includes('code scanning alerts') }" @click="securityTab = 'code scanning alerts'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('moderation settings alerts') }" @click="settingsTab = 'moderation settings alerts'">
                             <div v-if="settingsTab.includes('moderation settings alerts')" class="securityAsideLineItem">
 
                             </div>
                             Moderation settings
                         </span>
                     </div>
-                    <div v-if="securityTab.includes('overview')" class="securityMain">
+                    <div v-if="settingsTab.includes('options')" class="securityMain">
                         <h4>
-                            Security overview
+                            Settings
                         </h4>
-                        <div class="securityOverviewBlock">
-                            <div class="securityOverviewBlockColumn">
-                                <div class="securityOverviewBlockRow">
-                                    <div class="marker">
-
-                                    </div>
-                                    <span>
-                                        Security policy
-                                    </span>
-                                </div>
-                                <span>
-                                    Define how users should report security vulnerabilities for this repository
-                                </span>
-                            </div>
-                            <button class="btn btn-light">
-                                Set up a security policy
-                            </button>
-                        </div>
-                        <div class="securityOverviewBlock">
-                            <div class="securityOverviewBlockColumn">
-                                <div class="securityOverviewBlockRow">
-                                    <div class="marker">
-
-                                    </div>
-                                    <span>
-                                        Security advisories
-                                    </span>
-                                </div>
-                                <span>
-                                    View or disclose security advisories for this repository
-                                </span>
-                            </div>
-                            <button class="btn btn-light">
-                                View security advisories
-                            </button>
-                        </div>
-                        <div class="securityOverviewBlock">
-                            <div class="securityOverviewBlockColumn">
-                                <div class="securityOverviewBlockRow">
-                                    <div class="marker">
-
-                                    </div>
-                                    <span>
-                                        Dependabot alerts
-                                    </span>
-                                </div>
-                                <span>
-                                    Get notified when one of your dependencies has a vulnerability
-                                </span>
-                            </div>
-                            <button class="btn btn-light">
-                                Enable dependabot alerts
-                            </button>
-                        </div>
-                        <div class="securityOverviewBlock">
-                            <div class="securityOverviewBlockColumn">
-                                <div class="securityOverviewBlockRow">
-                                    <div class="marker">
-
-                                    </div>
-                                    <span>
-                                        Code scanning alerts
-                                    </span>
-                                </div>
-                                <span>
-                                    Automatically detect common vulnerability and coding errors
-                                </span>
-                            </div>
-                            <button class="btn btn-light">
-                                Set up a code scanning
-                            </button>
-                        </div>
-                        
-                    </div>
-                    <div v-else-if="securityTab.includes('security policy')" class="securityMain">
-                        <div class="securityPolicyBlock">
-                            <span class="material-icons">
-                                vpn_key
-                            </span>
-                            <h4>
-                                Set up a security policy
-                            </h4>
-                            <span>
-                                Help your community understand how to securely report security vulnerabilities for your project.
-                            </span>
-                            <button class="btn btn-success">
-                                Start setup
-                            </button>
-                        </div>
-                    </div>
-                    <div v-else-if="securityTab.includes('security advisories')" class="securityMain">
-                        <div class="securityAdvisoriesHeader">
-                            <h4>
-                                Security Advisories
-                            </h4>
-                            <button class="btn btn-success">
-                                New draft security advisory
-                            </button>
-                        </div>
+                        <hr />
                         <p>
-                            Privately discuss, fix, and publish information about security vulnerabilities in your repository's code.
+                            Repository name
                         </p>
-                        <div class="securityPolicyBlock">
-                            <span class="material-icons-outlined">
-                                gpp_maybe
-                            </span>
-                            <h4>
-                                There aren’t any draft security advisories
-                            </h4>
-                        </div>
-                    </div>
-                    <div v-else-if="securityTab.includes('dependabot alerts')" class="securityMain">
-                        <h4>
-                            Dependabot alerts
-                        </h4>
-                        <div class="dependabotAlertsBlock">
-                            <span class="material-icons">
-                                warning_amber
-                            </span>
-                            <h4>
-                                Dependabot alerts are disabled.
-                            </h4>
+                        <input v-model="newRepoName" type="text" class="form-control w-50" />
+                        <button @click="renameRepo()" class="btn btn-light dangerBtn">
+                            Rename
+                        </button>
+                        <div>
+                            <input type="checkbox" />
                             <span>
-                                To receive Dependabot alerts, you must first enable Dependabot alerts in this repository’s settings.
+                                Template repository 
                             </span>
                         </div>
                         <span>
-                            Dependabot alerts surface known security vulnerabilities in some dependency manifest files. Dependabot security updates automatically keep your application up-to-date by updating dependencies in response to these alerts. Dependabot version updates can also help keep dependencies updated.
+                            Template repositories let users generate new repositories with the same directory structure and files. Learn more.
                         </span>
-                    </div>
-                    <div v-else-if="securityTab.includes('code scanning alerts')" class="securityMain">
+                        <p>
+                            Social preview
+                        </p>
+                        <p>
+                            Upload an image to customize your repository’s social media preview.
+                        </p>
+                        <p>
+                            Images should be at least 640×320px (1280×640px for best display).
+                        </p>
+                        <p class="linkable">
+                            Download template
+                        </p>
                         <h4>
-                            Security overview
+                            Features
                         </h4>
-                        <div class="securityOverviewBlock">
-                            <div class="securityOverviewBlockColumn">
-                                <div class="securityOverviewBlockRow">
-                                    <div class="marker">
-
-                                    </div>
-                                    <span>
-                                        Security policy
-                                    </span>
-                                </div>
+                        <h4>
+                            Merge button
+                        </h4>
+                        <hr />
+                        <span>
+                            When merging pull requests, you can allow any combination of merge commits, squashing, or rebasing. At least one option must be enabled. If you have linear history requirement enabled on any protected branch, you must enable squashing or rebasing.
+                        </span>
+                        <div class="archives">
+                            <div class="archivesRow">
+                                <input checked type="checkbox" />
                                 <span>
-                                    Define how users should report security vulnerabilities for this repository
+                                    Allow merge commits 
                                 </span>
                             </div>
-                            <button class="btn btn-light">
-                                Set up a security policy
+                            <span>
+                                Add all commits from the head branch to the base branch with a merge commit.
+                            </span>
+                        </div>
+                        <div class="archives">
+                            <div class="archivesRow">
+                                <input checked type="checkbox" />
+                                <span>
+                                    Allow squash merging 
+                                </span>
+                            </div>
+                            <span>
+                                Combine all commits from the head branch into a single commit in the base branch.                                   
+                            </span>
+                        </div>
+                        <div class="archives">
+                            <div class="archivesRow">
+                                <input checked type="checkbox" />
+                                <span>
+                                    Allow rebase merging
+                                </span>
+                            </div>
+                            <span>
+                                Add all commits from the head branch onto the base branch individually.
+                            </span>
+                        </div>
+                        <span>
+                            You can allow setting pull requests to merge automatically once all required reviews and status checks have passed.
+                        </span>
+                        <div class="archives">
+                            <div class="archivesRow">
+                                <input type="checkbox" />
+                                <span>
+                                    Allow auto-merge
+                                </span>
+                            </div>
+                            <span>
+                                Waits for merge requirements to be met and then merges automatically. Learn more
+                            </span>
+                        </div>
+                        <span>
+                            After pull requests are merged, you can have head branches deleted automatically.
+                        </span>
+                        <div class="archives">
+                            <div class="archivesRow">
+                                <input type="checkbox" />
+                                <span>
+                                    Automatically delete head branches
+                                </span>
+                            </div>
+                            <span>
+                                Deleted branches will still be able to be restored.
+                            </span>
+                        </div>
+                        <h4>
+                            Archives
+                        </h4>
+                        <hr />
+                        <div class="archives">
+                            <div class="archivesRow">
+                                <input type="checkbox" />
+                                <span>
+                                    Include Git LFS objects in archives 
+                                </span>
+                            </div>
+                            <span>
+                                Git LFS usage in archives is billed at the same rate as usage with the client.
+                            </span>
+                        </div>
+                        <span>
+                            When creating source code archives, you can choose to include files stored using Git LFS in the archive.
+                        </span>
+                        <h4>
+                            GitFab Pages
+                        </h4>
+                        <hr />
+                        <div class="gitfabPages">
+                            <span>
+                                Pages settings now has its own dedicated tab! Check it out here!
+                            </span>
+                        </div>
+                        <h4>
+                            Danger Zone
+                        </h4>
+                        <div class="dangerZone">
+                            <div class="dangerZoneItem">
+                                <div class="dangerZoneLeftBlock">
+                                    <span>
+                                        Change repository visibility
+                                    </span>
+                                    <span>
+                                        This repository is currently public.
+                                    </span>
+                                </div>
+                                <button class="btn btn-light dangerBtn">
+                                    Change visibility
+                                </button>
+                            </div>
+                            <hr />
+                            <div class="dangerZoneItem">
+                                <div class="dangerZoneLeftBlock">
+                                    <span>
+                                        Transfer ownership
+                                    </span>
+                                    <span>
+                                        Transfer this repository to another user or to an organization where you have the ability to create repositories.
+                                    </span>
+                                </div>
+                                <button class="btn btn-light dangerBtn">
+                                    Transfer
+                                </button>
+                            </div>
+                            <hr />
+                            <div class="dangerZoneItem">
+                                <div class="dangerZoneLeftBlock">
+                                    <span>
+                                        Archive this repository
+                                    </span>
+                                    <span>
+                                        Mark this repository as archived and read-only.
+                                    </span>
+                                </div>
+                                <button class="btn btn-light dangerBtn">
+                                    Archive this repository
+                                </button>
+                            </div>
+                            <hr />
+                            <div class="dangerZoneItem">
+                                <div class="dangerZoneLeftBlock">
+                                    <span>
+                                        Delete this repository
+                                    </span>
+                                    <span>
+                                        Once you delete a repository, there is no going back. Please be certain.
+                                    </span>
+                                </div>
+                                <button @click="deleteRepo()" class="btn btn-light dangerBtn">
+                                    Delete this repository
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="settingsTab.includes('branches')" class="securityMain">
+                        <h4>
+                            Default branch
+                        </h4>
+                        <hr />
+                        <p>
+                            The default branch is considered the “base” branch in your repository, against which all pull requests and code commits are automatically made, unless you specify a different branch.
+                        </p>
+                        <div class="branchAdvisoriesHeader">
+                            <h4>
+                                Branch protection rules
+                            </h4>
+                            <button class="btn btn-success">
+                                Add rule
                             </button>
+                        </div>
+                        <hr />
+                        <p>
+                            Define branch protection rules to disable force pushing, prevent branches from being deleted, and optionally require status checks before merging. New to branch protection rules? Learn more.
+                        </p>
+                        <p>
+                            No branch protection rules defined yet.
+                        </p>
+                    </div>
+                    <div v-else-if="settingsTab.includes('webhooks')" class="securityMain">
+                        <div class="securityAdvisoriesHeader">
+                            <h4>
+                                Webhooks
+                            </h4>
+                            <button class="btn btn-success">
+                                Add webhook
+                            </button>
+                        </div>
+                        <hr />
+                        <p>
+                            Webhooks allow external services to be notified when certain events happen. When the specified events happen, we’ll send a POST request to each of the URLs you provide. Learn more in our Webhooks Guide.
+                        </p>
+                    </div>
+                    <div v-else-if="settingsTab.includes('integrations')" class="securityMain">
+                        <h4>
+                            Installed GitHub Apps
+                        </h4>
+                        <hr />
+                        <p>
+                            GitHub Apps augment and extend your workflows on GitHub with commercial, open source, and homegrown tools.
+                        </p>
+                    </div>
+                    <div v-else-if="securityTab.includes('deploykeys')">
+                        <div class="branchAdvisoriesHeader">
+                            <h4>
+                                Deploy keys
+                            </h4>
+                            <button class="btn btn-success">
+                                Add deploy key
+                            </button>
+                        </div>
+                        <p>
+                            There are no deploy keys for this repository
+                        </p>
+                        <p>
+                            Check out our guide on deploy keys to learn more.
+                        </p>
+                    </div>
+                    <div v-else-if="securityTab.includes('environments')" class="securityMain">
+                        <div class="secrets">
+                            <h4>
+                                Environments
+                            </h4>
+                            <button class="btn btn-light dangerBtn">
+                                New environment
+                            </button>
+                        </div>
+                        <div class="secret">
+                            <div class="secretBody">
+                                <h4>
+                                    There are no environments for this repository
+                                </h4>
+                                <span>
+                                    Environments are used by your workflows for deployments.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="settingsTab.includes('secrets')" class="securityMain">
+                        <div class="secrets">
+                            <h4>
+                                Actions secrets
+                            </h4>
+                            <button class="btn btn-light dangerBtn">
+                                New repository secret
+                            </button>
+                        </div>
+                        <span>
+                            Secrets are environment variables that are encrypted. Anyone with collaborator access to this repository can use these secrets for Actions.
+                        </span>
+                        <p>
+                            Secrets are not passed to workflows that are triggered by a pull request from a fork. Learn more.
+                        </p>
+                        <div class="secret">
+                            <div class="secretHeader">
+                                <span>
+                                    Environment secrets
+                                </span>
+                            </div>    
+                            <div class="secretBody">
+                                <h4>
+                                    There are no secrets for this repository's environments.
+                                </h4>
+                                <span>
+                                    Encrypted environment secrets allow you to store sensitive information, such as access tokens, in your repository environments.
+                                </span>
+                                <span class="linkable">
+                                    Manage your environments and add environment secrets
+                                </span>
+                            </div>
+                        </div>
+                        <div class="secret">
+                            <div class="secretHeader">
+                                <span>
+                                    Repository secrets
+                                </span>
+                            </div>    
+                            <div class="secretBody">
+                                <h4>
+                                    There are no secrets for this repository.
+                                </h4>
+                                <span>
+                                    Encrypted secrets allow you to store sensitive information, such as access tokens, in your repository.
+                                </span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -1499,6 +1666,7 @@ export default {
             settingsTab: 'options',
             repo: {},
             gitfaber: {},
+            newRepoName: '',
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
@@ -1538,10 +1706,87 @@ export default {
                     if(JSON.parse(result).status.includes('OK')){
                         this.repo = JSON.parse(result).repo
                         this.gitfaber = JSON.parse(result).gitfaber
+
+                        this.newRepoName = this.repo.name
+                        
                     }
                 })
             }
         })
+    },
+    methods: {
+        deleteRepo(){
+            fetch(`http://localhost:4000/api/repos/delete/?repoid=${this.$route.query.repoid}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                    // this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        renameRepo(){
+            fetch(`http://localhost:4000/api/repos/rename/?repoid=${this.$route.query.repoid}&newreponame=${this.newRepoName}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
     },
     components: {
         Header,
@@ -1778,6 +2023,20 @@ export default {
         width: 100%;
     }
 
+    .branchAside {
+        width: 25%;    
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgb(200, 200, 200);
+        background-color: rgb(245, 245, 245);
+        border-radius: 7px;
+        margin: 35px;
+    }
+
+    .brachMain {
+        width: 65%;
+    }
+
     .securityOverviewBlock {
         border: 1px solid rgb(200, 200, 200);
         width: 150%;
@@ -1834,6 +2093,12 @@ export default {
         display: flex;
         justify-content: space-between;
         width: 150%;
+    }
+
+    .branchAdvisoriesHeader {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
     }
 
     .gitfaber {
@@ -2010,6 +2275,115 @@ export default {
 
     .proTipRow {
         text-align: center;
+    }
+
+    .dangerZone {
+        margin-top: 25px;
+        margin-bottom: 50px;
+        display: flex;
+        flex-direction: column;
+        border: 1px solid rgb(200, 0, 0);
+        border-radius: 8px;
+        width: 75%;
+        /* height: 250px; */
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    .dangerZoneItem {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .dangerZoneLeftBlock {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .dangerBtn {
+        font-size: 12px;
+        width: 175px;
+        border: 1px solid rgb(200, 200, 200);
+        align-self: center;
+        font-weight: bolder;
+        color: rgb(200, 0, 0);
+    }
+
+    .gitfabPages {
+        margin-top: 25px;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        border: 1px solid rgb(215, 150, 0);
+        background-color:rgb(250, 250, 200);
+        border-radius: 8px;
+        width: 75%;
+        height: 50px;
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    .archives {
+        margin-top: 25px;
+        margin-bottom: 50px;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        border: 1px solid rgb(175, 175, 175);
+        border-radius: 8px;
+        width: 75%;
+        height: 85px;
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    .archivesRow {
+        align-items: center;
+        display: flex;
+    }
+
+    .archivesRow > span {
+        margin-left: 15px;
+        font-weight: bolder;
+    }
+
+    .secrets {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .secret {
+        margin: 15px;
+        border-radius: 8px;
+        width: 75%;
+        border: 1px solid rgb(175, 175, 175);
+    }
+
+    .secretHeader {
+        font-weight: bolder;
+        height: 50px;
+        border-radius: 8px 8px 0px 0px;
+        background-color: rgb(225, 225, 225);
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    .secretBody {
+        text-align: center;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        box-sizing: border-box;
+        padding: 25px;
+    }
+
+    .linkable {
+        color: rgb(0, 0, 255);
+        cursor: pointer;
     }
 
 </style>
