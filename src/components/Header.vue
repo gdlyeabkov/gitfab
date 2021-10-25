@@ -1,7 +1,7 @@
 <template>
     <div class ="header">
         <div class="headerItem headerLeftItem">
-            <img @click="$router.push({ name: 'Home' })" class="logo" width="100px" src="https://repository-images.githubusercontent.com/124369770/d12e6800-b47a-11e9-85a3-5fe53e198d49" alt="">
+            <img @click="$router.push({ name: 'Main' })" class="logo" width="100px" src="https://repository-images.githubusercontent.com/124369770/d12e6800-b47a-11e9-85a3-5fe53e198d49" alt="">
             <input @blur="searchKeywords = ''" v-model="searchKeywords" type="text" placeholder="Search or jump to..." class="searcher form-control">
             <span  @click="$router.push({ name: 'PullRequests' })">
                 Pull requests

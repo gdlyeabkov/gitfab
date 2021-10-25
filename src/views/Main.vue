@@ -7,12 +7,15 @@
                     <span>
                         Repositories
                     </span>
-                    <button class="btn btn-success w-25">
+                    <button @click="$router.push({ name: 'RepoRegister' })" class="btn btn-success w-25">
+                        <span class="newRepoIcon material-icons">
+                            import_contacts
+                        </span>
                         New
                     </button>
                 </div>
                 <input placeholder="Find a repository..." type="text" class="repoSearch form-control w-75">
-                <div class="repoRow">
+                <!-- <div class="repoRow">
                     <div class="logo">
                         Г
                     </div>
@@ -67,16 +70,24 @@
                     <span>
                         gdlyeabkov / reponame
                     </span>
+                </div> -->
+                <div v-for="repo in repos" :key="repo.name" class="repoRow">
+                    <div class="logo">
+                        Г
+                    </div>
+                    <span>
+                        {{ repo.gitfaber }} / {{ repo.name }}
+                    </span>
                 </div>
-                <span>
+                <span class="recentActivityDesc">
                     Show more
                 </span>
                 <hr />
-                <span>
+                <span class="recentActivity">
                     Recent activity
                 </span>
-                <span>
-                    When you take actions across GitHub, we’ll provide links to that activity here.
+                <span class="recentActivityDesc">
+                    When you take actions across GitFab, we’ll provide links to that activity here.
                 </span>
             </div>
             <div class="article">
@@ -92,7 +103,7 @@
                             <button class="btn btn-success w-50">
                                 Read the guide
                             </button>
-                            <button class="btn btn-light w-25">
+                            <button @click="$router.push({ name: 'RepoRegister' })" class="btn btn-light w-25">
                                 Start a project
                             </button>
                         </div>
@@ -128,10 +139,60 @@
 <script>
 import Header from '@/components/Header.vue'
 
-
+import * as jwt from 'jsonwebtoken'
 
 export default {
     name: 'Main',
+    data(){
+        return {
+            gitfaber: {
+                repos: []
+            },
+            repos: [],
+            token: window.localStorage.getItem("gitfabtoken")
+        }
+    },
+    mounted(){
+        jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
+        if(err) {
+            this.$router.push({ name: 'StartPage' })
+        } else {
+            // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+            fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                            if (done) {
+                                console.log('done', done);
+                                controller.close();
+                                return;
+                            }
+                            controller.enqueue(value);
+                            console.log(done, value);
+                            push();
+                        })
+                    }
+                    push();
+                }
+            });
+        }).then(stream => {
+            return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+        })
+            .then(result => {
+                    console.log(`JSON.parse(result): ${JSON.parse(result).gitfaber}`)
+                    if(JSON.parse(result).status.includes('OK')){
+                        this.gitfaber = JSON.parse(result).gitfaber
+                        this.repos = JSON.parse(result).repos
+                    }
+                })
+            }
+        })
+    },
     components: {
         Header
     }
@@ -247,6 +308,20 @@ export default {
 
     .articleRightBlockContent {
         font-size: 10px;
+    }
+
+    .recentActivity {
+        font-weight: bolder;
+        display: block;
+    }
+
+    .recentActivityDesc {
+        color: rgb(100, 100, 100);
+        font-size: 12px;
+    }
+
+    .newRepoIcon {
+        margin: 0px 5px;
     }
 
 </style>

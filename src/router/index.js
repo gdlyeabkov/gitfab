@@ -21,6 +21,9 @@ import ResetPassword from '../views/ResetPassword.vue'
 import Main from '../views/Main.vue'
 import RepoRegister from '../views/RepoRegister.vue'
 import Settings from '../views/Settings.vue'
+import Codespaces from '../views/Codespaces.vue'
+import OrganizationsPlan from '../views/OrganizationsPlan.vue'
+import Notifications from '../views/Notifications.vue'
 
 Vue.use(VueRouter)
 
@@ -129,7 +132,23 @@ const routes = [
     path: '/settings',
     name: 'Settings',
     component: Settings
+  },
+  {
+    path: '/codespaces',
+    name: 'Codespaces',
+    component: Codespaces
+  },
+  {
+    path: '/organizations',
+    name: 'OrganizationsPlan',
+    component: OrganizationsPlan
+  },
+  {
+    path: '/notifications',
+    name: 'Notifications',
+    component: Notifications
   }
+  
   
 ]
 

@@ -124,22 +124,22 @@
                 <p class="defaultEmail">
                     URL
                 </p>
-                <input v-model="newURL" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newURL" type="text" placeholder="" class="form-control w-50" />
                 <p class="defaultEmail">
                     Twitter username
                 </p>
-                <input v-model="newTwitter" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newTwitter" type="text" placeholder="" class="form-control w-50" />
                 <p class="defaultEmail">
                     Company
                 </p>
-                <input v-model="newCompany" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newCompany" type="text" placeholder="" class="form-control w-50" />
                 <span>
                     You can @mention your company’s GitHub organization to link it.
                 </span>
                 <p class="defaultEmail">
                     Location
                 </p>
-                <input v-model="newLocation" type="text" placeholder="Tell us a little bit about yourself" class="form-control w-50" />
+                <input v-model="newLocation" type="text" placeholder="" class="form-control w-50" />
                 <span>
                     All of the fields on this page are optional and can be deleted at any time, and by filling them out, you're giving us consent to share this data wherever your user profile appears. Please see our privacy statement to learn more about how we use this information.
                 </span>
