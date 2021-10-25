@@ -15,7 +15,7 @@
                             / {{ repo.name }}
                         </span>
                         <span class="repoAccess">
-                            Public
+                            {{ repo.access }}
                         </span>
                     </div>
                     <div class="repoHeaderItem">
@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="repoActions">
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('code') }">
                         <span class="material-icons-outlined">
                             code
                         </span>
@@ -66,7 +66,7 @@
                             Code
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('issues') }">
                         <span class="material-icons-outlined">
                             adjust
                         </span>
@@ -74,7 +74,7 @@
                             Issues
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('pull requests') }">
                         <span class="material-icons">
                             device_hub
                         </span>
@@ -82,7 +82,7 @@
                             Pull requests
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('actions') }">
                         <span class="material-icons">
                             play_circle_outline
                         </span>
@@ -90,7 +90,7 @@
                             Actions
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('projects') }">
                         <span class="material-icons-outlined">
                             insert_chart_outlined
                         </span>
@@ -98,7 +98,7 @@
                             Projects
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('wiki') }">
                         <span class="material-icons-outlined">
                             menu_book
                         </span>
@@ -106,7 +106,7 @@
                             Wiki
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('security') }">
                         <span class="material-icons">
                             warning_amber
                         </span>
@@ -114,7 +114,7 @@
                             Security
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('insights') }">
                         <span class="material-icons">
                             stacked_line_chart
                         </span>
@@ -122,7 +122,7 @@
                             Insights
                         </span>
                     </div>
-                    <div class="repoActionsItem">
+                    <div :class="{ repoActionsItem: true, repoActionsItemActive: activeTab.includes('settings') }">
                         <span class="material-icons-outlined">
                             settings
                         </span>
@@ -136,7 +136,7 @@
                 <div>
                     <div class="repoMetaInfos">
                         <div class="repoMetaInfo">
-                            <button class="btn btn-light repoBtn">
+                            <button  @click="togglerBranchesContextMenu = true" id="branchesContextMenu" class="btn btn-light repoBtn">
                                 <span class="material-icons">
                                     device_hub
                                 </span>
@@ -176,7 +176,7 @@
                                     Go to file
                                 </span>
                             </button>
-                            <button class="btn btn-light repoBtn">
+                            <button id="addFileContextMenu" @click="togglerAddFileContextMenu = true" class="btn btn-light repoBtn">
                                 <span>
                                     Add file
                                 </span>
@@ -184,7 +184,7 @@
                                     arrow_drop_down
                                 </span>
                             </button>
-                            <button class="btn btn-success repoBtn">
+                            <button id="codeContextMenu" @click="togglerCodeContextMenu = true" class="btn btn-success repoBtn">
                                 <span>
                                     Code
                                 </span>
@@ -409,7 +409,7 @@
                     </div>
                 </div>
             </div>
-            <div class="" v-else-if="activeTab.includes('issues')">
+            <div class="pullRequestsBlock" v-else-if="activeTab.includes('issues')">
                 <div class="pullRequestsFilters">
                     <input placeholder="Filters" type="text" class="form-control w-50" />
                     <button class="btn btn-light">
@@ -427,7 +427,7 @@
                         </span>
                     </button>
                     <button class="btn btn-success">
-                        New pull request
+                        New issue
                     </button>
                 </div>
                 <div class="pullRequestData">
@@ -457,7 +457,7 @@
                     </span>
                 </p>    
             </div>
-            <div class="" v-else-if="activeTab.includes('pull requests')">
+            <div class="pullRequestsBlock" v-else-if="activeTab.includes('pull requests')">
                 <div class="pullRequestsFilters">
                     <input placeholder="Filters" type="text" class="form-control w-50" />
                     <button class="btn btn-light">
@@ -505,7 +505,7 @@
                     </span>
                 </p>    
             </div>
-            <div class="" v-else-if="activeTab.includes('actions')">
+            <div class="actionsBlock" v-else-if="activeTab.includes('actions')">
                 <h4>
                     Get started with GitHub Actions
                 </h4>
@@ -761,7 +761,20 @@
                 </div>
             </div>
             <div class="repoBody" v-else-if="activeTab.includes('wiki')">
-                
+                <div class="pullRequestData">
+                    <span class="material-icons-outlined">
+                        device_hub
+                    </span>
+                    <span class="pullRequestDataHeader">
+                        Welcome to the {{ repo.name }} wiki!
+                    </span>
+                    <span class="pullRequestDataContent">
+                        Wikis provide a place in your repository to lay out the roadmap of your project, show the current status, and document software better, together.
+                    </span>
+                    <button class="btn btn-success">
+                        create the first page
+                    </button>
+                </div>
             </div>
             <div class="securityBody" v-else-if="activeTab.includes('security')">
                 <div class="securityBody">
@@ -1299,7 +1312,7 @@
                             </div>
                             Environments
                         </span>
-                        <span :class="{ securityAsideItemActive: settingsTab.includes('code scanning alerts') }" @click="settingsTab = 'secrets'">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('secrets') }" @click="settingsTab = 'secrets'">
                             <div v-if="settingsTab.includes('secrets')" class="securityAsideLineItem">
 
                             </div>
@@ -1311,8 +1324,8 @@
                             </div>
                             Pages
                         </span>
-                        <span :class="{ securityAsideItemActive: settingsTab.includes('moderation settings alerts') }" @click="settingsTab = 'moderation settings alerts'">
-                            <div v-if="settingsTab.includes('moderation settings alerts')" class="securityAsideLineItem">
+                        <span :class="{ securityAsideItemActive: settingsTab.includes('moderation settings') }" @click="settingsTab = 'moderation settings'">
+                            <div v-if="settingsTab.includes('moderation settings')" class="securityAsideLineItem">
 
                             </div>
                             Moderation settings
@@ -1510,6 +1523,80 @@
                             </div>
                         </div>
                     </div>
+                    <div v-else-if="settingsTab.includes('security and analysis')" class="securityMain">
+                        <h4>
+                            Configure security and analysis features
+                        </h4>
+                        <hr />
+                        <p>
+                            Security and analysis features help keep your repository secure and updated. By enabling these features, you're granting us permission to perform read-only analysis on your repository.
+                        </p>
+                        <div class="securityAndAnalysisBlock">
+                            <div class="securityAndAnalysisBlockColumn">
+                                <span>
+                                    Dependency graph
+                                </span>
+                                <span>
+                                    Understand your dependencies.
+                                </span>
+                                <span>
+                                    Dependency graph is always enabled for public repos.
+                                </span>
+                            </div>
+                            <button :disalbed="true" class="btn btn-light dangerBtn w-25">
+                                Disable
+                            </button>
+                        </div>
+                        <hr />
+                        <div class="securityAndAnalysisBlock">
+                            <div class="securityAndAnalysisBlockColumn">
+                                <span>
+                                    Dependabot alerts
+                                </span>
+                                <span>
+                                    Receive alerts of new vulnerabilities that affect your dependencies.
+                                </span>
+                            </div>
+                            <button class="btn btn-light dangerBtn w-25">
+                                Disable
+                            </button>
+                        </div>
+                        <hr />
+                        <div class="securityAndAnalysisBlock">
+                            <div class="securityAndAnalysisBlockColumn">
+                                <span>
+                                    Dependabot security updates
+                                </span>
+                                <span>
+                                    Easily upgrade to non-vulnerable dependencies.
+                                </span>
+                            </div>
+                            <button class="btn btn-light dangerBtn w-25">
+                                Enable
+                            </button>
+                        </div>
+                        <hr />
+                        <div class="securityAndAnalysisBlock">
+                            <div class="securityAndAnalysisBlockColumn">
+                                <span>
+                                    Code scanning
+                                </span>
+                                <span>
+                                    Automatically detect common vulnerabilities and coding errors.
+                                </span>
+                            </div>
+                            <button class="btn btn-light dangerBtn w-25">
+                                Set up
+                            </button>
+                        </div>
+                        <hr />
+                    </div>
+                    <div v-else-if="settingsTab.includes('manage access')" class="securityMain">
+                        <h4>
+                            Manage Access
+                        </h4>
+                        <hr />
+                    </div>
                     <div v-else-if="settingsTab.includes('branches')" class="securityMain">
                         <h4>
                             Default branch
@@ -1522,7 +1609,7 @@
                             <h4>
                                 Branch protection rules
                             </h4>
-                            <button class="btn btn-success">
+                            <button @click="addRule()" class="btn btn-success">
                                 Add rule
                             </button>
                         </div>
@@ -1548,6 +1635,12 @@
                             Webhooks allow external services to be notified when certain events happen. When the specified events happen, we’ll send a POST request to each of the URLs you provide. Learn more in our Webhooks Guide.
                         </p>
                     </div>
+                    <div v-else-if="settingsTab.includes('notifications')" class="securityMain">
+                        <h4>
+                            Notifications
+                        </h4>
+                        <hr />
+                    </div>
                     <div v-else-if="settingsTab.includes('integrations')" class="securityMain">
                         <h4>
                             Installed GitHub Apps
@@ -1557,7 +1650,7 @@
                             GitHub Apps augment and extend your workflows on GitHub with commercial, open source, and homegrown tools.
                         </p>
                     </div>
-                    <div v-else-if="securityTab.includes('deploykeys')">
+                    <div v-else-if="settingsTab.includes('deploykeys')">
                         <div class="branchAdvisoriesHeader">
                             <h4>
                                 Deploy keys
@@ -1573,7 +1666,143 @@
                             Check out our guide on deploy keys to learn more.
                         </p>
                     </div>
-                    <div v-else-if="securityTab.includes('environments')" class="securityMain">
+                    <div v-else-if="settingsTab.includes('actions')" class="securityMain">
+                        <h4>
+                            Actions permissions
+                        </h4>
+                        <hr />
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Allow all actions
+                                </span>
+                            </div>
+                            <span>
+                                Any action can be used, regardless of who authored it or where it is defined.
+                            </span>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Disable Actions
+                                </span>
+                            </div>
+                            <span>
+                                The Actions tab is hidden and no workflows can run.
+                            </span>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Allow local actions only
+                                </span>
+                            </div>
+                            <span>
+                                Only actions defined in a repository within glebDyakov can be used.
+                            </span>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Allow select actions
+                                </span>
+                            </div>
+                            <span>
+                                Only actions that match specified criteria, plus actions defined in a repository within glebDyakov, can be used. Learn more about allowing specific actions to run.
+                            </span>
+                        </div>
+                        <button :disabled="true" class="btn dangerBtn btnRow">
+                            Save
+                        </button>
+                        <h4>
+                            Artifact and log retention
+                        </h4>
+                        <p>
+                            This is the duration that artifacts and logs will be retained.
+                        </p>
+                        <input type="text" value="90 days" class="form-control w-25" />
+                        <button class="btn dangerBtn">
+                            Save
+                        </button>
+                        <h4>
+                            Fork pull request workflows from outside collaborators
+                        </h4>
+                        <span>
+                            Choose which subset of outside collaborators will require approval to run workflows on their pull requests. Learn more.
+                        </span>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Require approval for first-time contributors who are new to GitHub
+                                </span>
+                            </div>
+                            <span>
+                                Only first-time contributors who recently created a GitHub account will require approval to run workflows.
+                            </span>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Require approval for first-time contributors
+                                </span>
+                            </div>
+                            <span>
+                                Only first-time contributors will require approval to run workflows.
+                            </span>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Require approval for all outside collaborators
+                                </span>
+                            </div>
+                            <span>
+                                All outside collaborators will always require approval to run workflows on their pull requests.
+                            </span>
+                        </div>
+                        <button class="btn dangerBtn btnRow">
+                            Save
+                        </button>
+                        <h4>
+                            Workflow permissions
+                        </h4>
+                        <span>
+                            Choose the default permissions granted to the GITHUB_TOKEN when running workflows in this repository. You can specify more granular permissions in the workflow using YAML. Learn more.
+                        </span>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Read and write permissions
+                                </span>
+                            </div>
+                            <span>
+                                Workflows have read and write permissions in the repository for all scopes.
+                            </span>
+                        </div>
+                        <div>
+                            <div>
+                                <input type="radio" />
+                                <span>
+                                    Read repository contents permission
+                                </span>
+                            </div>
+                            <span>
+                                Workflows have read permissions in the repository for the contents scope only.
+                            </span>
+                        </div>
+                        <button class="btn dangerBtn btnRow">
+                            Save
+                        </button>
+                    </div>
+                    <div v-else-if="settingsTab.includes('environments')" class="securityMain">
                         <div class="secrets">
                             <h4>
                                 Environments
@@ -1598,7 +1827,7 @@
                             <h4>
                                 Actions secrets
                             </h4>
-                            <button class="btn btn-light dangerBtn">
+                            <button @click="addSecret()" class="btn btn-light dangerBtn">
                                 New repository secret
                             </button>
                         </div>
@@ -1642,7 +1871,317 @@
                             </div>
                         </div>
                     </div>
+                    <div v-else-if="settingsTab.includes('pages')" class="securityMain">
+                        <h4>
+                            GitHub Pages
+                        </h4>
+                        <span>
+                            <span class="linkable">
+                                GitHub Pages
+                            </span> is designed to host your personal, organization, or project pages from a GitHub repository.
+                        </span>
+                        <hr />
+                        <p>
+                            Source
+                        </p>
+                        <p>
+                            GitHub Pages is currently disabled. Select a source below to enable GitHub Pages for this repository. Learn more.
+                        </p>
+                        <button class="btn bt-light dangerBtn">
+                            None
+                        </button>
+                        <button class="btn bt-light dangerBtn">
+                            Save
+                        </button>
+                        <p>
+                            Theme Chooser
+                        </p>
+                        <p>
+                            Select a theme to publish your site with a Jekyll theme using the gh-pages branch. Learn more.
+                        </p>
+                        <button class="btn bt-light dangerBtn">
+                            Choose a theme
+                        </button>
+                        <div class="gitfabPagesBlock">
+                            <span class="gitfabPagesPicture material-icons">
+                                dashboard
+                            </span>
+                            <div class="gitfabPagesColumn">
+                                <span>
+                                    Publish privately to people with read access to this repository
+                                </span>
+                                <span>
+                                    Try it risk-free for 14 days using a GitHub Enterprise organization, or learn more about changing the visibility of your GitHub Pages site.
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="settingsTab.includes('moderation settings')" class="securityMain">
+                        <h4>
+                            Temporary interaction limits
+                        </h4>
+                        <hr />
+                        <p>
+                            Temporarily restrict which external users can interact with your repository (comment, open issues, or create pull requests) for a configurable period of time.
+                        </p>
+                        <p>
+                            This may be used to force a "cool-down" period during heated discussions or prevent unwanted interactions.
+                        </p>
+                        <div class="reposTable">
+                            <div class="reposTableHeader">
+                                <span>
+                                    You can restrict repository interactions across your account in your account settings        
+                                </span>
+                            </div>
+                            <div class="reposTableHeader">
+                                <div class="sessionDataColumn">
+                                    <div class="sessionDataColumn">
+                                        <span>
+                                            Limit to existing users
+                                        </span>
+                                        <span>
+                                            Users that have recently created their account will be unable to interact with the repository.
+                                        </span>
+                                        <div class="sessionDataRow">
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    New users
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    Users
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    Contributors
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    Collaborators
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-light turnBtn">
+                                    Enable
+                                </button>
+                            </div>
+                            <div class="reposTableHeader">
+                                <div class="sessionDataColumn">
+                                    <div class="sessionDataColumn">
+                                        <span>
+                                            Limit to prior contributors
+                                        </span>
+                                        <span>
+                                            Users that have not previously committed to the master branch of this repository will be unable to interact with the repository.
+                                        </span>
+                                        <div class="sessionDataRow">
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    New users
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    Users
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    done
+                                                </span>
+                                                <span>
+                                                    Contributors
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    done
+                                                </span>
+                                                <span>
+                                                    Collaborators
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-light turnBtn">
+                                    Enable
+                                </button>
+                            </div>
+                            <div class="reposTableHeader">
+                                <div class="sessionDataColumn">
+                                    <div class="sessionDataColumn">
+                                        <span>
+                                            Limit to repository collaborators
+                                        </span>
+                                        <span>
+                                            Users that are not collaborators will not be able to interact with the repository.
+                                        </span>
+                                        <div class="sessionDataRow">
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    New users
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    Users
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    close
+                                                </span>
+                                                <span>
+                                                    Contributors
+                                                </span>
+                                            </div>
+                                            <div>
+                                                <span class="material-icons">
+                                                    done
+                                                </span>
+                                                <span>
+                                                    Collaborators
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <button class="btn btn-light turnBtn">
+                                    Enable
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
+            </div>
+        </div>
+        <div v-if="togglerBranchesContextMenu" class="brachesContextMenu">
+            <div class="brachesContextMenuHeader">
+                <span>
+                    Switch branches/tags
+                </span>
+                <span @click="togglerBranchesContextMenu = false" class="closer material-icons">
+                    close
+                </span>
+            </div>
+            <input type="text" placeholder="Find or create a branch" class="form-control">
+            <div class="brachesContextMenuHeader">
+                <span>
+                    Branches
+                </span>
+                <span>
+                    Tags
+                </span>
+            </div>
+            <div class="brachesContextMenuHeader">
+                <div>
+                    <span class="material-icons">
+                        done
+                    </span>
+                    <span>
+                        master
+                    </span>
+                </div>
+                <span>
+                    Default
+                </span>
+            </div>
+            <span class="linkable">
+                View all branches
+            </span>
+        </div>
+        <div v-if="togglerAddFileContextMenu" class="addFileContextMenu">
+            <span>
+                Create new file
+            </span>
+            <span>
+                Upload files
+            </span>
+        </div>
+        <div v-if="togglerCodeContextMenu" class="codeContextMenu">
+            <div class="brachesContextMenuHeader">
+                <div>
+                    <span class="material-icons">
+                        chevron_right
+                    </span>
+                    <span>
+                        Clone
+                    </span>
+                </div>
+                <span class="material-icons">
+                    help_outline
+                </span>
+            </div>
+            <div class="brachesContextMenuHeader">
+                <span>
+                    Https
+                </span>
+                <span>
+                    SSH
+                </span>
+                <span>
+                    GitFab CLI
+                </span>
+            </div>
+            <div class="codeContextMenuHeader">
+                <input type="text" value="https://github.com/glebDyakov/mynewrepository.git" class="form-control w-75">
+                <span class="material-icons">
+                    content_copy
+                </span>
+            </div>
+            <span>
+                Use Git or checkout with SVN using the web URL.
+            </span>
+            <div class="codeContextMenuHeader">
+                <span class="material-icons">
+                    desktop_windows
+                </span>
+                <span>
+                    Open with GitFab Desktop
+                </span>
+            </div>
+            <div class="codeContextMenuHeader">
+                <span>
+                    Open with Visual Studio
+                </span>
+            </div>
+            <div class="codeContextMenuHeader">
+                <span class="material-icons">
+                    folder_zip
+                </span>
+                <span>
+                    Download ZIP
+                </span>
             </div>
         </div>
         <Footer />
@@ -1676,6 +2215,9 @@ export default {
             allowMergeCommits: false,
             isOwner: false,
             archived: false,
+            togglerBranchesContextMenu: false,
+            togglerAddFileContextMenu: false,
+            togglerCodeContextMenu: false,
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
@@ -1725,13 +2267,95 @@ export default {
                         this.automaticallyDeleteHeadBranches = this.repo.automaticallyDeleteHeadBranches
                         this.includeGitLFSObjectsInArchives = this.repo.includeGitLFSObjectsInArchives
                         this.templateRepository = this.repo.templateRepository
-                        
+          
+                        document.body.addEventListener("click", (event) => {                        
+                            if(!event.target.id.includes('branchesContextMenu'))
+                                this.togglerBranchesContextMenu = false
+                            if(!event.target.id.includes('addFileContextMenu'))
+                                this.togglerAddFileContextMenu = false
+                            if(!event.target.id.includes('codeContextMenu'))
+                                this.togglerCodeContextMenu = false
+                            
+                        })
+
                     }
                 })
             }
         })
     },
     methods: {
+        addSecret(){
+            fetch(`http://localhost:4000/api/repos/secrets/set/?repoid=${this.$route.query.repoid}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
+        addRule(){
+            fetch(`http://localhost:4000/api/repos/rules/set/?repoid=${this.$route.query.repoid}`, {
+                mode: 'cors',
+                method: 'GET'
+            }).then(response => response.body).then(rb  => {
+                const reader = rb.getReader()
+                return new ReadableStream({
+                    start(controller) {
+                        function push() {
+                            reader.read().then( ({done, value}) => {
+                                if (done) {
+                                    console.log('done', done);
+                                    controller.close();
+                                    return;
+                                }
+                                controller.enqueue(value);
+                                console.log(done, value);
+                                push();
+                            })
+                        }
+                        push();
+                    }
+                });
+            }).then(stream => {
+                return new Response(stream, { headers: { "Content-Type": "text/html" } }).text();
+            })
+            .then(result => {
+                // console.log(`JSON.parse(result): ${JSON.parse(result).repo.gitfaber}`)
+                // if(JSON.parse(result).status.includes('OK')){
+                //     this.$router.push({ name: 'Home' })
+                // }
+            })
+            setTimeout(() => {
+                this.$router.push({ name: 'Home' })
+            }, 1500)
+        },
         setAllowMergeCommits(){
             fetch(`http://localhost:4000/api/repos/allowmergecommits/set/?repoid=${this.$route.query.repoid}&newrepoallowmergecommits=${this.allowMergeCommits}`, {
                 mode: 'cors',
@@ -2224,6 +2848,12 @@ export default {
         justify-content: space-around;
     }
 
+    .repoActionsItemActive {
+        border-bottom: 2px solid rgb(230, 100, 0);
+        padding-bottom: 10px;
+        font-weight: bolder;
+    }
+
     .repoActionsItem > span {
         margin: 0px 2px;
     }
@@ -2377,6 +3007,7 @@ export default {
     }
 
     .securityAside > * {
+        cursor: pointer;
         border-top: 1px solid rgb(200, 200, 200);
         height: 50px;
         display: flex;
@@ -2438,6 +3069,7 @@ export default {
 
     .securityBody {
         display: flex;
+        margin-top: 50px;
     }
 
     .securityPolicyBlock {
@@ -2504,6 +3136,7 @@ export default {
     }
 
     .projectsHeader {
+        margin-top: 50px;
         display: flex;
         justify-content: space-around;
 
@@ -2761,6 +3394,147 @@ export default {
     .linkable {
         color: rgb(0, 0, 255);
         cursor: pointer;
+    }
+
+    .actionsBlock {
+        margin-top: 50px;
+    }
+
+    .btnRow {
+        display: block;
+    }
+
+    .pullRequestsBlock {
+        margin-top: 50px;
+    }
+
+    .brachesContextMenu {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(245, 245, 245);
+        top: 270px;
+        left: 65px;
+        border: 1px solid rgb(175, 175, 175);
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 15px;
+        position: absolute;
+        width: 250px;
+        height: 200px;
+    }
+
+    .brachesContextMenuHeader {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .brachesContextMenu > .linkable {
+        text-align: center;
+    }
+
+    .addFileContextMenu {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(245, 245, 245);
+        top: 275px;
+        left: 615px;
+        border: 1px solid rgb(175, 175, 175);
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 15px;
+        position: absolute;
+        width: 200px;
+        height: 85px;
+    }
+
+    .codeContextMenu {
+        display: flex;
+        flex-direction: column;
+        background-color: rgb(245, 245, 245);
+        top: 275px;
+        left: 600px;
+        border: 1px solid rgb(175, 175, 175);
+        border-radius: 8px;
+        box-sizing: border-box;
+        padding: 15px;
+        position: absolute;
+        width: 375px;
+        height: 250px;
+    }
+
+    .codeContextMenuHeader {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .closer {
+        cursor: pointer;
+    }
+
+    .reposTable {
+        border: 1px solid rgb(200, 200, 200);
+        border-radius: 8px;
+        background-color: rgb(255, 255, 255);
+        display: flex;
+        flex-direction: column;
+    }
+
+    .reposTableHeader {
+        box-sizing: border-box;
+        padding: 10px;
+        display: flex;
+        border-bottom: 1px solid rgb(200, 200, 200);
+        background-color: rgb(235, 235, 235);
+    }
+
+    .reposTableHeader > * {
+        display: flex;
+        align-items: center;
+        margin: 10px;
+    }
+
+    .reposTableHeader > * > * {
+        margin: 5px;
+    }
+
+    .sessionDataColumn {
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .sessionDataRow {
+        display: flex;
+    }
+    
+    .securityAndAnalysisBlock {
+        display: flex;
+        justify-content: space-between;
+        width: 75%;
+        height: 100px;
+    }
+
+    .securityAndAnalysisBlockColumn {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gitfabPagesBlock {
+        display: flex;
+        justify-content: space-between;
+        border: 1px solid rgb(175, 175, 175);
+        border-radius: 8px;
+        background-color: rgb(100, 200, 250);
+        align-items: center;
+    }
+
+    .gitfabPagesColumn {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .gitfabPagesPicture {
+        font-size: 48px;
+        color: rgb(245, 245, 200);
     }
 
 </style>

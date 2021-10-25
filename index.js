@@ -98,7 +98,9 @@ const RepoSchema = new mongoose.Schema({
     allowMergeCommits: {
         type: Boolean,
         default: true
-    }
+    },
+    secrets: [mongoose.Schema.Types.Map],
+    rules: [mongoose.Schema.Types.Map],
 }, { collection : 'myrepos' });
 
 const RepoModel = mongoose.model('RepoModel', RepoSchema);
@@ -814,6 +816,58 @@ app.get('/api/gitfabers/billing/set', (req, res) => {
     })
 })
 
+app.get('/api/repos/rules/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        { $push: 
+            {
+                rules: [
+                    {
+                        name: "new_rule"
+                    }
+                ]
+                
+            }
+    }, (err, repo) => {
+        if(err){
+            return res.json({ "status": "error" })
+        } else {
+            return res.json({ status: 'OK' })
+        }
+    })
+})
+
+app.get('/api/repos/secrets/set', (req, res) => {
+    
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    RepoModel.updateOne({ _id: req.query.repoid },
+        { $push: 
+            {
+                secrets: [
+                    {
+                        name: "new_secret"
+                    }
+                ]
+                
+            }
+    }, (err, repo) => {
+        if(err){
+            return res.json({ "status": "error" })
+        } else {
+            return res.json({ status: 'OK' })
+        }
+    })
+})
+
 app.get('/api/repos/templaterepository/set', (req, res) => {
     
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -904,7 +958,7 @@ app.get('/api/repos/allowautomerge/set', (req, res) => {
     })
 })
 
-app.get('/api/repos/automaticallydeleteheadbracnhes/set', (req, res) => {
+app.get('/api/repos/automaticallydeleteheadbranches/set', (req, res) => {
     
     res.setHeader('Access-Control-Allow-Origin', '*');
     res.setHeader('Access-Control-Allow-Credentials', true);
@@ -913,7 +967,7 @@ app.get('/api/repos/automaticallydeleteheadbracnhes/set', (req, res) => {
     
     RepoModel.updateOne({ _id: req.query.repoid },
         {
-            automaticallyDeleteHeadBracnhes: req.query.newrepoautomaticallydeleteheadbracnhes,
+            automaticallyDeleteHeadBranches: req.query.newrepoautomaticallydeleteheadbranches,
         }, (err, gitfaber) => {
             if(err){
                 return res.json({ status: 'Error' })        
