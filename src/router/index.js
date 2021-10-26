@@ -29,6 +29,8 @@ import GistRegister from '../views/GistRegister.vue'
 import ProjectRegister from '../views/ProjectRegister.vue'
 import Team from '../views/Team.vue'
 import Enterprise from '../views/Enterprise.vue'
+import Help from '../views/Help.vue'
+import Upgrade from '../views/Upgrade.vue'
 
 Vue.use(VueRouter)
 
@@ -177,6 +179,16 @@ const routes = [
     path: '/enterprise',
     name: 'Enterprise',
     component: Enterprise
+  },
+  {
+    path: '/help',
+    name: 'Help',
+    component: Help
+  },
+  {
+    path: '/upgrade',
+    name: 'Upgrade',
+    component: Upgrade
   },
   
 ]

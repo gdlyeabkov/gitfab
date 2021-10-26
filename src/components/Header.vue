@@ -17,7 +17,7 @@
             </span>
         </div>
         <div class="headerItem">
-            <span @click="togglerNotificationContextMenu = true" id="notificationContextMenu" class="toggler material-icons">
+            <span @click="$router.push({ name: 'Notifications' })" @mouseenter="togglerNotificationContextMenu = true" @mouseleave="togglerNotificationContextMenu = false" id="notificationContextMenu" class="toggler material-icons">
                 notifications
             </span>
             <span @click="togglerAddContextMenu = true" id="addContextMenu" class="toggler material-icons">
@@ -45,7 +45,7 @@
                 Set status
             </span>
             <hr />
-            <span @click="$router.push({ name: 'Profile' })">
+            <span @click="$router.push({ name: 'Home' })">
                 Your profile
             </span>
             <span @click="gotoRepositories()">
@@ -67,7 +67,7 @@
             <span @click="$router.push({ name: 'Upgrade' })">
                 Upgrade
             </span>
-            <span @click="$router.push({ name: 'FeaturePreview' })">
+            <span @click="togglerFeaturePreview = true">
                 Feature preview
             </span>
             <span @click="$router.push({ name: 'Help' })">
@@ -114,6 +114,47 @@
                 <hr />
             </div>
         </div>
+        <div v-if="togglerFeaturePreview" class="featurePreviewAlertBackdrop">
+            <div class="featurePreviewAlert">
+                <div class="featurePreviewAlertHeader">
+                    <span class="featurePreviewAlertHeaderItem">
+                        Feature preview
+                    </span>
+                    <span @click="togglerFeaturePreview = false" class="material-icons-outlined featurePreviewAlertHeaderCloser">
+                        close
+                    </span>
+                </div>
+                <div class="featurePreviewAlertBody">
+                    <div class="featurePreviewAlertBodyAside">
+                        <div class="featurePreviewAlertBodyAsideRow">
+                            <span class="material-icons-outlined">
+                                visibility_off
+                            </span>
+                            <span>
+                                Colorbind themes
+                            </span>
+                        </div>
+                    </div>
+                    <div class="featurePreviewAlertBodyArticle">
+                        <div class="featurePreviewAlertBodyArticleHeader">
+                            <h6>
+                                Colorblind Themes
+                            </h6>
+                            <button class="enableBtn btn btn-light">
+                                Enable
+                            </button>
+                        </div>
+                        <img class="featurePreviewAlertBodyArticleImg" width="100%" src="https://user-images.githubusercontent.com/54012/135328369-4dda43b2-977d-4071-9837-100c8a029010.png" alt="">
+                        <span>
+                            Color blindness affects up to 8% of people in the world, with a majority impacted by the red/green color spectrum. This new theme swaps colors like red and green across github.com for orange and blue to make GitHub more inclusive for colorblind users.
+                        </span>
+                        <span class="feedback">
+                            Give feedback
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -130,6 +171,7 @@ export default {
             togglerContextMenu: false,
             togglerAddContextMenu: false,
             togglerNotificationContextMenu: false,
+            togglerFeaturePreview: false,
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
@@ -357,6 +399,105 @@ export default {
 
     .logo {
         cursor: pointer;
+    }
+
+    .featurePreviewAlertBackdrop {
+        color: rgb(0, 0, 0);
+        position: fixed;
+        /* top: calc(50% - 25%);
+        left: calc(50% - 25%); */
+        top: 0px;
+        left: 0px;
+        height: 100%;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgba(0, 0, 0, 0.7);
+    }
+    
+    .featurePreviewAlert {
+        overflow: hidden;
+        background-color: rgb(250, 250, 250);
+        border-radius: 8px;
+        border: 1px solid rgb(200, 200, 200);
+        width: 75%;
+        height: 350px;
+    }
+
+    .featurePreviewAlertHeader {
+        display: flex;
+        justify-content: space-between;
+        box-sizing: border-box;
+        padding: 15px;
+        height: 50px;
+        border-bottom: 1px solid rgb(150, 150, 150);
+    }
+
+    .featurePreviewAlertBody {
+        display: flex;
+        width: 100%;
+        height: calc(100% - 50px);
+    }
+
+    .featurePreviewAlertBodyAside {
+        display: flex;
+        flex-direction: column;
+        width: 35%;
+        border-right: 1px solid rgb(200, 200, 200);
+    }
+
+    .featurePreviewAlertBodyAsideRow {
+        color: rgb(255, 255, 255);
+        display: flex;
+        align-items: center;
+        height: 75px;
+        background-color: rgb(0, 100, 255);
+    }
+
+    .featurePreviewAlertBodyAsideRow > * {
+        margin: 5px;
+        align-self: center;
+    }
+
+    .featurePreviewAlertBodyArticle {
+        width: 65%;
+        overflow-y: scroll;
+        box-sizing: border-box;
+        padding: 15px;
+    }
+    
+    .featurePreviewAlertBodyArticleHeader {
+        display: flex;
+        justify-content: space-between;
+    }
+
+    .featurePreviewAlertBodyArticleImg {
+        margin: 25px 0px;
+    }
+
+    .featurePreviewAlertHeaderCloser {
+        font-size: 18px;
+        cursor: pointer;
+    }
+
+    .featurePreviewAlertHeaderCloser:hover {
+        color: rgb(0, 100, 255);
+    }
+
+    .feedback {
+        cursor: pointer;
+        color: rgb(0, 100, 255);
+        font-weight: bolder;
+    }
+
+    .enableBtn {
+        font-weight: bolder;
+        border: 1px solid rgb(150, 150, 150);
+    }
+
+    .featurePreviewAlertHeaderItem {
+        font-weight: bolder;    
     }
 
 </style>

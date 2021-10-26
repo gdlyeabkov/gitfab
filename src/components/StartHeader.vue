@@ -165,7 +165,7 @@ export default {
         justify-content: flex-end;
     }
 
-    .rightSideHeader > *, .leftSideHeader > * {
+    .rightSideHeader > span, .leftSideHeader > * {
         margin: 0px 5px;
         color: rgb(255, 255, 255);
     }
