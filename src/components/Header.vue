@@ -85,16 +85,16 @@
             <span @click="$router.push({ name: 'RepoRegister' })">
                 New repository
             </span>
-            <span @click="$router.push({ name: 'Status' })">
+            <span @click="$router.push({ name: 'RepoImporter' })">
                 Import repository
             </span>
-            <span @click="$router.push({ name: 'Profile' })">
+            <span @click="$router.push({ name: 'GistRegister' })">
                 New gist
             </span>
-            <span @click="$router.push({ name: 'Repos' })">
+            <span @click="$router.push({ name: 'OrganiczationPlans' })">
                 New organization
             </span>
-            <span @click="$router.push({ name: 'CodeSpaces' })">
+            <span @click="$router.push({ name: 'ProjectRegister' })">
                 New project
             </span>
         </div>

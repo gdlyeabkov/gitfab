@@ -3,15 +3,25 @@
         <Header />
         <div class="createRepoForm">
             <h4>
-                Create a new repository
+                Import your project to GitFab
             </h4>
             <span>
-                A repository contains all project files, including the revision history. Already have a project repository elsewhere? 
-                <span class="importRepo">
-                    Import a repository.
-                </span>
+                Import all the files, including the revision history, from another version control system.
             </span>
             <hr />
+            <h4>
+                Your old repository’s clone URL
+            </h4>
+            <input v-model="oldRepoLink" placeholder="https://svn.example.org/code/svn" type="text" class="form-control w-75">
+            <span>
+                Learn more about the types of 
+                <span class="importRepo">
+                    supported VCS
+                </span>
+                <h4>
+                    Your new repository details
+                </h4>
+            </span>
             <div class="repoLabels">
                 <span class="repoLabel">
                     Owner *
@@ -27,14 +37,6 @@
                 </span>
                 <input v-model="name" type="text" class="form-control w-25">
             </div>
-            <span>
-                Great repository names are short and memorable. Need inspiration? How about curly-waddle?
-            </span>
-            <span>
-                Description (optional)
-            </span>
-            <input v-model="description" type="text" class="form-control w-75">
-            <hr />
             <div class="accessRow">
                 <input v-model="access" :value="'Public'" name="access" type="radio" >
                 <span class="material-icons">
@@ -63,51 +65,14 @@
                     </span>
                 </div>
             </div>
-            <hr />
-                <h6>
-                    Initialize this repository with:
-                </h6>
-                <p>
-                    Skip this step if you’re importing an existing repository.
-                </p>
-            <hr />
             <div class="accessRow">
-                <input v-model="addReadme" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Add a README file
-                    </span>
-                    <span>
-                        This is where you can write a long description for your project. Learn more.
-                    </span>
-                </div>
+                <span class="importRepo">
+                    Cancel
+                </span>
+                <button :disabled="name.length <= 0" @click="createRepo()" class="btn btn-success">
+                    Begin import
+                </button>
             </div>
-            <div class="accessRow">
-                <input v-model="addGitIngore" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Add .gitignore
-                    </span>
-                    <span>
-                        Choose which files not to track from a list of templates. Learn more.
-                    </span>
-                </div>
-            </div>
-            <div class="accessRow">
-                <input v-model="chooseALicense" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Choose a license
-                    </span>
-                    <span>
-                        A license tells others what they can and can't do with your code. Learn more.
-                    </span>
-                </div>
-            </div>
-            <hr />
-            <button :disabled="name.length <= 0" @click="createRepo()" class="btn btn-success">
-                Create repository
-            </button>
         </div>
         <Footer />
     </div>
@@ -128,7 +93,7 @@ export default {
                 email: ''
             },
             name: '',
-            description: '',
+            oldRepoLink: '',
             access: 'Public',
             addReadme: false,
             addGitIngore: false,

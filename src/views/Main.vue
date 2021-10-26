@@ -71,15 +71,17 @@
                         gdlyeabkov / reponame
                     </span>
                 </div> -->
-                <div v-for="repo in repos" :key="repo.name" class="repoRow">
+                <div v-for="repo in repos.filter((repo, repoIdx) => {
+                    return repoIdx <= countOfShowedRepos
+                })" :key="repo.name" class="repoRow">
                     <div class="logo">
                         Г
                     </div>
-                    <span>
+                    <span @click="$router.push({ name: 'Repo', query: { repoid: repo._id } })" class="repoLink">
                         {{ repo.gitfaber }} / {{ repo.name }}
                     </span>
                 </div>
-                <span class="recentActivityDesc">
+                <span v-if="repos.length > countOfShowedRepos" @click="countOfShowedRepos += 7" class="showMoreRepos recentActivityDesc">
                     Show more
                 </span>
                 <hr />
@@ -149,6 +151,7 @@ export default {
                 repos: []
             },
             repos: [],
+            countOfShowedRepos: 6,
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
@@ -322,6 +325,18 @@ export default {
 
     .newRepoIcon {
         margin: 0px 5px;
+    }
+
+    .repoLink {
+        cursor: pointer;
+    }
+
+    .repoLink:hover {
+        text-decoration: underline;
+    }
+
+    .showMoreRepos {
+        cursor: pointer;
     }
 
 </style>

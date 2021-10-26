@@ -3,111 +3,47 @@
         <Header />
         <div class="createRepoForm">
             <h4>
-                Create a new repository
+                Instantly share code, notes, and snippets.
             </h4>
-            <span>
-                A repository contains all project files, including the revision history. Already have a project repository elsewhere? 
-                <span class="importRepo">
-                    Import a repository.
-                </span>
-            </span>
             <hr />
-            <div class="repoLabels">
-                <span class="repoLabel">
-                    Owner *
-                </span>
-                <span class="repoLabel">
-                    Repository name *
-                </span>
-            </div>
-            <div class="repoLabels">
-                <input v-model="gitfaber.email" :disabled="true" type="text" class="form-control w-25">
-                <span class="separator">
-                    /
-                </span>
-                <input v-model="name" type="text" class="form-control w-25">
-            </div>
-            <span>
-                Great repository names are short and memorable. Need inspiration? How about curly-waddle?
-            </span>
-            <span>
-                Description (optional)
-            </span>
-            <input v-model="description" type="text" class="form-control w-75">
-            <hr />
-            <div class="accessRow">
-                <input v-model="access" :value="'Public'" name="access" type="radio" >
-                <span class="material-icons">
-                    note
-                </span>
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Public
+            <input v-model="description" placeholder="Gist description" type="text" class="form-control w-75">
+            <div v-for="file in files" :key="file.id" class="gistFile">
+                <div class="gistFileHeader">
+                    <input v-model="file.name" placeholder="Filename including extension" type="text" class="form-control w-50">
+                    <span @click="files = files.filter((currentFile, currentFileIdx) => {
+                        return file.id !== currentFile.id
+                    })" class="gistFileDelete material-icons">
+                        delete
                     </span>
-                    <span>
-                        Anyone on the internet can see this repository. You choose who can commit.
-                    </span>
+                    <button class="gistSelector btn bnt-light">
+                        Spaces
+                    </button>
+                    <button class="gistSelector btn bnt-light">
+                        2
+                    </button>
+                    <button class="gistSelector btn bnt-light">
+                        Nowrap
+                    </button>
                 </div>
+                <textarea v-model="file.content" class="form-control gistFileCcntent">
+
+                </textarea>
             </div>
             <div class="accessRow">
-                <input name="access" v-model="access" :value="'Private'" type="radio" >
-                <span class="material-icons">
-                    lock_open
-                </span>
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Private
-                    </span>
-                    <span>
-                        You choose who can see and commit to this repository.
-                    </span>
-                </div>
+                <button @click="files.push({
+                    id: files.length + 1,
+                    name: '',
+                    content: '',
+                    indentMode: 'spaces',
+                    indentSize: 2,
+                    lineWrapMode: 'No wrap',
+                })" class="gistSelector btn btn-light">
+                    Add file
+                </button>
+                <button @click="createSecretGist()" class="btn btn-success">
+                    Create secret gist
+                </button>
             </div>
-            <hr />
-                <h6>
-                    Initialize this repository with:
-                </h6>
-                <p>
-                    Skip this step if you’re importing an existing repository.
-                </p>
-            <hr />
-            <div class="accessRow">
-                <input v-model="addReadme" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Add a README file
-                    </span>
-                    <span>
-                        This is where you can write a long description for your project. Learn more.
-                    </span>
-                </div>
-            </div>
-            <div class="accessRow">
-                <input v-model="addGitIngore" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Add .gitignore
-                    </span>
-                    <span>
-                        Choose which files not to track from a list of templates. Learn more.
-                    </span>
-                </div>
-            </div>
-            <div class="accessRow">
-                <input v-model="chooseALicense" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Choose a license
-                    </span>
-                    <span>
-                        A license tells others what they can and can't do with your code. Learn more.
-                    </span>
-                </div>
-            </div>
-            <hr />
-            <button :disabled="name.length <= 0" @click="createRepo()" class="btn btn-success">
-                Create repository
-            </button>
         </div>
         <Footer />
     </div>
@@ -121,18 +57,23 @@ import * as jwt from 'jsonwebtoken'
 const ip = require("ip")
 
 export default {
-    name: 'RepoRegister',
+    name: 'GistRegister',
     data(){
         return {
             gitfaber: {
                 email: ''
             },
-            name: '',
             description: '',
-            access: 'Public',
-            addReadme: false,
-            addGitIngore: false,
-            chooseALicense: false,
+            files: [
+                {
+                    id: 1,
+                    name: '',
+                    content: '',
+                    indentMode: 'spaces',
+                    indentSize: 2,
+                    lineWrapMode: 'No wrap',
+                }
+            ],
             errors: '',
             token: window.localStorage.getItem("gitfabtoken")
         }
@@ -178,9 +119,9 @@ export default {
         })
     },
     methods: {
-        createRepo(){
+        createSecretGist(){
             // fetch(`https://gitfabric.herokuapp.com/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}`, {
-            fetch(`http://localhost:4000/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}&ip=${ip.address()}`, {
+            fetch(`http://localhost:4000/api/gists/create/?gitfaberemail=${this.gitfaber.email}&gistdescription=${this.description}&gistfilesnames=${this.files.flatMap((file) => file.name).join(',')}&gistfilescontents=${this.files.flatMap((file) => file.content).join(',')}&ip=${ip.address()}`, {
                 mode: 'cors',
                 method: 'GET'
             }).then(response => response.body).then(rb  => {
@@ -274,6 +215,37 @@ export default {
 
     .accessRow > * {
         margin: 5px 15px;
+    }
+
+    .gistFile {
+        margin: 25px 0px;
+        width: 100%;
+        border-radius: 8px;
+    }
+    
+    .gistFileHeader {
+        align-items: center;
+        box-sizing: border-box;
+        padding: 15px;
+        border-radius: 8px 8px 0px 0px;
+        background-color: rgb(245, 245, 245);
+        border: 1px solid rgb(225, 225, 225);
+        width: 100%;
+        display: flex;
+        justify-content: space-between
+    }
+
+    .gistSelector {
+        border: 1px solid rgb(170, 170, 170);
+    }
+    
+    .gistFileCcntent {
+        border-radius: 0px 0px 8px 8px;
+        height: 250px;
+    }
+
+    .gistFileDelete {
+        cursor: pointer;
     }
 
 </style>

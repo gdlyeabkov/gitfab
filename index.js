@@ -35,6 +35,7 @@ mongoose.connect(url, connectionParams)
         console.error(`Error connecting to the database. \n${err}`);
     })
 
+
 const RepoSchema = new mongoose.Schema({
     gitfaber: String,
     name: String,
@@ -244,9 +245,34 @@ const GitFaberSchema = new mongoose.Schema({
     repos: [mongoose.Schema.Types.Map],
     deletedRepos: [mongoose.Schema.Types.Map],
     events: [mongoose.Schema.Types.Map],
+    projects: [mongoose.Schema.Types.Map],
+    gists: [mongoose.Schema.Types.Map],
 }, { collection : 'mygitfabers' });
 
 const GitFaberModel = mongoose.model('GitFaberModel', GitFaberSchema);
+
+const ProjectSchema = new mongoose.Schema({
+    gitfaber: String,
+    name: String,
+    description: String,
+    template: {
+        type: String,
+        default: 'None'
+    },
+    access: String,
+    linkedRepos: [mongoose.Schema.Types.Map],
+}, { collection : 'myprojects' });
+
+const ProjectModel = mongoose.model('ProjectModel', ProjectSchema);
+
+const GistSchema = new mongoose.Schema({
+    gitfaber: String,
+    description: String,
+    files: [mongoose.Schema.Types.Map],
+}, { collection : 'mygists' });
+
+const GistModel = mongoose.model('GistModel', GistSchema);
+
 
 app.get('/api/gitfabers/create',(req, res)=>{
     res.setHeader('Access-Control-Allow-Origin', '*');
@@ -367,6 +393,144 @@ app.get('/api/repos/create',(req, res)=>{
         }
     })
 })
+
+app.get('/api/projects/create',(req, res)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let query = ProjectModel.find({})
+    query.exec((err, allProjects) => {
+        if (err){
+            return res.json({ "status": "Error" })
+        }
+        let projectExists = false;
+        if(allProjects.length >= 1){
+            allProjects.forEach(project => {
+                if(project.name.includes(req.query.projectname)){
+                    projectExists = true
+                }
+            })
+        }
+        if(projectExists){
+            return res.json({ "status": "Error" })
+        } else {
+            let newProject = new ProjectModel({ name: req.query.projectname, description: req.query.projectdescription, template: req.query.projecttemplate, access: req.query.prjectaccess, gitfaber: req.query.gitfaberemail });
+            newProject.save(function (err) {
+                if(err){
+                    return res.json({ "status": "Error" })
+                } else {
+                    GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+                        { $push: 
+                            {
+                                projects: [
+                                    {
+                                        name: req.query.projectname
+                                    }
+                                ]
+                                
+                            }
+                    }, (err, gitfaber) => {
+                        if(err){
+                            return res.json({ "status": "error" })
+                        } else {
+                            GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+                                { $push: 
+                                    {
+                                        events: [
+                                            {
+                                                type: 'project.create',
+                                                message: `Created the project ${req.query.gitfaberemail}/${req.query.projectname}`,
+                                                date: new Date().toLocaleDateString(),
+                                                ip: req.query.ip,
+                                                raiser: req.query.gitfaberemail
+                                            }
+                                        ]
+                                        
+                                    }
+                            }, (err, gitfaber) => {
+                                if(err){
+                                    return res.json({ "status": "error" })
+                                } else {
+                                    return res.json({ 'status': 'OK' })
+                                }
+                            })
+                        }
+                    })                
+                }
+            })
+        }
+    })
+})
+
+app.get('/api/gists/create',(req, res)=>{
+    res.setHeader('Access-Control-Allow-Origin', '*');
+    res.setHeader('Access-Control-Allow-Credentials', true);
+    res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
+    res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
+    
+    let query = GistModel.find({})
+    query.exec((err, allGists) => {
+        if (err){
+            return res.json({ "status": "Error" })
+        }
+        let gistFiles = []
+        let gistsFilesNames = req.query.gistfilesnames.split(',')
+        let gistsFilesContents = req.query.gistfilescontents.split(',')
+        gistsFilesNames.map((gistFile, gistFileIdx) => {
+            gistFiles.push({
+                name: gistsFilesNames[gistFileIdx],
+                content: gistsFilesContents[gistFileIdx]
+            })
+        })
+        let newGist = new GistModel({ description: req.query.gistdescription, files: gistFiles, gitfaber: req.query.gitfaberemail });
+        newGist.save(function (err) {
+            if(err){
+                return res.json({ "status": "Error" })
+            } else {
+                GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+                    { $push: 
+                        {
+                            gists: [
+                                {
+                                    description: req.query.reponame
+                                }
+                            ]
+                            
+                        }
+                }, (err, gitfaber) => {
+                    if(err){
+                        return res.json({ "status": "error" })
+                    } else {
+                        GitFaberModel.updateOne({ email: req.query.gitfaberemail },
+                            { $push: 
+                                {
+                                    events: [
+                                        {
+                                            type: 'gist.create',
+                                            message: `Created the gist ${req.query.gitfaberemail}/${req.query.gistdescription}`,
+                                            date: new Date().toLocaleDateString(),
+                                            ip: req.query.ip,
+                                            raiser: req.query.gitfaberemail
+                                        }
+                                    ]
+                                    
+                                }
+                        }, (err, gitfaber) => {
+                            if(err){
+                                return res.json({ "status": "error" })
+                            } else {
+                                return res.json({ 'status': 'OK' })
+                            }
+                        })
+                    }
+                })                
+            }
+        })
+    })
+})
+
 
 app.get('/api/repos/get', (req,res) => {
 

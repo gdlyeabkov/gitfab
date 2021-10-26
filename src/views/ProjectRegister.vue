@@ -3,38 +3,37 @@
         <Header />
         <div class="createRepoForm">
             <h4>
-                Create a new repository
+                Create a new project
             </h4>
             <span>
-                A repository contains all project files, including the revision history. Already have a project repository elsewhere? 
-                <span class="importRepo">
-                    Import a repository.
-                </span>
+                Coordinate, track, and update your work in one place, so projects stay transparent and on schedule.
             </span>
             <hr />
-            <div class="repoLabels">
-                <span class="repoLabel">
-                    Owner *
+            <h6>
+                Project board name
+            </h6>
+            <input v-model="name" placeholder="Project board name" type="text" class="form-control w-75">
+            <h6>
+                Description
+                <span>
+                    (optional)
                 </span>
-                <span class="repoLabel">
-                    Repository name *
-                </span>
-            </div>
-            <div class="repoLabels">
-                <input v-model="gitfaber.email" :disabled="true" type="text" class="form-control w-25">
-                <span class="separator">
-                    /
-                </span>
-                <input v-model="name" type="text" class="form-control w-25">
-            </div>
+            </h6>
+            <textarea v-model="description" class="projectDesc form-control w-75">
+
+            </textarea>
+            <h6>
+                Project template
+            </h6>
             <span>
-                Great repository names are short and memorable. Need inspiration? How about curly-waddle?
+                Save yourself time with a pre-configured project board template.
             </span>
-            <span>
-                Description (optional)
-            </span>
-            <input v-model="description" type="text" class="form-control w-75">
-            <hr />
+            <button class="btn btn-light">
+                Template: None
+            </button>
+            <h6>
+                Visibility
+            </h6>
             <div class="accessRow">
                 <input v-model="access" :value="'Public'" name="access" type="radio" >
                 <span class="material-icons">
@@ -63,51 +62,22 @@
                     </span>
                 </div>
             </div>
-            <hr />
-                <h6>
-                    Initialize this repository with:
-                </h6>
-                <p>
-                    Skip this step if you’re importing an existing repository.
-                </p>
-            <hr />
+            <h6>
+                Linked repositories
+            </h6>
+            <span>
+                Search {{ gitfaber.email }} to link repositories to this project for more accurate suggestions and better search results.
+            </span>
+            <input placeholder="Search by repository name" type="text" class="form-control w-5">
+            <span>
+                Linked repositories: None yet!
+            </span>
+            <hr/>
             <div class="accessRow">
-                <input v-model="addReadme" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Add a README file
-                    </span>
-                    <span>
-                        This is where you can write a long description for your project. Learn more.
-                    </span>
-                </div>
+                <button :disabled="name.length <= 0" @click="createProject()" class="btn btn-success">
+                    Create project
+                </button>
             </div>
-            <div class="accessRow">
-                <input v-model="addGitIngore" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Add .gitignore
-                    </span>
-                    <span>
-                        Choose which files not to track from a list of templates. Learn more.
-                    </span>
-                </div>
-            </div>
-            <div class="accessRow">
-                <input v-model="chooseALicense" type="checkbox" >
-                <div class="accessColumn">
-                    <span class="repoAccess">
-                        Choose a license
-                    </span>
-                    <span>
-                        A license tells others what they can and can't do with your code. Learn more.
-                    </span>
-                </div>
-            </div>
-            <hr />
-            <button :disabled="name.length <= 0" @click="createRepo()" class="btn btn-success">
-                Create repository
-            </button>
         </div>
         <Footer />
     </div>
@@ -129,10 +99,8 @@ export default {
             },
             name: '',
             description: '',
+            template: 'None',
             access: 'Public',
-            addReadme: false,
-            addGitIngore: false,
-            chooseALicense: false,
             errors: '',
             token: window.localStorage.getItem("gitfabtoken")
         }
@@ -178,9 +146,9 @@ export default {
         })
     },
     methods: {
-        createRepo(){
+        createProject(){
             // fetch(`https://gitfabric.herokuapp.com/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}`, {
-            fetch(`http://localhost:4000/api/repos/create/?gitfaberemail=${this.gitfaber.email}&reponame=${this.name}&repodescription=${this.description}&repoaccess=${this.access}&addreadme=${this.addReadme}&addgitignore=${this.addGitIngore}&choosealicense=${this.chooseALicense}&ip=${ip.address()}`, {
+            fetch(`http://localhost:4000/api/projects/create/?gitfaberemail=${this.gitfaber.email}&projectname=${this.name}&projectdescription=${this.description}&projecttemplate=${this.template}&projectaccess=${this.access}&ip=${ip.address()}`, {
                 mode: 'cors',
                 method: 'GET'
             }).then(response => response.body).then(rb  => {
@@ -274,6 +242,10 @@ export default {
 
     .accessRow > * {
         margin: 5px 15px;
+    }
+
+    .projectDesc {
+        height: 200px;
     }
 
 </style>

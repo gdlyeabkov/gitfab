@@ -24,6 +24,9 @@ import Settings from '../views/Settings.vue'
 import Codespaces from '../views/Codespaces.vue'
 import OrganizationsPlan from '../views/OrganizationsPlan.vue'
 import Notifications from '../views/Notifications.vue'
+import RepoImporter from '../views/RepoImporter.vue'
+import GistRegister from '../views/GistRegister.vue'
+import ProjectRegister from '../views/ProjectRegister.vue'
 
 Vue.use(VueRouter)
 
@@ -147,8 +150,22 @@ const routes = [
     path: '/notifications',
     name: 'Notifications',
     component: Notifications
-  }
-  
+  },
+  {
+    path: '/repo/import',
+    name: 'RepoImporter',
+    component: RepoImporter
+  },
+  {
+    path: '/gist/register',
+    name: 'GistRegister',
+    component: GistRegister
+  },
+  {
+    path: '/project/register',
+    name: 'ProjectRegister',
+    component: ProjectRegister
+  },
   
 ]
 
