@@ -2193,6 +2193,7 @@ import Header from "@/components/Header.vue"
 import Footer from "@/components/Footer.vue"
 
 import * as jwt from 'jsonwebtoken'
+const ip = require("ip")
 
 export default {
     name: "Repo",
@@ -2717,7 +2718,7 @@ export default {
             }, 1500)
         },
         deleteRepo(){
-            fetch(`http://localhost:4000/api/repos/delete/?repoid=${this.$route.query.repoid}`, {
+            fetch(`http://localhost:4000/api/repos/delete/?repoid=${this.$route.query.repoid}&ip=${ip.address()}`, {
                 mode: 'cors',
                 method: 'GET'
             }).then(response => response.body).then(rb  => {

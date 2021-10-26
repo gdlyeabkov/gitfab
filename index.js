@@ -780,10 +780,42 @@ app.get('/api/repos/delete', async (req, res) => {
                 { $pull: { 'repos': { name: repo.name } } },
                 async (err, gitfaber) => {
                     await RepoModel.deleteOne({ _id: req.query.repoid  })
+                    GitFaberModel.updateOne({ email: repo.gitfaber }, {
+                        $push: {
+                            deletedRepos: [
+                                {
+                                    name: repo.name,
+                                    date: new Date().toLocaleDateString()
+                                }
+                            ]    
+                        }
+                    }, (err, gitfaber) => {
+                        if(err){
+                            return res.json({ "status": "error" })
+                        }
+                    })
+                    GitFaberModel.updateOne({ email: repo.gitfaber }, {
+                        $push: {
+                            events: [
+                                {
+                                    type: 'repo.destroy',
+                                    message: `Deleted the repository ${repo.gitfaber}/${repo.name}`,
+                                    date: new Date().toLocaleDateString(),
+                                    ip: req.query.ip,
+                                    raiser: repo.gitfaber
+                                }
+                            ]    
+                        }
+                    }, (err, gitfaber) => {
+                        if(err){
+                            return res.json({ "status": "error" })
+                        } else {
+                            return res.json({ status: 'OK' })
+                        }
+                    })
                 })
         }
     })
-    return res.json({ status: 'OK' })
 
 })
 

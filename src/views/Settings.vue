@@ -26,7 +26,7 @@
                     <div class="asideMenuItem">
                         Account settings
                     </div>
-                    <div @click="activeTab = 'profile'" class="asideMenuItem">
+                    <div @click="activeTab = 'profile'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('profile')  && activeTab.length <= 7 }">
                         Profile
                     </div>
                     <div @click="activeTab = 'account'" :class="{ asideMenuItem: true, asideMenuActiveItem: activeTab.includes('account')  && activeTab.length <= 7 }">
@@ -1289,7 +1289,7 @@
                 <hr />
                 <div class="reposTable">
                     <div class="reposTableHeader">
-                        <div>
+                        <div class="repoTab" @click="repoTab = 'repositories'">
                             <span class="material-icons">
                                 import_contacts
                             </span>
@@ -1297,7 +1297,7 @@
                                 Repositories
                             </span>
                         </div>
-                        <div>
+                        <div class="repoTab" @click="repoTab = 'deleted repositories'">
                             <span class="material-icons">
                                 delete
                             </span>
@@ -1313,25 +1313,46 @@
                             </span>
                         </div>
                     </div>
-                    <div v-for="repo in repos" :key="repo.name">
-                        <hr />
-                        <div class="currentRepo">
-                            <span class="material-icons-outlined">
-                                lock
-                            </span>
-                            <span class="linkable">
-                                {{ gitfaber.email }}/{{ repo.name }}
-                            </span>
-                            <span>
-                                1.82 MB
-                            </span>
-                            <div class="collaboratorsBlock">
+                    <div v-if="repoTab.includes('deleted repositories')">
+                        <div v-for="repo in gitfaber.deletedRepos" :key="repo">
+                            <hr />
+                            <div class="currentRepo">
                                 <span class="material-icons-outlined">
-                                    group
+                                    lock
                                 </span>
                                 <span class="linkable">
-                                    0 collaborators
+                                    {{ gitfaber.email }}/{{ repo.name }}
                                 </span>
+                                <span class="">
+                                    Delete on {{ `${repo.date.split('-')[2]} ${monthsLabels[repo.date.split('-')[1]]} ${repo.date.split('-')[0]}` }} by {{ gitfaber.email }}
+                                </span>
+                                <button class="btn btn-light">
+                                    Restore
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    <div v-else-if="repoTab.includes('repositories')">
+                        <div v-for="repo in repos" :key="repo.name">
+                            <hr />
+                            <div class="currentRepo">
+                                <span class="material-icons-outlined">
+                                    lock
+                                </span>
+                                <span class="linkable">
+                                    {{ gitfaber.email }}/{{ repo.name }}
+                                </span>
+                                <span>
+                                    1.82 MB
+                                </span>
+                                <div class="collaboratorsBlock">
+                                    <span class="material-icons-outlined">
+                                        group
+                                    </span>
+                                    <span class="linkable">
+                                        0 collaborators
+                                    </span>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -1559,6 +1580,31 @@ export default {
             pullRequestReviews: false,
             pullRequestPushes: false,
             includeYourOwnUpdates : false,
+            repoTab: 'repositories',
+            monthsLabels: {
+                '0': 'Jan',
+                '0': 'Feb',
+                '0': 'Mar',
+                '0': 'Apr',
+                '0': 'May',
+                '0': 'Jun',
+                '0': 'Jul',
+                '0': 'Aug',
+                '0': 'Sep',
+                '1': 'Oct',
+                '01': 'Jan',
+                '02': 'Feb',
+                '03': 'Mar',
+                '04': 'Apr',
+                '05': 'May',
+                '06': 'Jun',
+                '07': 'Jul',
+                '08': 'Aug',
+                '09': 'Sep',
+                '10': 'Oct',
+                '11': 'Nov',
+                '12': 'Dec',
+            },
             token: window.localStorage.getItem("gitfabtoken"),
         }
     },
@@ -3010,6 +3056,10 @@ export default {
         background-color: rgb(0, 155, 0);
         color: rgb(255, 255, 255);
         align-self: center;
+    }
+
+    .repoTab {
+        cursor: pointer;
     }
 
 </style>
