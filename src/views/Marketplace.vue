@@ -1,6 +1,6 @@
 <template>
 <div>
-    <Header />
+    <StartHeader />
     <div>
         <div class="marketplace">
             <h2>
@@ -452,13 +452,13 @@
 </template>
 
 <script>
-import Header from '@/components/Header.vue'
+import StartHeader from '@/components/StartHeader.vue'
 import Footer from '@/components/Footer.vue'
 
 export default {
     name: 'Marketplace',
     components: {
-        Header,
+        StartHeader,
         Footer
     }
 }

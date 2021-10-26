@@ -27,6 +27,8 @@ import Notifications from '../views/Notifications.vue'
 import RepoImporter from '../views/RepoImporter.vue'
 import GistRegister from '../views/GistRegister.vue'
 import ProjectRegister from '../views/ProjectRegister.vue'
+import Team from '../views/Team.vue'
+import Enterprise from '../views/Enterprise.vue'
 
 Vue.use(VueRouter)
 
@@ -165,6 +167,16 @@ const routes = [
     path: '/project/register',
     name: 'ProjectRegister',
     component: ProjectRegister
+  },
+  {
+    path: '/team',
+    name: 'Team',
+    component: Team
+  },
+  {
+    path: '/enterprise',
+    name: 'Enterprise',
+    component: Enterprise
   },
   
 ]
