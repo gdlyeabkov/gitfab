@@ -41,26 +41,29 @@
                 {{ gitfaber.email }}
             </span>
             <hr />
-            <span @click="$router.push({ name: 'Status' })">
+            <span @click="togglerSetStatus = true" class="status enableBtn">
+                <span class="material-icons-outlined">
+                    insert_emoticon
+                </span>
                 Set status
             </span>
             <hr />
-            <span @click="$router.push({ name: 'Home' })">
+            <span @click="$emit('setActiveTab', 'overview'); $router.push({ name: 'Home' })">
                 Your profile
             </span>
             <span @click="gotoRepositories()">
                 Your repositories
             </span>
-            <span @click="$router.push({ name: 'CodeSpaces' })">
+            <span @click="$router.push({ name: 'Codespaces' })">
                 Your codespaces
             </span>
-            <span @click="$router.push({ name: 'Projects' })">
+            <span @click="$emit('setActiveTab', 'projects'); $router.push({ name: 'Home', query: { activetab: 'projects' } });">
                 Your projects
             </span>
             <span @click="$router.push({ name: 'Stars' })">
                 Your stars
             </span>
-            <span @click="$router.push({ name: 'Gists' })">
+            <span @click="$router.push({ name: 'GistsList' })">
                 Your gists
             </span>
             <hr />
@@ -91,7 +94,7 @@
             <span @click="$router.push({ name: 'GistRegister' })">
                 New gist
             </span>
-            <span @click="$router.push({ name: 'OrganiczationPlans' })">
+            <span @click="$router.push({ name: 'OrganizationsPlan' })">
                 New organization
             </span>
             <span @click="$router.push({ name: 'ProjectRegister' })">
@@ -155,6 +158,50 @@
                 </div>
             </div>
         </div>
+        <div v-if="togglerSetStatus" class="featurePreviewAlertBackdrop">
+            <div class="setStatusAlert">
+                <div class="featurePreviewAlertHeader">
+                    <span class="featurePreviewAlertHeaderItem">
+                        Edit status
+                    </span>
+                    <span @click="togglerSetStatus = false" class="material-icons-outlined featurePreviewAlertHeaderCloser">
+                        close
+                    </span>
+                </div>
+                <div class="setStatusAlertBody">
+                    <input placeholder="What's happening" type="text" class="form-control w-50 whatSHappennig">
+                    <div class="setStatusBusy">
+                        <input type="checkbox">
+                        <div>
+                            <h6>
+                                Busy
+                            </h6>
+                            <span>
+                                When others mention you, assign you, or request your review, GitHub will let them know that you have limited availability.
+                            </span>
+                        </div>
+                    </div>
+                    <hr />
+                    <div class="setStatusClearStatus">
+                        <span>
+                            Clear status
+                        </span>
+                        <button class="btn btn-light enableBtn w-25">
+                            Never
+                        </button>
+                    </div>
+                    <hr />
+                    <div class="btns">
+                        <button class="btn btn-success w-25">
+                            Set status
+                        </button>
+                        <button class="btn btn-light w-25 enableBtn">
+                            Clear status
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </template>
 
@@ -172,11 +219,13 @@ export default {
             togglerAddContextMenu: false,
             togglerNotificationContextMenu: false,
             togglerFeaturePreview: false,
+            togglerSetStatus: false,
             token: window.localStorage.getItem("gitfabtoken")
         }
     },
     emits: [
-        "gotoRepositories"
+        "gotoRepositories",
+        "setActiveTab",
     ],
     mounted(){
         jwt.verify(this.token, 'gitfabsecret', (err, decoded) => {
@@ -498,6 +547,55 @@ export default {
 
     .featurePreviewAlertHeaderItem {
         font-weight: bolder;    
+    }
+
+    .setStatusAlertBody {
+        box-sizing: border-box;
+        padding: 15px;
+    }
+
+    .btns {
+        display: flex;
+        justify-content: center;
+    }
+
+    .btns > button {
+        margin: 25px;
+    }
+
+    .setStatusBusy {
+        display: flex;
+    }
+
+    .setStatusBusy > * {
+        margin: 25px;
+    }
+
+    .setStatusClearStatus > * {
+        margin: 0px 10px;
+    }
+
+    .setStatusAlert {
+        overflow: hidden;
+        background-color: rgb(250, 250, 250);
+        border-radius: 8px;
+        border: 1px solid rgb(200, 200, 200);
+        width: 50%;
+        height: 450px;
+    }
+
+    .whatSHappennig {
+        background-color: rgb(235, 235, 235);
+        margin: auto;
+    }
+
+    .status {
+        align-items: center;
+        display: flex;
+    }
+
+    .status > * {
+        margin: 5px;
     }
 
 </style>

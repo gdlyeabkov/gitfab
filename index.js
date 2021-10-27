@@ -247,6 +247,7 @@ const GitFaberSchema = new mongoose.Schema({
     events: [mongoose.Schema.Types.Map],
     projects: [mongoose.Schema.Types.Map],
     gists: [mongoose.Schema.Types.Map],
+    peoples: [mongoose.Schema.Types.Map],
 }, { collection : 'mygitfabers' });
 
 const GitFaberModel = mongoose.model('GitFaberModel', GitFaberSchema);
@@ -582,6 +583,8 @@ app.get('/api/gitfabers/get', (req,res) => {
     res.setHeader("Access-Control-Allow-Headers", "X-Requested-With, X-Access-Token, X-Socket-ID, Content-Type");
     res.setHeader("Access-Control-Allow-Methods", "GET, POST, OPTIONS, PUT, PATCH, DELETE");
     
+    console.log(`req.query.gitfaberemail: ${req.query.gitfaberemail}`)
+
     let query =  GitFaberModel.findOne({'email': req.query.gitfaberemail}, function(err, gitfaber){
         if (err){
             return res.json({ "status": "Error" })
@@ -590,7 +593,17 @@ app.get('/api/gitfabers/get', (req,res) => {
                 if(err) {
                     return res.json({ "status": "Error" })
                 }
-                return res.json({ status: 'OK', gitfaber: gitfaber, repos: allRepos })
+                let query =  GistModel.find({'gitfaber': req.query.gitfaberemail}, function(err, allGists){
+                    if(err) {
+                        return res.json({ "status": "Error" })
+                    }
+                    let query =  ProjectModel.find({'gitfaber': req.query.gitfaberemail}, function(err, allProjects){
+                        if(err) {
+                            return res.json({ "status": "Error" })
+                        }
+                      return res.json({ status: 'OK', gitfaber: gitfaber, repos: allRepos, gists: allGists, projects: allProjects })
+                    })
+                })
             })
         }
     })

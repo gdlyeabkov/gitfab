@@ -1,9 +1,27 @@
 <template>
-  <div :style="`background-color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${this.gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : this.gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : this.gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : this.gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : this.gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : this.gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(0, 0, 0)'};`">
+  <div :style="`background-color: ${gitfaber.appearance.includes('light default') ? 'rgb(255, 255, 255)' : gitfaber.appearance.includes('dark default') ? 'rgb(0, 0, 0)' : gitfaber.appearance.includes('dark dimmed') ? 'rgb(100, 100, 100)' : gitfaber.appearance.includes('dark high contrast') ? 'rgb(175, 175, 175)' : gitfaber.appearance.includes('dark colorblind') ? 'rgb(200, 200, 200)' : gitfaber.appearance.includes('light colorblind') ? 'rgb(235, 235, 235)' : 'rgb(255, 255, 255)'}; color: ${gitfaber.appearance.includes('light default') ? 'rgb(0, 0, 0)' : gitfaber.appearance.includes('dark default') ? 'rgb(255, 255, 255)' : gitfaber.appearance.includes('dark dimmed') ? 'rgb(215, 215, 215)' : gitfaber.appearance.includes('dark high contrast') ? 'rgb(125, 125, 125)' : gitfaber.appearance.includes('dark colorblind') ? 'rgb(75, 75, 75)' : gitfaber.appearance.includes('light colorblind') ? 'rgb(150, 150, 150)' : 'rgb(0, 0, 0)'};`">
     <Header @gotoRepositories="gotoRepositoriesHandler" @setActiveTab="setActiveTabHandler" />
-    <div style="display: flex;">
-      <div style="width: 350px; margin: 0px 75px;">
-
+    <div style="display: flex; flex-direction: column;">
+      <div style="margin: 0px 75px; display: flex;">
+        <div class="avatar">
+          <img src="https://avatars.githubusercontent.com/u/8070735?s=200&v=4" alt="">
+        </div>
+        <div class="gitfaberInfo">
+          <span class="gitfaberName">
+            RPCS3
+          </span>
+          <span>
+            PlayStation 3 emulator and debugger
+          </span>
+          <div class="gitfaberMeta">
+            <span>
+              https://rpcs3.net/
+            </span>
+            <span>
+              rpcs3mulator@gmail.com
+            </span>
+          </div>
+        </div>
       </div>
       <div style="width: calc(100% - 340px); display: flex; justify-content: space-between; box-sizing: border-box; padding: 0px 30px;">
         <div @click="activeTab = 'overview'" class="tabItem">
@@ -37,92 +55,11 @@
     </div>
     <hr />
     <div style="display: flex;">
-      <div class="avatarAside">
-        <div @click="$router.push({ name: 'Settings' })" style="cursor: pointer; color: rgb(255, 255, 255);  font-size: 128px; display: flex; align-items: center; justify-content: center; border-radius: 100%; background-color: rgb(0, 150, 0); width: 300px; height: 300px; margin: 0px 75px;">
-          Г
-        </div>
-        <span>
-          {{ gitfaber.email }}
-        </span>
-        <button class="btn btn-light w-75">
-          Edit profile
-        </button>
-      </div>
       <div v-if="activeTab.includes('overview')" style="width: calc(100% - 175px);">
         <p>Popular repositories</p>
         <div style="display: flex; width: 100%;">
           
           <div style="width: 50%;">
-            <!-- <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
-                </span>
-                <span class="repoAccess">
-                  Public
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <span>
-                  vueJS
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <div class="marker">
-
-                </div>
-                <span>
-                  HTML
-                </span>
-              </div>
-            </div>
-            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
-                </span>
-                <span class="repoAccess">
-                  Public
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <span>
-                  vueJS
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <div class="marker">
-
-                </div>
-                <span>
-                  HTML
-                </span>
-              </div>
-            </div>
-            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
-                </span>
-                <span class="repoAccess">
-                  Public
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <span>
-                  vueJS
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <div class="marker">
-
-                </div>
-                <span>
-                  HTML
-                </span>
-              </div>
-            </div> -->
-            
             <div v-for="repo in repos.filter((repo, repoInd) => {
                 return repoInd <= 2
               })" style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
@@ -149,75 +86,6 @@
             </div>
           </div>
           <div style="width: 50%;">
-            <!-- <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
-                </span>
-                <span class="repoAccess">
-                  Public
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <span>
-                  vueJS
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <div class="marker">
-
-                </div>
-                <span>
-                  HTML
-                </span>
-              </div>
-            </div>
-            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
-                </span>
-                <span class="repoAccess">
-                  Public
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <span>
-                  vueJS
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <div class="marker">
-
-                </div>
-                <span>
-                  HTML
-                </span>
-              </div>
-            </div>
-            <div style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
-              <div class="repoShortcutNameRow">
-                <span class="repoName">
-                  mynewrepository
-                </span>
-                <span class="repoAccess">
-                  Public
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <span>
-                  vueJS
-                </span>
-              </div>
-              <div class="repoShortcutLanguageRow">
-                <div class="marker">
-
-                </div>
-                <span>
-                  HTML
-                </span>
-              </div>
-            </div> -->
             <div v-for="repo in repos.filter((repo, repoInd) => {
                 return repoInd <= 5 && repoInd >= 3
               })" style="box-sizing: border-box; padding: 15px; margin: 15px 0px; width: 85%; height: 150px; border: 1px solid rgb(175, 175, 175);">
@@ -560,6 +428,81 @@
           </div>
         </div>
       </div>
+      <div class="peoplesAside">
+        <span>
+          People
+        </span>
+        <div class="peoples">
+          <div class="people">
+
+          </div>
+          <div class="people">
+
+          </div>
+          <div class="people">
+
+          </div>
+          <div class="people">
+
+          </div>
+          <div class="people">
+
+          </div>
+          <div class="people">
+
+          </div>
+        </div>
+        <hr />
+        <span>
+          Top languages
+        </span>
+        <div class="languages">
+          <div class="language">
+            <div class="languageMarker">
+            
+            </div>  
+            <span>
+              C++
+            </span>
+          </div>
+          <div class="language">
+            <div class="languageMarker">
+            
+            </div>  
+            <span>
+              C
+            </span>
+          </div>
+          <div class="language">
+            <div class="languageMarker">
+            
+            </div>  
+            <span>
+              Python
+            </span>
+          </div>
+          <div class="language">
+            <div class="languageMarker">
+            
+            </div>  
+            <span>
+              C#
+            </span>
+          </div>
+          <div class="language">
+            <div class="languageMarker">
+            
+            </div>  
+            <span>
+              QML
+            </span>
+          </div>
+        </div>
+        <span>
+          Report abuse
+        </span>
+      </div>
+      
     </div>
     <Footer />
   </div>
@@ -594,7 +537,7 @@ export default {
           this.activeTab = this.$route.query.activetab
         }
         // fetch(`https://gitfabric.herokuapp.com/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
-        fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${decoded.gitfaberemail}`, {
+        fetch(`http://localhost:4000/api/gitfabers/get/?gitfaberemail=${this.$route.params.gitfaber}`, {
           mode: 'cors',
           method: 'GET'
         }).then(response => response.body).then(rb  => {
@@ -927,6 +870,76 @@ export default {
 
   .projectMeta > * {
     margin: 15px;
+  }
+
+  .peoples {
+    display: flex;
+  }
+
+  .people {
+    margin:   5px;
+    border-radius: 100%;
+    width: 35px;
+    height: 35px;
+    background-color: rgb(0, 155, 0);
+  }
+
+  .peoplesAside {
+    width: 35%;
+  }
+
+  .languages {
+    display: flex;
+  }
+
+  .language {
+    margin: 0px 15px;
+    display: flex;
+    align-items: center;
+  }
+
+  .languageMarker {
+    margin-right: 10px;
+    border-radius: 100%;
+    width: 10px;
+    height: 10px;
+    background-color: rgb(0, 155, 0);
+  }
+
+  .avatar {
+    border: 1px solid rgb(175, 175, 175);
+    border-radius: 8px;
+    width: 100px;
+    height: 100px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 15px;
+  }
+
+  .avatar > img {
+    width: 85%;
+    height: 85%;
+  }
+
+  .gitfaberMeta {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .gitfaberMeta > span {
+    margin-right: 25px;
+  }
+
+  .gitfaberInfo {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .gitfaberName {
+    font-weight: bolder;
+    font-size: 24px;
   }
 
 </style>

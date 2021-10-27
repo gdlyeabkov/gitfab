@@ -31,6 +31,9 @@ import Team from '../views/Team.vue'
 import Enterprise from '../views/Enterprise.vue'
 import Help from '../views/Help.vue'
 import Upgrade from '../views/Upgrade.vue'
+import GistsList from '../views/GistsList.vue'
+import Stars from '../views/Stars.vue'
+import OtherGitFaber from '../views/OtherGitFaber.vue'
 
 Vue.use(VueRouter)
 
@@ -190,6 +193,23 @@ const routes = [
     name: 'Upgrade',
     component: Upgrade
   },
+  {
+    path: '/gists',
+    name: 'GistsList',
+    component: GistsList
+  },
+  {
+    path: '/stars',
+    name: 'Stars',
+    component: Stars
+  },
+  {
+    path: '/other/:gitfaber',
+    name: 'OtherGitFaber',
+    component: OtherGitFaber
+  },
+  
+  
   
 ]
 
